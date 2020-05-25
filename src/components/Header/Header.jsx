@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -15,12 +15,27 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-
-import { logout } from "../../app/authSlice";
+import roles from "../../constants/roles";
+import { signOut } from "../../app/authSlice";
 
 const drawerWidth = 240;
 
-// const links = [{}, {}]
+const links = [
+  // {
+  //   url: "/",
+  //   label: "Главная",
+  // },
+  {
+    url: "/users",
+    label: "Список преподавателей",
+    roles: [roles.Admin],
+  },
+  {
+    url: "/positions",
+    label: "Списк должностей",
+    roles: [roles.Admin],
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -47,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: drawerWidth,
   },
   logoutBtn: {
-    color: theme.palette.secondary.main
-  }
+    color: theme.palette.secondary.main,
+  },
 }));
 
 export default function Header() {
@@ -57,6 +72,7 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const currentUser = useSelector((state) => state.auth.user);
   const isMenuOpen = Boolean(anchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -72,7 +88,7 @@ export default function Header() {
       history.replace("/login");
     };
 
-    dispatch(logout(redirect));
+    dispatch(signOut(redirect));
   };
 
   const handleProfile = (event) => {
@@ -95,7 +111,9 @@ export default function Header() {
           Профиль
         </Link>
       </MenuItem>
-      <MenuItem onClick={handleLogout} className={classes.logoutBtn}>Выйти</MenuItem>
+      <MenuItem onClick={handleLogout} className={classes.logoutBtn}>
+        Выйти
+      </MenuItem>
     </Menu>
   );
 
@@ -141,11 +159,19 @@ export default function Header() {
         anchor="left"
       >
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {links
+            .filter((link) =>
+              Array.isArray(link.roles)
+                ? link.roles.some((role) => role === currentUser?.position)
+                : true
+            )
+            .map((link) => (
+              <Link component={RouterLink} to={link.url}>
+                <ListItem button key={link.url}>
+                  <ListItemText>{link.label}</ListItemText>
+                </ListItem>
+              </Link>
+            ))}
         </List>
       </Drawer>
     </>

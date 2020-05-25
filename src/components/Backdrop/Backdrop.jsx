@@ -13,10 +13,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function _Backdrop() {
   const classes = useStyles();
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const isLoadingAuth = useSelector((state) => state.auth.isLoading);
+  const isLoadingUsers = useSelector((state) => state.users.isLoading);
 
   return (
-    <Backdrop className={classes.backdrop} open={isLoading}>
+    <Backdrop
+      className={classes.backdrop}
+      open={isLoadingAuth || isLoadingUsers}
+    >
       <CircularProgress color="inherit" />
     </Backdrop>
   );

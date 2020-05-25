@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiLogin, apiLogout } from '../api/authAPI';
+import { enqueueSnackbar } from './appSlice';
 
 function startLoading(state) {
   state.isLoading = true
@@ -16,7 +17,9 @@ const authSlice = createSlice({
   reducers: {
     getUserStart: startLoading,
     getUserFailure: loadingFailed,
-
+    resetError(state) {
+      state.error = null
+    },
     getUserSuccess(state, { payload }) {
       state.user = payload
       state.isAuthenticated = true
@@ -30,29 +33,31 @@ export const {
   getUserStart,
   getUserFailure,
   getUserSuccess,
+  resetError
 } = authSlice.actions
 
-export const login = (email, password, redirect) =>
+export const signIn = (login, password, redirect) =>
   async dispatch => {
     try {
       dispatch(getUserStart())
-      
-      const user = await apiLogin(email, password)
-      
+
+      const user = await apiLogin(login, password)
+
       dispatch(getUserSuccess(user))
       redirect();
 
     } catch (err) {
-      dispatch(getUserFailure(err))
+      dispatch(getUserFailure(err));
+      dispatch(enqueueSnackbar(err.response?.data?.message, 'error'));
     }
   }
 
-export const logout = (redirect) =>
+export const signOut = (redirect) =>
   async dispatch => {
     try {
-      
+
       await apiLogout();
-      
+
       redirect();
 
     } catch (err) {

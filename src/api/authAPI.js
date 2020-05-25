@@ -1,19 +1,23 @@
 import axios from 'axios';
 
-export async function apiLogin(email, password) {
-  
+export async function apiLogin(login, password) {
+
   try {
     const url = `${process.env.REACT_APP_HOST}/api/auth/login`;
     const data = {
-      email, 
+      login,
       password
     };
+    const options = {
+      withCredentials: true
+    };
 
-    const responce = await axios.post(url, data);
+    const responce = await axios.post(url, data, options);
 
     return responce.data;
 
   } catch (error) {
+    console.info({ ...error });
     throw error;
   }
 }
@@ -21,7 +25,7 @@ export async function apiLogin(email, password) {
 export async function apiLogout() {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/auth/logout`;
-   
+
     await axios.get(url);
 
   } catch (error) {

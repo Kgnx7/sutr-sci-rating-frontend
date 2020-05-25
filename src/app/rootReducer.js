@@ -1,12 +1,15 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
 import authReducer from './authSlice'
-// import repoDetailsReducer from 'features/repoSearch/repoDetailsSlice'
-// import issuesReducer from 'features/issuesList/issuesSlice'
-// import commentsReducer from 'features/issueDetails/commentsSlice'
+import usersReducer from './usersSlice'
+import positionsSlice from './positionsSlice'
+import appReducer from './appSlice'
 
 const rootReducer = combineReducers({
+  app: appReducer,
   auth: authReducer,
+  users: usersReducer,
+  positions: positionsSlice,
 })
 
 export default rootReducer

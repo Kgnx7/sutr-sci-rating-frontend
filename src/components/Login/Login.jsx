@@ -7,7 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Snackbar from '@material-ui/core/Snackbar';
-import { login } from "../../app/authSlice";
+import { signIn } from "../../app/authSlice";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
   const error = useSelector((state) => state.auth.error);
@@ -39,7 +39,7 @@ export default function SignIn() {
   const classes = useStyles();
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setLogin(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -47,12 +47,12 @@ export default function SignIn() {
   };
 
   const redirect = () => {
-    history.push("/dashboard");
+    history.push("/");
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(login(email, password, redirect));
+    dispatch(signIn(login, password, redirect));
   };
 
   return (
@@ -69,12 +69,12 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="login"
             label="Логин"
-            name="email"
-            type="email"
+            name="login"
+            // type="email"
             autoFocus
-            value={email}
+            value={login}
             onChange={handleEmailChange}
           />
           <TextField
@@ -95,14 +95,13 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={!email.length || !password.length}
-            // onClick={handleSubmit}
+            disabled={!login.length || !password.length}
           >
             Войти
           </Button>
         </form>
       </div>
-      {
+      {/* {
         error && (
           <Snackbar
             anchorOrigin={{
@@ -114,7 +113,7 @@ export default function SignIn() {
             message={error.message}
           />
         )
-      }
+      } */}
     </Container>
   );
 }
