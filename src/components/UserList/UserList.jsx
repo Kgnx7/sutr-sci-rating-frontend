@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import {
   VirtualTableState,
   SortingState,
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
 
 const columns = [
   { name: "login", title: "Логин" },
-  { name: "name", title: "Имя" },
+  { name: "position", title: "Должность" },
 ];
 
 const VIRTUAL_PAGE_SIZE = 100;
@@ -56,6 +57,9 @@ export default function UserList() {
     <>
       <Header />
       <Container className={classes.container}>
+        <Typography variant="h2" gutterBottom>
+          Список преподавателей
+        </Typography>
         <Paper>
           <Grid rows={users} columns={columns}>
             <SearchState value={searchValue} onValueChange={setSearchState} />

@@ -48,7 +48,7 @@ export const signIn = (login, password, redirect) =>
 
     } catch (err) {
       dispatch(getUserFailure(err));
-      dispatch(enqueueSnackbar(err.response?.data?.message, 'error'));
+      dispatch(enqueueSnackbar(err.response?.data?.message || 'Что-то пошло не так', 'error'));
     }
   }
 

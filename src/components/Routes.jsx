@@ -13,6 +13,7 @@ import Profile from "./Profile";
 import roles from "../constants/roles";
 import UserList from "./UserList";
 import PositionList from "./PositionList";
+import UserCreate from "./UserCreate";
 
 export default function Routers() {
   return (
@@ -23,7 +24,6 @@ export default function Routers() {
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute
-          withRoles={[roles.Admin]}
           exact
           path="/"
           component={Dashboard}
@@ -33,6 +33,12 @@ export default function Routers() {
           exact
           path="/users"
           component={UserList}
+        />
+        <PrivateRoute
+          // withRoles={[roles.Admin]}
+          exact
+          path="/user/create"
+          component={UserCreate}
         />
         <PrivateRoute
           withRoles={[roles.Admin]}

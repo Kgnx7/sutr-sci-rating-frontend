@@ -17,7 +17,6 @@ export async function apiLogin(login, password) {
     return responce.data;
 
   } catch (error) {
-    console.info({ ...error });
     throw error;
   }
 }
