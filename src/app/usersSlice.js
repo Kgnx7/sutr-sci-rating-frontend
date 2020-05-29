@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllUsers } from '../api/usersAPI';
 import { signOut } from './authSlice';
+import { enqueueSnackbar } from './appSlice';
 
 function startLoading(state) {
   state.isLoading = true
@@ -25,7 +26,7 @@ const usersSlice = createSlice({
       state.users = payload;
       state.isLoading = false
       state.error = null
-    }
+    },
   },
 });
 
@@ -45,14 +46,17 @@ export const getAllUsers = (router) =>
 
       dispatch(getUsersSuccess(users))
 
-    } catch (err) {
+    } catch (error) {
 
-      if (err.response.status === 401) {
-        dispatch(signOut());
-        router.push('/login');
+      if (error.response) {
+        if (error.response.status === 401) {
+          dispatch(signOut());
+          router.push('/login');
+        }
+      } else if (error.request) {
+        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
       }
-
-      dispatch(getUsersFailure(err));
+      dispatch(getUsersFailure(error));
     }
   }
 

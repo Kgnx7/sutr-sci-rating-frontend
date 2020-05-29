@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
@@ -14,6 +14,11 @@ import roles from "../constants/roles";
 import UserList from "./UserList";
 import PositionList from "./PositionList";
 import UserCreate from "./UserCreate";
+import FacultyList from "./FacultyList";
+import FacultyShow from "./FacultyShow";
+import DepartmentShow from "./DepartmentShow";
+
+import groups from "../constants/groups";
 
 export default function Routers() {
   return (
@@ -23,28 +28,42 @@ export default function Routers() {
 
         <PrivateRoute exact path="/profile" component={Profile} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <PrivateRoute exact path="/" component={Dashboard} />
         <PrivateRoute
-          exact
-          path="/"
-          component={Dashboard}
-        />
-        <PrivateRoute
-          withRoles={[roles.Admin]}
+          withRoles={groups.University}
           exact
           path="/users"
           component={UserList}
         />
         <PrivateRoute
-          // withRoles={[roles.Admin]}
+          withRoles={[roles.Admin]}
           exact
           path="/user/create"
           component={UserCreate}
         />
         <PrivateRoute
-          withRoles={[roles.Admin]}
+          withRoles={groups.University}
           exact
           path="/positions"
           component={PositionList}
+        />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/faculties"
+          component={FacultyList}
+        />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/faculties/:id"
+          component={FacultyShow}
+        />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/departments/:id"
+          component={DepartmentShow}
         />
         <PrivateRoute path="*">404</PrivateRoute>
       </Switch>

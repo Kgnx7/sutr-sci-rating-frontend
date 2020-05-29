@@ -35,6 +35,7 @@ const useStyles = makeStyles(() => ({
 
 const columns = [
   { name: "login", title: "Логин" },
+  { name: "displayName", title: "ФИО" },
   { name: "position", title: "Должность" },
 ];
 

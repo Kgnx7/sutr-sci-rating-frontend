@@ -37,7 +37,7 @@ export default function Profile() {
             <Typography
               className={classes.text}
             >{`Логин: ${user.login}`}</Typography>
-            <Typography>{`ФИО: ${user.surname} ${user.name} ${user.patronymic}`}</Typography>
+            <Typography>{`ФИО: ${user.displayName}`}</Typography>
             <Typography>{`Должность: ${user.position || ""}`}</Typography>
             <Typography>{`Кафедра: ${user.cathedra || ""}`}</Typography>
             <Typography>{`Ученая степень: ${

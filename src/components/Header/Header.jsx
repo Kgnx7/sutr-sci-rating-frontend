@@ -16,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
 import roles from "../../constants/roles";
+import groups from "../../constants/groups";
 import { signOut } from "../../app/authSlice";
 
 const drawerWidth = 240;
@@ -28,12 +29,17 @@ const links = [
   {
     url: "/users",
     label: "Список преподавателей",
-    roles: [roles.Admin],
+    roles: groups.University,
   },
   {
     url: "/positions",
     label: "Списк должностей",
-    roles: [roles.Admin],
+    roles: groups.University,
+  },
+  {
+    url: "/faculties",
+    label: "Списк факультетов",
+    roles: groups.University,
   },
 ];
 
