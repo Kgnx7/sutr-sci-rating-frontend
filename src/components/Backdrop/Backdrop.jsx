@@ -15,11 +15,24 @@ export default function _Backdrop() {
   const classes = useStyles();
   const isLoadingAuth = useSelector((state) => state.auth.isLoading);
   const isLoadingUsers = useSelector((state) => state.users.isLoading);
+  const isLoadingPositions = useSelector((state) => state.positions.isLoading);
+  const isLoadingDepartments = useSelector(
+    (state) => state.departments.isLoading
+  );
+  const isLoadingFaculties = useSelector((state) => state.faculties.isLoading);
+  const isLoadingStaffs = useSelector((state) => state.staffs.isLoading);
 
   return (
     <Backdrop
       className={classes.backdrop}
-      open={isLoadingAuth || isLoadingUsers}
+      open={
+        isLoadingAuth ||
+        isLoadingUsers ||
+        isLoadingPositions ||
+        isLoadingDepartments ||
+        isLoadingFaculties ||
+        isLoadingStaffs
+      }
     >
       <CircularProgress color="inherit" />
     </Backdrop>

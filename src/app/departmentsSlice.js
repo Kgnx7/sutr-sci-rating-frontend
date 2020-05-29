@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { signOut } from './authSlice';
 import { apiGetUsersByDepartment } from '../api/usersAPI';
 import { apiGetFacultyDepartments } from '../api/facultiesAPI';
+import { apiGetAllDepartments } from '../api/departmentsAPI';
 import { enqueueSnackbar } from './appSlice';
 
 function startLoading(state) {
@@ -45,6 +46,30 @@ export const {
   getDepartmentStaffSuccess,
   resetError,
 } = departmentsSlice.actions
+
+export const getAllDepartments = (router) => async dispatch => {
+  try {
+    dispatch(getDepartmentsStart())
+
+    const departments = await apiGetAllDepartments();
+
+    dispatch(getDepartmentsSuccess(departments))
+
+  } catch (error) {
+
+    if (error.response) {
+      if (error.response.status === 401) {
+        dispatch(signOut());
+        router.push('/login');
+      } else {
+        dispatch(enqueueSnackbar('Что-то пошло не так', 'error'));
+      }
+    } else if (error.request) {
+      dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
+    }
+    dispatch(getDepartmentsFailure(error));
+  }
+}
 
 export const getFacultyDepartments = (id, router) =>
   async dispatch => {

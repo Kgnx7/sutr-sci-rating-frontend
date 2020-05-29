@@ -115,7 +115,6 @@ export default function UserList() {
               pageSize={PAGE_SIZE}
             />
             <IntegratedSorting />
-            {/* <IntegratedFiltering /> */}
             <Table messages={tableMessages} />
             <TableHeaderRow
               showSortingControls
