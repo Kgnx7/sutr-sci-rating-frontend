@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import debounce from "../../utils/debounce";
+
 import {
-  VirtualTableState,
   SortingState,
   SearchState,
   PagingState,
   IntegratedSorting,
-  IntegratedFiltering,
-  IntegratedPaging,
+  // IntegratedFiltering,
+  // IntegratedPaging,
+  CustomPaging,
 } from "@devexpress/dx-react-grid";
 
 import {
   Grid,
-  VirtualTable,
+  Table,
   TableHeaderRow,
   SearchPanel,
   PagingPanel,
   Toolbar,
 } from "@devexpress/dx-react-grid-material-ui";
+
 import Paper from "@material-ui/core/Paper";
 import Header from "../Header";
 import Container from "@material-ui/core/Container";
@@ -31,6 +35,10 @@ const useStyles = makeStyles(() => ({
   container: {
     marginTop: 100,
   },
+  addUserBtn: {
+    marginTop: 15,
+    marginBottom: 15,
+  },
 }));
 
 const columns = [
@@ -39,7 +47,7 @@ const columns = [
   { name: "position", title: "Должность" },
 ];
 
-const VIRTUAL_PAGE_SIZE = 100;
+const PAGE_SIZE = 10;
 
 export default function UserList() {
   const [searchValue, setSearchState] = useState("");
@@ -48,10 +56,35 @@ export default function UserList() {
   const dispatch = useDispatch();
   const history = useHistory();
   const users = useSelector((state) => state.users.users);
-  const loading = useSelector((state) => state.users.loading);
+  const totalCount = useSelector((state) => state.users.count);
+  // const loading = useSelector((state) => state.users.loading);
 
-  const getUsers = () => {
-    dispatch(getAllUsers(history));
+  const handleAddUser = () => {
+    history.push("/users/create");
+  };
+
+  useEffect(() => {
+    dispatch(
+      getAllUsers(searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
+    );
+  }, []);
+
+  const handleCurrentPageChange = (page) => {
+    setCurrentPage(page);
+    dispatch(getAllUsers(searchValue, PAGE_SIZE * page, PAGE_SIZE, history));
+  };
+
+  const handleSearchChangeDebounced = useRef(
+    debounce((search) => {
+      dispatch(
+        getAllUsers(search, PAGE_SIZE * currentPage, PAGE_SIZE, history)
+      );
+    }, 1000)
+  ).current;
+
+  const handleSearchChange = (search) => {
+    setSearchState(search);
+    handleSearchChangeDebounced(search);
   };
 
   return (
@@ -61,30 +94,34 @@ export default function UserList() {
         <Typography variant="h2" gutterBottom>
           Список преподавателей
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddUser}
+          className={classes.addUserBtn}
+        >
+          Добавить пользователя
+        </Button>
         <Paper>
           <Grid rows={users} columns={columns}>
-            <SearchState value={searchValue} onValueChange={setSearchState} />
+            <SearchState
+              value={searchValue}
+              onValueChange={handleSearchChange}
+            />
             <SortingState />
             <PagingState
               currentPage={currentPage}
-              onCurrentPageChange={setCurrentPage}
-              pageSize={20}
+              onCurrentPageChange={handleCurrentPageChange}
+              pageSize={PAGE_SIZE}
             />
             <IntegratedSorting />
-            <IntegratedFiltering />
-            <IntegratedPaging />
-            <VirtualTableState
-              loading={loading}
-              totalRowCount={users.lenght}
-              pageSize={VIRTUAL_PAGE_SIZE}
-              skip={0}
-              getRows={getUsers}
-            />
-            <VirtualTable messages={tableMessages} />
+            {/* <IntegratedFiltering /> */}
+            <Table messages={tableMessages} />
             <TableHeaderRow
               showSortingControls
               messages={tableHeaderMessages}
             />
+            <CustomPaging totalCount={totalCount} />
             <Toolbar />
             <SearchPanel />
             <PagingPanel />

@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export async function apiGetAllUsers() {
+export async function apiGetAllUsers(filter, offset, limit) {
 
   try {
     const url = `${process.env.REACT_APP_HOST}/api/users/list`;
 
-    const responce = await axios.get(url, { withCredentials: true, timeout: 3000 });
+    const responce = await axios.get(url, { params: { filter, offset, limit }, withCredentials: true, timeout: 3000 });
 
     return responce.data;
 

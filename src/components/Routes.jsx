@@ -38,9 +38,9 @@ export default function Routers() {
           component={UserList}
         />
         <PrivateRoute
-          withRoles={[roles.Admin]}
+          withRoles={groups.University}
           exact
-          path="/user/create"
+          path="/users/create"
           component={UserCreate}
         />
         <PrivateRoute

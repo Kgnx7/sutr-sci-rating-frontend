@@ -21,9 +21,11 @@ const usersSlice = createSlice({
     resetError(state) {
       state.error = null;
     },
+
     getUsersSuccess(state, { payload }) {
       // TODO: валидация данных
-      state.users = payload;
+      state.users = payload.users;
+      state.count = payload.count;
       state.isLoading = false
       state.error = null
     },
@@ -37,14 +39,14 @@ export const {
   resetError,
 } = usersSlice.actions
 
-export const getAllUsers = (router) =>
+export const getAllUsers = (search, offset, limit, router) =>
   async dispatch => {
     try {
       dispatch(getUsersStart())
 
-      const users = await apiGetAllUsers()
+      const { users, count } = await apiGetAllUsers(search, offset, limit);
 
-      dispatch(getUsersSuccess(users))
+      dispatch(getUsersSuccess({ users, count }))
 
     } catch (error) {
 
