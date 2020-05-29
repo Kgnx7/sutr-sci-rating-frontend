@@ -19,7 +19,7 @@ export async function apiGetUsersByDepartment(departmentId) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/departments/staff`;
 
-    const responce = await axios.get(url, { params: { id: departmentId }, withCredentials: true, timeout: 15000 });
+    const responce = await axios.get(url, { params: { id: departmentId }, withCredentials: true, timeout: 30000 });
 
     return responce.data;
 

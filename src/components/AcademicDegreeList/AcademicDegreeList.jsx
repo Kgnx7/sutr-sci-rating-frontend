@@ -16,7 +16,7 @@ import {
   VirtualTable,
   TableHeaderRow,
 } from "@devexpress/dx-react-grid-material-ui";
-import { getAllPositions } from "../../app/positionsSlice";
+import { getAllAcademicDegrees } from "../../app/academicDegreesSlice";
 import { tableHeaderMessages, tableMessages } from "../../utils/localization";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,27 +46,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const columns = [
-  { name: "title", title: "Наименование" },
-  { name: "short", title: "Сокращение" },
-];
-
-const tableColumnExtensions = [
-  { columnName: "title", width: 220 },
-  { columnName: "short", width: 220 },
-];
+const columns = [{ name: "title", title: "Наименование" }];
 
 const VIRTUAL_PAGE_SIZE = 100;
 
-export default function PositionList() {
+export default function AcademicDegreeList() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
-  const positions = useSelector((state) => state.positions.positions);
-  const loading = useSelector((state) => state.positions.loading);
+  const academicDegrees = useSelector(
+    (state) => state.academicDegrees.academicDegrees
+  );
+  const loading = useSelector((state) => state.academicDegrees.loading);
 
-  const getPositions = () => {
-    dispatch(getAllPositions(history));
+  const getAcademicDegrees = () => {
+    dispatch(getAllAcademicDegrees(history));
   };
 
   return (
@@ -74,23 +68,20 @@ export default function PositionList() {
       <Header />
       <Container className={classes.container}>
         <Typography variant="h2" gutterBottom>
-          Список должностей
+          Список академических степеней
         </Typography>
         <Paper>
-          <Grid rows={positions} columns={columns}>
+          <Grid rows={academicDegrees} columns={columns}>
             <SortingState />
             <IntegratedSorting />
             <VirtualTableState
               loading={loading}
-              totalRowCount={positions.lenght}
+              totalRowCount={academicDegrees.lenght}
               pageSize={VIRTUAL_PAGE_SIZE}
               skip={0}
-              getRows={getPositions}
+              getRows={getAcademicDegrees}
             />
-            <VirtualTable
-              columnExtensions={tableColumnExtensions}
-              messages={tableMessages}
-            />
+            <VirtualTable messages={tableMessages} />
             <TableHeaderRow
               showSortingControls
               messages={tableHeaderMessages}

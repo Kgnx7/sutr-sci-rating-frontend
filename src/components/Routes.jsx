@@ -17,6 +17,8 @@ import UserCreate from "./UserCreate";
 import FacultyList from "./FacultyList";
 import FacultyShow from "./FacultyShow";
 import DepartmentShow from "./DepartmentShow";
+import AcademicDegreeList from "./AcademicDegreeList";
+import AcademicRankList from "./AcademicRankList";
 
 import groups from "../constants/groups";
 
@@ -64,6 +66,18 @@ export default function Routers() {
           exact
           path="/departments/:id"
           component={DepartmentShow}
+        />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/academicDegrees"
+          component={AcademicDegreeList}
+        />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/academicRanks"
+          component={AcademicRankList}
         />
         <PrivateRoute path="*">404</PrivateRoute>
       </Switch>

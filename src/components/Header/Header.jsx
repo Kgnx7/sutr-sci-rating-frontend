@@ -15,7 +15,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-import roles from "../../constants/roles";
+// import roles from "../../constants/roles";
 import groups from "../../constants/groups";
 import { signOut } from "../../app/authSlice";
 
@@ -39,6 +39,16 @@ const links = [
   {
     url: "/faculties",
     label: "Списк факультетов",
+    roles: groups.University,
+  },
+  {
+    url: "/academicDegrees",
+    label: "Списк ученых степеней",
+    roles: groups.University,
+  },
+  {
+    url: "/academicRanks",
+    label: "Списк ученых званий",
     roles: groups.University,
   },
 ];
@@ -125,17 +135,8 @@ export default function Header() {
 
   return (
     <>
-      {/* <div className={classes.grow}> */}
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography className={classes.title} variant="h6" noWrap>
             Научный рейтинг СГУ
           </Typography>
@@ -155,7 +156,6 @@ export default function Header() {
         </Toolbar>
       </AppBar>
       {renderMenu}
-      {/* </div> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"

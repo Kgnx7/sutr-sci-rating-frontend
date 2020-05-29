@@ -9,6 +9,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { getStaff } from "../../app/departmentsSlice";
 import {
   VirtualTableState,
@@ -129,6 +131,7 @@ export default function DepartmentShow() {
   const [tab, setTab] = React.useState(0);
   const departments = useSelector((state) => state.departments.departments);
   const { id } = useParams();
+  const history = useHistory();
   const department = departments.find(
     (department) => department.id === parseInt(id)
   );
@@ -139,10 +142,17 @@ export default function DepartmentShow() {
     setTab(newValue);
   };
 
+  const handleBack = () => {
+    history.goBack();
+  };
+
   return (
     <>
       <Header />
       <Container className={classes.profileContainer}>
+        <IconButton aria-label="назад" onClick={handleBack}>
+          <ArrowBackIosIcon />
+        </IconButton>
         {department && (
           <>
             <Typography variant="h2" gutterBottom>
