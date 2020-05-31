@@ -27,3 +27,33 @@ export async function apiGetUsersByDepartment(departmentId) {
     throw error;
   }
 }
+
+export async function apiCreateUser(user) {
+
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/users/create`;
+    const options = { withCredentials: true }
+
+    const responce = await axios.post(url, user, options);
+
+    return responce.data;
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function apiDeleteUser(id) {
+
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/users/delete`;
+    const options = { withCredentials: true, params: { id } }
+
+    const responce = await axios.get(url, options);
+
+    return responce.data;
+
+  } catch (error) {
+    throw error;
+  }
+}

@@ -1,25 +1,25 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Link from "@material-ui/core/Link";
-import { Link as RouterLink } from "react-router-dom";
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Link from '@material-ui/core/Link'
+import { Link as RouterLink } from 'react-router-dom'
 // import roles from "../../constants/roles";
-import groups from "../../constants/groups";
-import { signOut } from "../../app/authSlice";
+import groups from '../../constants/groups'
+import { signOut } from '../../app/authSlice'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const links = [
   // {
@@ -27,31 +27,31 @@ const links = [
   //   label: "Главная",
   // },
   {
-    url: "/users",
-    label: "Список преподавателей",
+    url: '/users',
+    label: 'Список преподавателей',
     roles: groups.University,
   },
   {
-    url: "/positions",
-    label: "Списк должностей",
+    url: '/positions',
+    label: 'Списк должностей',
     roles: groups.University,
   },
   {
-    url: "/faculties",
-    label: "Списк факультетов",
+    url: '/faculties',
+    label: 'Списк факультетов',
     roles: groups.University,
   },
   {
-    url: "/academicDegrees",
-    label: "Списк ученых степеней",
+    url: '/academicDegrees',
+    label: 'Списк ученых степеней',
     roles: groups.University,
   },
   {
-    url: "/academicRanks",
-    label: "Списк ученых званий",
+    url: '/academicRanks',
+    label: 'Списк ученых званий',
     roles: groups.University,
   },
-];
+]
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -61,9 +61,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
   },
   drawer: {
@@ -80,45 +80,45 @@ const useStyles = makeStyles((theme) => ({
   logoutBtn: {
     color: theme.palette.secondary.main,
   },
-}));
+}))
 
 export default function Header() {
-  const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const classes = useStyles()
+  const [anchorEl, setAnchorEl] = React.useState(null)
 
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const currentUser = useSelector((state) => state.auth.user);
-  const isMenuOpen = Boolean(anchorEl);
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const currentUser = useSelector((state) => state.auth.user)
+  const isMenuOpen = Boolean(anchorEl)
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleLogout = () => {
     const redirect = () => {
-      history.replace("/login");
-    };
+      history.replace('/login')
+    }
 
-    dispatch(signOut(redirect));
-  };
+    dispatch(signOut(redirect))
+  }
 
   const handleProfile = (event) => {
     // event.stopPropagation();
-  };
+  }
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -131,7 +131,7 @@ export default function Header() {
         Выйти
       </MenuItem>
     </Menu>
-  );
+  )
 
   return (
     <>
@@ -181,5 +181,5 @@ export default function Header() {
         </List>
       </Drawer>
     </>
-  );
+  )
 }

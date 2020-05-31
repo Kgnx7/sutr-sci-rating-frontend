@@ -72,7 +72,6 @@ const TableRow = ({ row, ...restProps }) => {
   );
 }
 
-
 export default function FacultyList() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -88,7 +87,7 @@ export default function FacultyList() {
     <>
       <Header />
       <Container className={classes.container}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h2" gutterBottom>
           Список факультетов
         </Typography>
         <Paper>

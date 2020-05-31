@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import debounce from "../../utils/debounce";
+import React, { useState, useEffect, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import debounce from '../../utils/debounce'
 
 import {
   SortingState,
   SearchState,
   PagingState,
+  EditingState,
   IntegratedSorting,
   // IntegratedFiltering,
   // IntegratedPaging,
   CustomPaging,
-} from "@devexpress/dx-react-grid";
+} from '@devexpress/dx-react-grid'
 
 import {
   Grid,
@@ -23,13 +24,14 @@ import {
   SearchPanel,
   PagingPanel,
   Toolbar,
-} from "@devexpress/dx-react-grid-material-ui";
+  TableEditColumn,
+} from '@devexpress/dx-react-grid-material-ui'
 
-import Paper from "@material-ui/core/Paper";
-import Header from "../Header";
-import Container from "@material-ui/core/Container";
-import { tableHeaderMessages, tableMessages } from "../../utils/localization";
-import { getAllUsers } from "../../app/usersSlice";
+import Paper from '@material-ui/core/Paper'
+import Header from '../Header'
+import Container from '@material-ui/core/Container'
+import { tableHeaderMessages, tableMessages, editColumnMessages } from '../../utils/localization'
+import { getAllUsers, deleteUser } from '../../app/usersSlice'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -39,53 +41,55 @@ const useStyles = makeStyles(() => ({
     marginTop: 15,
     marginBottom: 15,
   },
-}));
+}))
 
 const columns = [
-  { name: "login", title: "Логин" },
-  { name: "displayName", title: "ФИО" },
-  { name: "position", title: "Должность" },
-];
+  { name: 'login', title: 'Логин' },
+  { name: 'displayName', title: 'ФИО' },
+  { name: 'position', title: 'Должность' },
+]
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 10
 
 export default function UserList() {
-  const [searchValue, setSearchState] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const users = useSelector((state) => state.users.users);
-  const totalCount = useSelector((state) => state.users.count);
+  const [searchValue, setSearchState] = useState('')
+  const [currentPage, setCurrentPage] = useState(0)
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const users = useSelector((state) => state.users.users)
+  const totalCount = useSelector((state) => state.users.count)
   // const loading = useSelector((state) => state.users.loading);
 
   const handleAddUser = () => {
-    history.push("/users/create");
-  };
+    history.push('/users/create')
+  }
 
   useEffect(() => {
-    dispatch(
-      getAllUsers(searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
-    );
-  }, []);
+    dispatch(getAllUsers(searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history))
+  }, [])
 
   const handleCurrentPageChange = (page) => {
-    setCurrentPage(page);
-    dispatch(getAllUsers(searchValue, PAGE_SIZE * page, PAGE_SIZE, history));
-  };
+    setCurrentPage(page)
+    dispatch(getAllUsers(searchValue, PAGE_SIZE * page, PAGE_SIZE, history))
+  }
 
   const handleSearchChangeDebounced = useRef(
     debounce((search) => {
-      dispatch(
-        getAllUsers(search, PAGE_SIZE * currentPage, PAGE_SIZE, history)
-      );
+      dispatch(getAllUsers(search, PAGE_SIZE * currentPage, PAGE_SIZE, history))
     }, 1000)
-  ).current;
+  ).current
 
   const handleSearchChange = (search) => {
-    setSearchState(search);
-    handleSearchChangeDebounced(search);
-  };
+    setSearchState(search)
+    handleSearchChangeDebounced(search)
+  }
+
+  const commitChanges = ({ deleted }) => {
+    const userId = users[deleted].id
+
+    dispatch(deleteUser(userId))
+  }
 
   return (
     <>
@@ -104,29 +108,25 @@ export default function UserList() {
         </Button>
         <Paper>
           <Grid rows={users} columns={columns}>
-            <SearchState
-              value={searchValue}
-              onValueChange={handleSearchChange}
-            />
+            <SearchState value={searchValue} onValueChange={handleSearchChange} />
             <SortingState />
             <PagingState
               currentPage={currentPage}
               onCurrentPageChange={handleCurrentPageChange}
               pageSize={PAGE_SIZE}
             />
+            <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
             <Table messages={tableMessages} />
-            <TableHeaderRow
-              showSortingControls
-              messages={tableHeaderMessages}
-            />
+            <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
             <CustomPaging totalCount={totalCount} />
             <Toolbar />
             <SearchPanel />
             <PagingPanel />
+            <TableEditColumn showDeleteCommand messages={editColumnMessages} />
           </Grid>
         </Paper>
       </Container>
     </>
-  );
+  )
 }
