@@ -51,6 +51,24 @@ const columns = [
 
 const PAGE_SIZE = 10
 
+const TableRow = ({ row, ...restProps }) => {
+  const history = useHistory()
+
+  const handleRowClick = () => {
+    history.push(`/users/${row.id}`)
+  }
+
+  return (
+    <Table.Row
+      {...restProps}
+      onClick={handleRowClick}
+      style={{
+        cursor: 'pointer',
+      }}
+    />
+  )
+}
+
 export default function UserList() {
   const [searchValue, setSearchState] = useState('')
   const [currentPage, setCurrentPage] = useState(0)
@@ -117,7 +135,7 @@ export default function UserList() {
             />
             <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
-            <Table messages={tableMessages} />
+            <Table messages={tableMessages} rowComponent={TableRow} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
             <CustomPaging totalCount={totalCount} />
             <Toolbar />

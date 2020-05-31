@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { signOut } from './authSlice';
 import { apiGetUsersByDepartment } from '../api/usersAPI';
 import { apiGetFacultyDepartments } from '../api/facultiesAPI';
 import { apiGetAllDepartments } from '../api/departmentsAPI';
-import { enqueueSnackbar } from './appSlice';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -56,18 +55,8 @@ export const getAllDepartments = (router) => async dispatch => {
     dispatch(getDepartmentsSuccess(departments))
 
   } catch (error) {
-
-    if (error.response) {
-      if (error.response.status === 401) {
-        dispatch(signOut());
-        router.push('/login');
-      } else {
-        dispatch(enqueueSnackbar('Что-то пошло не так', 'error'));
-      }
-    } else if (error.request) {
-      dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-    }
     dispatch(getDepartmentsFailure(error));
+    handleServerErrors(error, router, dispatch);
   }
 }
 
@@ -81,18 +70,8 @@ export const getFacultyDepartments = (id, router) =>
       dispatch(getDepartmentsSuccess(departments))
 
     } catch (error) {
-
-      if (error.response) {
-        if (error.response.status === 401) {
-          dispatch(signOut());
-          router.push('/login');
-        } else {
-          dispatch(enqueueSnackbar('Что-то пошло не так', 'error'));
-        }
-      } else if (error.request) {
-        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-      }
       dispatch(getDepartmentsFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 
@@ -106,17 +85,8 @@ export const getStaff = (departmentId, router) =>
       dispatch(getDepartmentStaffSuccess(staff))
 
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          dispatch(signOut());
-          router.push('/login');
-        } else {
-          dispatch(enqueueSnackbar('Что-то пошло не так', 'error'));
-        }
-      } else if (error.request) {
-        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-      }
       dispatch(getDepartmentsFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

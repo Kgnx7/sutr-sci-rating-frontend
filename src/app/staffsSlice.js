@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllStaffs } from '../api/staffsAPI';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -44,9 +45,9 @@ export const getAllStaffs = (router) =>
 
       dispatch(getStaffsSuccess(staffs))
 
-    } catch (err) {
-
-      dispatch(getStaffsFailure(err));
+    } catch (error) {
+      dispatch(getStaffsFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

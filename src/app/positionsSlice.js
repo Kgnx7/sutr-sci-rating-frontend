@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllPositions } from '../api/positionsAPI';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -44,9 +45,9 @@ export const getAllPositions = (router) =>
 
       dispatch(getPositionsSuccess(positions))
 
-    } catch (err) {
-
-      dispatch(getPositionsFailure(err));
+    } catch (error) {
+      dispatch(getPositionsFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

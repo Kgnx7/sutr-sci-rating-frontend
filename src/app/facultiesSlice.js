@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllFaculties, apiGetFacultyDepartments } from '../api/facultiesAPI';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -56,9 +57,9 @@ export const getAllFaculties = (router) =>
 
       dispatch(getFacultiesSuccess(faculties))
 
-    } catch (err) {
-
-      dispatch(getFacultiesFailure(err));
+    } catch (error) {
+      dispatch(getFacultiesFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 
@@ -71,9 +72,9 @@ export const getFacultyDepartments = (id, router) =>
 
       dispatch(getFacultyDepartmentsSuccess(departments))
 
-    } catch (err) {
-
-      dispatch(getFacultyDepartmentsFailure(err));
+    } catch (error) {
+      dispatch(getFacultyDepartmentsFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

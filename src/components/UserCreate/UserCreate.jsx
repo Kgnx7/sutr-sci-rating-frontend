@@ -26,8 +26,8 @@ const useStyles = makeStyles(() => ({
     marginBottom: 30,
   },
   createButton: {
-    marginTop: 15
-  }
+    marginTop: 15,
+  },
 }))
 
 export default function UserCreate(props) {
@@ -82,7 +82,12 @@ export default function UserCreate(props) {
                   ))}
                 </Select>
 
-                <Select name="position" label="Должность" formControlProps={{ margin: 'normal' }}>
+                <Select
+                  name="position"
+                  label="Должность"
+                  formControlProps={{ margin: 'normal' }}
+                  required
+                >
                   {positions.map((position) => (
                     <MenuItem value={position.id}>{position.short}</MenuItem>
                   ))}

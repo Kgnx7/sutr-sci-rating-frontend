@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllAcademicDegrees } from '../api/academicDegreesAPI';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -44,9 +45,9 @@ export const getAllAcademicDegrees = (router) =>
 
       dispatch(getAcademicDegreesSuccess(academicDegrees))
 
-    } catch (err) {
-
-      dispatch(getAcademicDegreesFailure(err));
+    } catch (error) {
+      dispatch(getAcademicDegreesFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllAcademicRanks } from '../api/academicRanksAPI';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -44,9 +45,9 @@ export const getAllAcademicRanks = (router) =>
 
       dispatch(getAcademicRanksSuccess(academicRanks))
 
-    } catch (err) {
-
-      dispatch(getAcademicRanksFailure(err));
+    } catch (error) {
+      dispatch(getAcademicRanksFailure(error));
+      handleServerErrors(error, router, dispatch);
     }
   }
 

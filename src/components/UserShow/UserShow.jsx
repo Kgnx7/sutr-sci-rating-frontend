@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
-
 import Header from '../Header'
 
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +20,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Profile() {
-  const user = useSelector((state) => state.auth.user)
+export default function UserShow() {
+  const users = useSelector((state) => state.users.users)
+  const { id } = useParams()
+  const user = users.find((user) => user.id === parseInt(id))
 
   const classes = useStyles()
+
   return (
     <>
       <Header />
       <Container className={classes.profileContainer}>
-        <Typography variant="h2" gutterBottom>
-          Профиль
-        </Typography>
         {user ? (
           <>
             <Avatar src="/avatar.jpg" className={classes.avatar} />

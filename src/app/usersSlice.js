@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { apiGetAllUsers, apiCreateUser, apiDeleteUser } from '../api/usersAPI';
 import { signOut } from './authSlice';
 import { enqueueSnackbar } from './appSlice';
+import { handleServerErrors } from '../utils/errorHandler';
 
 function startLoading(state) {
   state.isLoading = true
@@ -40,7 +41,7 @@ const usersSlice = createSlice({
     },
     deleteUserSuccess(state, { payload }) {
       // TODO: валидация данных
-      state.users = state.users.filter(user => user.id === payload);
+      state.users = state.users.filter(user => user.id !== payload);
       state.isLoading = false
       state.error = null
     },
@@ -71,15 +72,9 @@ export const getAllUsers = (search, offset, limit, router) =>
 
     } catch (error) {
 
-      if (error.response) {
-        if (error.response.status === 401) {
-          dispatch(signOut());
-          router.push('/login');
-        }
-      } else if (error.request) {
-        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-      }
       dispatch(getUsersFailure(error));
+
+      handleServerErrors(error, router, dispatch);
     }
   }
 
@@ -95,16 +90,9 @@ export const createUser = (user, router) =>
       router.push('/users');
 
     } catch (error) {
-
-      if (error.response) {
-        if (error.response.status === 401) {
-          dispatch(signOut());
-          router.push('/login');
-        }
-      } else if (error.request) {
-        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-      }
       dispatch(createUserFailure(error));
+
+      handleServerErrors(error, router, dispatch);
     }
   }
 
@@ -120,16 +108,9 @@ export const deleteUser = (userId, router) =>
       router.push('/users');
 
     } catch (error) {
-
-      if (error.response) {
-        if (error.response.status === 401) {
-          dispatch(signOut());
-          router.push('/login');
-        }
-      } else if (error.request) {
-        dispatch(enqueueSnackbar('Нет ответа от сервера', 'error'));
-      }
       dispatch(deleteUserFailure(error));
+
+      handleServerErrors(error, router, dispatch);
     }
   }
 
