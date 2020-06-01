@@ -1,19 +1,18 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
-import Login from './Login'
-import Dashboard from './Dashboard'
 import Profile from './Profile'
-import roles from '../constants/roles'
-import UserList from './UserList'
-import PositionList from './PositionList'
-import UserCreate from './UserCreate'
-import FacultyList from './FacultyList'
-import FacultyShow from './FacultyShow'
-import DepartmentShow from './DepartmentShow'
-import AcademicDegreeList from './AcademicDegreeList'
-import AcademicRankList from './AcademicRankList'
-import UserShow from './UserShow'
+import UsersList from '../features/usersList'
+import PositionsList from '../features/positionsList'
+// import UserCreate from './UserCreate'
+import FacultiesList from '../features/facultiesList'
+import FacultyDetails from '../features/facultyDetails'
+import DepartmentDetails from '../features/departmentDetails'
+import AcademicDegreesList from '../features/academicDegreesList'
+import AcademicRanksList from '../features/academicRanksList'
+import UserDetails from '../features/userDetails'
+import Login from '../features/login'
+import Dashboard from '../components/Dashboard'
 
 import groups from '../constants/groups'
 
@@ -23,53 +22,69 @@ export default function Routers() {
       <Switch>
         <Route exact path="/login" component={Login} />
 
-        <PrivateRoute exact path="/profile" component={Profile} />
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute exact path="/" component={Dashboard} />
-        <PrivateRoute withRoles={groups.University} exact path="/users" component={UserList} />
+        {/* <PrivateRoute exact path="/profile" component={Profile} /> */}
         <PrivateRoute
-          withRoles={groups.University}
+          withRoles={[
+            ...groups.University,
+            ...groups.Faculty,
+            ...groups.Department,
+            ...groups.Worker,
+          ]}
           exact
-          path="/users/create"
-          component={UserCreate}
+          path="/users/:id"
+          component={UserDetails}
         />
-        <PrivateRoute withRoles={groups.University} exact path="/users/:id" component={UserShow} />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/positions"
-          component={PositionList}
-        />
+        <PrivateRoute withRoles={groups.University} exact path="/users" component={UsersList} />
+
+        <PrivateRoute exact path="/" render={() => <Dashboard />} />
+
         <PrivateRoute
           withRoles={groups.University}
           exact
           path="/faculties"
-          component={FacultyList}
+          component={FacultiesList}
         />
+
         <PrivateRoute
-          withRoles={groups.University}
+          withRoles={[...groups.University, ...groups.Faculty]}
           exact
           path="/faculties/:id"
-          component={FacultyShow}
+          component={FacultyDetails}
         />
         <PrivateRoute
           withRoles={groups.University}
           exact
-          path="/departments/:id"
-          component={DepartmentShow}
+          path="/positions"
+          component={PositionsList}
         />
+
         <PrivateRoute
           withRoles={groups.University}
           exact
           path="/academicDegrees"
-          component={AcademicDegreeList}
+          component={AcademicDegreesList}
         />
         <PrivateRoute
           withRoles={groups.University}
           exact
           path="/academicRanks"
-          component={AcademicRankList}
+          component={AcademicRanksList}
         />
+        <PrivateRoute
+          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
+          exact
+          path="/faculties/:facultyId/departments/:departmentId"
+          component={DepartmentDetails}
+        />
+        {/* 
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <PrivateRoute
+          withRoles={groups.University}
+          exact
+          path="/user/create"
+          component={UserCreate}
+        />
+        */}
         <PrivateRoute path="*">404</PrivateRoute>
       </Switch>
     </Router>

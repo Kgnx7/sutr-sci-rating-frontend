@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem'
 import { getAllDepartments } from '../../app/departmentsSlice'
-import { getAllPositions } from '../../app/positionsSlice'
+import { getAllPositions } from '../../features/positionsList/positonsSlice'
 import { createUser } from '../../app/usersSlice'
 import { getAllAcademicDegrees } from '../../app/academicDegreesSlice'
 import { getAllAcademicRanks } from '../../app/academicRanksSlice'
@@ -36,7 +36,7 @@ export default function UserCreate(props) {
   const dispatch = useDispatch()
 
   const positions = useSelector((state) => state.positions.positions)
-  const departments = useSelector((state) => state.departments.departments)
+  const departments = useSelector((state) => state.department.departments)
   const academicDegrees = useSelector((state) => state.academicDegrees.academicDegrees)
   const academicRanks = useSelector((state) => state.academicRanks.academicRanks)
   const staffs = useSelector((state) => state.staffs.staffs)

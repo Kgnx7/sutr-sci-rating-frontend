@@ -17,41 +17,9 @@ import Link from '@material-ui/core/Link'
 import { Link as RouterLink } from 'react-router-dom'
 // import roles from "../../constants/roles";
 import groups from '../../constants/groups'
-import { signOut } from '../../app/authSlice'
+import { signOut } from '../../features/login/authSlice'
 
 const drawerWidth = 240
-
-const links = [
-  // {
-  //   url: "/",
-  //   label: "Главная",
-  // },
-  {
-    url: '/users',
-    label: 'Список преподавателей',
-    roles: groups.University,
-  },
-  {
-    url: '/positions',
-    label: 'Списк должностей',
-    roles: groups.University,
-  },
-  {
-    url: '/faculties',
-    label: 'Списк факультетов',
-    roles: groups.University,
-  },
-  {
-    url: '/academicDegrees',
-    label: 'Списк ученых степеней',
-    roles: groups.University,
-  },
-  {
-    url: '/academicRanks',
-    label: 'Списк ученых званий',
-    roles: groups.University,
-  },
-]
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -111,6 +79,48 @@ export default function Header() {
     // event.stopPropagation();
   }
 
+  const links = [
+    // {
+    //   url: "/",
+    //   label: "Главная",
+    // },
+    {
+      url: '/users',
+      label: 'Список преподавателей',
+      roles: groups.University,
+    },
+    {
+      url: '/positions',
+      label: 'Списк должностей',
+      roles: groups.University,
+    },
+    {
+      url: '/faculties',
+      label: 'Списк факультетов',
+      roles: groups.University,
+    },
+    {
+      url: `/faculties/${currentUser.facultyId}`,
+      label: 'Факультет',
+      roles: groups.Faculty,
+    },
+    {
+      url: `/faculties/${currentUser.facultyId}/departments/${currentUser.departmentId}`,
+      label: 'Кафедра',
+      roles: groups.Department,
+    },
+    {
+      url: '/academicDegrees',
+      label: 'Списк ученых степеней',
+      roles: groups.University,
+    },
+    {
+      url: '/academicRanks',
+      label: 'Списк ученых званий',
+      roles: groups.University,
+    },
+  ]
+
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
     <Menu
@@ -123,7 +133,7 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfile}>
-        <Link component={RouterLink} to="/profile">
+        <Link component={RouterLink} to={`/users/${currentUser.id}`}>
           Профиль
         </Link>
       </MenuItem>
