@@ -11,7 +11,6 @@ import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import { getFaculty, getFacultyDepartments } from './facultySlice'
 import {
-  VirtualTableState,
   SortingState,
   SearchState,
   PagingState,
@@ -22,7 +21,6 @@ import {
 import { tableHeaderMessages, tableMessages } from '../../utils/localization'
 import {
   Grid,
-  VirtualTable,
   Table,
   TableHeaderRow,
   SearchPanel,
@@ -67,13 +65,11 @@ const DepartmentsListColumns = [
   { name: 'email', title: 'Электронная почта' },
 ]
 
-const VIRTUAL_PAGE_SIZE = 100
-
 const TableRow = ({ row, ...restProps }) => {
   const history = useHistory()
 
   const handleRowClick = () => {
-    history.push(`/faculties/${row.facultyId}/departments/${row.id}`)
+    history.push(`/departments/${row.id}`)
   }
 
   return (
@@ -89,15 +85,13 @@ const TableRow = ({ row, ...restProps }) => {
 
 function FacultyDepartments({ facultyId }) {
   const [searchValue, setSearchState] = useState('')
-  const [currentPage, setCurrentPage] = useState(0)
   const dispatch = useDispatch()
   const history = useHistory()
   const departments = useSelector((state) => state.faculty.departments)
-  const loading = useSelector((state) => state.faculty.loading)
 
-  const getDepartments = () => {
+  useEffect(() => {
     dispatch(getFacultyDepartments(facultyId, history))
-  }
+  }, [])
 
   return (
     <>
@@ -105,26 +99,12 @@ function FacultyDepartments({ facultyId }) {
         <Grid rows={departments} columns={DepartmentsListColumns}>
           <SearchState value={searchValue} onValueChange={setSearchState} />
           <SortingState />
-          <PagingState
-            currentPage={currentPage}
-            onCurrentPageChange={setCurrentPage}
-            pageSize={20}
-          />
           <IntegratedSorting />
           <IntegratedFiltering />
-          <IntegratedPaging />
-          <VirtualTableState
-            loading={loading}
-            totalRowCount={departments.lenght}
-            pageSize={VIRTUAL_PAGE_SIZE}
-            skip={0}
-            getRows={getDepartments}
-          />
-          <VirtualTable messages={tableMessages} rowComponent={TableRow} />
+          <Table messages={tableMessages} rowComponent={TableRow} />
           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
           <Toolbar />
           <SearchPanel />
-          <PagingPanel />
         </Grid>
       </Paper>
     </>

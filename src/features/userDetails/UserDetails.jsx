@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Header from '../../components/Header'
 import { getUser } from './userDetailsSlice'
@@ -39,6 +40,10 @@ export default function UserShow() {
     history.goBack()
   }
 
+  const handleEditUser = () => {
+    history.push(`/user/${id}/edit`)
+  }
+
   return (
     <>
       <Header />
@@ -55,6 +60,14 @@ export default function UserShow() {
             <Typography>{`Кафедра: ${user.cathedra || ''}`}</Typography>
             <Typography>{`Ученая степень: ${user.academicDegree || ''}`}</Typography>
             <Typography>{`Ученое звание: ${user.academicDegree || ''}`}</Typography>
+            {/* <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEditUser}
+              className={classes.addUserBtn}
+            >
+              Добавить пользователя
+            </Button> */}
           </>
         ) : (
           <Typography className={classes.text}>Нет информации о пользователе</Typography>

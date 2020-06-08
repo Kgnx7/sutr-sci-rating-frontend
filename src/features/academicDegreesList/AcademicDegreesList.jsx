@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { VirtualTableState, SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
-import { Grid, VirtualTable, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
-import { getAllAcademicDegrees } from './academicDegreesSlice'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { SortingState, EditingState, IntegratedSorting } from '@devexpress/dx-react-grid'
+import { Grid, Table, TableHeaderRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'
+import { getAllAcademicDegrees, deleteAcademicDegree } from './academicDegreesSlice'
+import { tableHeaderMessages, tableMessages, editColumnMessages } from '../../utils/localization'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     margin: -1,
     overflow: 'hidden',
     padding: 0,
-    position: 'absolute',
+    academicDegree: 'absolute',
     top: 20,
     width: 1,
   },
@@ -40,17 +41,24 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [{ name: 'title', title: 'Наименование' }]
 
-const VIRTUAL_PAGE_SIZE = 100
-
 export default function AcademicDegreeList() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
   const academicDegrees = useSelector((state) => state.academicDegrees.academicDegrees)
-  const loading = useSelector((state) => state.academicDegrees.loading)
 
-  const getAcademicDegrees = () => {
+  useEffect(() => {
     dispatch(getAllAcademicDegrees(history))
+  }, [])
+
+  const commitChanges = ({ deleted }) => {
+    const academicDegreeId = academicDegrees[deleted].id
+
+    dispatch(deleteAcademicDegree(academicDegreeId, history))
+  }
+
+  const handleAddAcademicDegree = () => {
+    history.push('/academicDegrees/create')
   }
 
   return (
@@ -60,19 +68,22 @@ export default function AcademicDegreeList() {
         <Typography variant="h2" gutterBottom>
           Список академических степеней
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddAcademicDegree}
+          className={classes.addBtn}
+        >
+          Добавить
+        </Button>
         <Paper>
           <Grid rows={academicDegrees} columns={columns}>
             <SortingState />
+            <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
-            <VirtualTableState
-              loading={loading}
-              totalRowCount={academicDegrees.lenght}
-              pageSize={VIRTUAL_PAGE_SIZE}
-              skip={0}
-              getRows={getAcademicDegrees}
-            />
-            <VirtualTable messages={tableMessages} />
+            <Table messages={tableMessages} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+            <TableEditColumn showDeleteCommand messages={editColumnMessages} />
           </Grid>
         </Paper>
       </Container>

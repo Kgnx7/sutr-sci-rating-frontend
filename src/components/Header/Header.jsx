@@ -99,16 +99,16 @@ export default function Header() {
       label: 'Списк факультетов',
       roles: groups.University,
     },
-    {
-      url: `/faculties/${currentUser.facultyId}`,
-      label: 'Факультет',
-      roles: groups.Faculty,
-    },
-    {
-      url: `/faculties/${currentUser.facultyId}/departments/${currentUser.departmentId}`,
-      label: 'Кафедра',
-      roles: groups.Department,
-    },
+    // {
+    //   url: `/faculties/${currentUser.facultyId}`,
+    //   label: 'Факультет',
+    //   roles: groups.Faculty,
+    // },
+    // {
+    //   url: `/faculties/${currentUser.facultyId}/departments/${currentUser.departmentId}`,
+    //   label: 'Кафедра',
+    //   roles: groups.Department,
+    // },
     {
       url: '/academicDegrees',
       label: 'Списк ученых степеней',
@@ -176,11 +176,11 @@ export default function Header() {
       >
         <List>
           {links
-            .filter((link) =>
-              Array.isArray(link.roles)
-                ? link.roles.some((role) => role === currentUser?.position)
-                : true
-            )
+            // .filter((link) =>
+            //   Array.isArray(link.roles)
+            //     ? link.roles.some((role) => role === currentUser?.position)
+            //     : true
+            // )
             .map((link) => (
               <Link component={RouterLink} to={link.url}>
                 <ListItem button key={link.url}>

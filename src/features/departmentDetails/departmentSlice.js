@@ -50,11 +50,11 @@ export const {
   resetError,
 } = departmentSlice.actions
 
-export const getDepartment = (facultyId, departmentId, router) => async (dispatch) => {
+export const getDepartment = (departmentId, router) => async (dispatch) => {
   try {
     dispatch(getDepartmentStart())
 
-    const department = await apiGetDepartment(facultyId, departmentId)
+    const department = await apiGetDepartment(departmentId)
 
     dispatch(getDepartmentSuccess(department))
   } catch (error) {
@@ -63,24 +63,13 @@ export const getDepartment = (facultyId, departmentId, router) => async (dispatc
   }
 }
 
-export const getDepartmentUsers = (
-  facultyId,
-  departmentId,
-  filter,
-  offset,
-  limit,
-  router
-) => async (dispatch) => {
+export const getUsersByDepartment = (departmentId, filter, offset, limit, router) => async (
+  dispatch
+) => {
   try {
     dispatch(getDepartmentUsersStart())
 
-    const { users, count } = await apiGetUsersByDepartment(
-      facultyId,
-      departmentId,
-      filter,
-      offset,
-      limit
-    )
+    const { users, count } = await apiGetUsersByDepartment(departmentId, filter, offset, limit)
 
     dispatch(getDepartmentUsersSuccess({ users, count }))
   } catch (error) {

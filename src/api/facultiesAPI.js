@@ -12,9 +12,9 @@ export async function apiGetAllFaculties() {
   }
 }
 
-export async function apiGetFacultyDepartments(facultyId) {
+export async function apiGetFaculty(id) {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/faculties/${facultyId}/departments`
+    const url = `${process.env.REACT_APP_HOST}/api/faculties/get/${id}`
 
     const responce = await axios.get(url, { withCredentials: true, timeout: 3000 })
 
@@ -24,11 +24,11 @@ export async function apiGetFacultyDepartments(facultyId) {
   }
 }
 
-export async function apiGetFaculty(id) {
+export async function apiCreateFaculty(newFaculty) {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/faculties/get/${id}`
+    const url = `${process.env.REACT_APP_HOST}/api/faculties/create`
 
-    const responce = await axios.get(url, { withCredentials: true, timeout: 3000 })
+    const responce = await axios.post(url, newFaculty, { withCredentials: true, timeout: 3000 })
 
     return responce.data
   } catch (error) {

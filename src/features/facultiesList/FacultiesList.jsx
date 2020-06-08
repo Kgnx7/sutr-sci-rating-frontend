@@ -1,13 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { VirtualTableState, SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
-import { Grid, VirtualTable, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
+import { SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
+import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
 import { getAllFaculties } from './facultiesSlice'
 import { tableHeaderMessages, tableMessages } from '../../utils/localization'
 
@@ -43,8 +44,6 @@ const columns = [
   { name: 'short', title: 'Сокращение' },
 ]
 
-const VIRTUAL_PAGE_SIZE = 100
-
 const TableRow = ({ row, ...restProps }) => {
   const history = useHistory()
 
@@ -68,10 +67,13 @@ export default function FacultyList() {
   const dispatch = useDispatch()
   const history = useHistory()
   const faculties = useSelector((state) => state.faculties.faculties)
-  const loading = useSelector((state) => state.faculties.loading)
 
-  const getFaculties = () => {
+  useEffect(() => {
     dispatch(getAllFaculties(history))
+  }, [])
+
+  const handleCreate = () => {
+    history.push('/faculties/create')
   }
 
   return (
@@ -81,18 +83,19 @@ export default function FacultyList() {
         <Typography variant="h2" gutterBottom>
           Список факультетов
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreate}
+          className={classes.addBtn}
+        >
+          Добавить
+        </Button>
         <Paper>
           <Grid rows={faculties} columns={columns}>
             <SortingState />
             <IntegratedSorting />
-            <VirtualTableState
-              loading={loading}
-              totalRowCount={faculties.lenght}
-              pageSize={VIRTUAL_PAGE_SIZE}
-              skip={0}
-              getRows={getFaculties}
-            />
-            <VirtualTable messages={tableMessages} rowComponent={TableRow} />
+            <Table messages={tableMessages} rowComponent={TableRow} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
           </Grid>
         </Paper>

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetFaculty, apiGetFacultyDepartments } from '../../api/facultiesAPI'
+import { apiDepartmentByFaculty } from '../../api/departmentsAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
 
 function startLoading(state) {
@@ -65,7 +66,7 @@ export const getFacultyDepartments = (facultyId, departmentId, router) => async 
   try {
     dispatch(getFacultyDepartmentsStart())
 
-    const departments = await apiGetFacultyDepartments(facultyId, departmentId)
+    const departments = await apiDepartmentByFaculty(facultyId)
 
     dispatch(getFacultyDepartmentsSuccess(departments))
   } catch (error) {

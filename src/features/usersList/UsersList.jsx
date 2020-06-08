@@ -113,14 +113,14 @@ export default function UserList() {
         <Typography variant="h2" gutterBottom>
           Список преподавателей
         </Typography>
-        <Button
+        {/* <Button
           variant="contained"
           color="primary"
           onClick={handleAddUser}
           className={classes.addUserBtn}
         >
           Добавить пользователя
-        </Button>
+        </Button> */}
         <Paper>
           <Grid rows={users} columns={columns}>
             <SearchState value={searchValue} onValueChange={handleSearchChange} />

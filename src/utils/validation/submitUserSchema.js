@@ -1,6 +1,6 @@
-import { object, string, number } from 'yup';
+import { object, string, number } from 'yup'
 
-import { validationErrorMessages as msg } from '../localization';
+import { validationErrorMessages as msg } from '../localization'
 
 export default object().shape({
   login: string().required(msg.required).trim(),
@@ -17,4 +17,4 @@ export default object().shape({
   phone: string().nullable().trim(),
   email: string().email(msg.email).nullable(),
   yearOfBirth: number().nullable().integer().min(1900, msg.min).max(3000, msg.max),
-});
+})

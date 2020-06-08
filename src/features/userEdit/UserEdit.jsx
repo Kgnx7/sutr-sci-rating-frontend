@@ -3,19 +3,19 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form } from 'react-final-form'
 import { TextField, Select, makeValidate } from 'mui-rff'
-import Header from '../Header'
+import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem'
-import { getAllDepartments } from '../../app/departmentsSlice'
-import { getAllPositions } from '../../features/positionsList/positonsSlice'
-import { createUser } from '../../app/usersSlice'
-import { getAllAcademicDegrees } from '../../app/academicDegreesSlice'
-import { getAllAcademicRanks } from '../../app/academicRanksSlice'
-import { getAllStaffs } from '../../app/staffsSlice'
+import { getAllDepartments } from '../departmentsList/departmentsSlice'
+import { getAllPositions } from '../positionsList/positionsSlice'
+import { editUser } from './userEditSlice'
+import { getAllAcademicDegrees } from '../academicDegreesList/academicDegreesSlice'
+import { getAllAcademicRanks } from '../academicRanksList/academicRanksSlice'
+import { getAllStaffs } from '../staffsList/staffsSlice'
 import Button from '@material-ui/core/Button'
-import userSchema from '../../utils/validation/userSchema'
+import submitUserSchema from '../../utils/validation/submitUserSchema'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -30,22 +30,23 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function UserCreate(props) {
+export default function UserEdit(props) {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
 
+  const userData = useSelector((state) => state.userDetails.user)
   const positions = useSelector((state) => state.positions.positions)
-  const departments = useSelector((state) => state.department.departments)
+  const departments = useSelector((state) => state.departments.departments)
   const academicDegrees = useSelector((state) => state.academicDegrees.academicDegrees)
   const academicRanks = useSelector((state) => state.academicRanks.academicRanks)
   const staffs = useSelector((state) => state.staffs.staffs)
 
   const onSubmit = async (values) => {
-    dispatch(createUser(values, history))
+    dispatch(editUser(values, history))
   }
 
-  const validate = makeValidate(userSchema)
+  const validate = makeValidate(submitUserSchema)
 
   useEffect(() => {
     dispatch(getAllPositions(history))
@@ -53,6 +54,7 @@ export default function UserCreate(props) {
     dispatch(getAllAcademicDegrees(history))
     dispatch(getAllAcademicRanks(history))
     dispatch(getAllStaffs(history))
+    // dispatch(getAllStaffs(history))
   }, [])
 
   return (
@@ -65,7 +67,7 @@ export default function UserCreate(props) {
         <div className={classes.formContainer}>
           <Form
             onSubmit={onSubmit}
-            initialValues={{}}
+            initialValues={userData}
             validate={validate}
             render={({ handleSubmit, form, submitting, pristine, values }) => (
               <form onSubmit={handleSubmit} noValidate>
@@ -137,7 +139,7 @@ export default function UserCreate(props) {
                   color="primary"
                   type="submit"
                   disabled={submitting || pristine}
-                  className={classes.createButton}
+                  className={classes.editButton}
                 >
                   Создать
                 </Button>

@@ -11,7 +11,7 @@ import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
-import { getDepartment, getDepartmentUsers } from './departmentSlice'
+import { getDepartment, getUsersByDepartment } from './departmentSlice'
 
 import {
   SortingState,
@@ -83,7 +83,7 @@ const TableRow = ({ row, ...restProps }) => {
   )
 }
 
-const PAGE_SIZE = 100
+const PAGE_SIZE = 10
 
 function DepartmentStaff({ facultyId, departmentId }) {
   const [searchValue, setSearchState] = useState('')
@@ -95,14 +95,7 @@ function DepartmentStaff({ facultyId, departmentId }) {
 
   useEffect(() => {
     dispatch(
-      getDepartmentUsers(
-        facultyId,
-        departmentId,
-        searchValue,
-        PAGE_SIZE * currentPage,
-        PAGE_SIZE,
-        history
-      )
+      getUsersByDepartment(departmentId, searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
     )
   }, [])
 
@@ -115,7 +108,7 @@ function DepartmentStaff({ facultyId, departmentId }) {
           <PagingState
             currentPage={currentPage}
             onCurrentPageChange={setCurrentPage}
-            pageSize={20}
+            pageSize={PAGE_SIZE}
           />
           <IntegratedSorting />
           <IntegratedFiltering />
@@ -149,13 +142,13 @@ function TabPanel(props) {
 
 export default function DepartmentShow() {
   const [tab, setTab] = useState(0)
-  const { facultyId, departmentId } = useParams()
+  const { id } = useParams()
   const history = useHistory()
   const dispatch = useDispatch()
   const department = useSelector((state) => state.department.department)
 
   useEffect(() => {
-    dispatch(getDepartment(facultyId, departmentId, history))
+    dispatch(getDepartment(id, history))
   }, [])
 
   const classes = useStyles()

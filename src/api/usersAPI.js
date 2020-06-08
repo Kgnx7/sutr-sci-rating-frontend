@@ -29,9 +29,9 @@ export async function apiGetUser(userId) {
   }
 }
 
-export async function apiGetUsersByDepartment(facultyId, departmentId, filter, offset, limit) {
+export async function apiGetUsersByDepartment(departmentId, filter, offset, limit) {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/faculties/${facultyId}/departments/${departmentId}/users`
+    const url = `${process.env.REACT_APP_HOST}/api/users/listByDepartment/${departmentId}`
 
     const responce = await axios.get(url, {
       params: { filter, offset, limit },
@@ -44,13 +44,26 @@ export async function apiGetUsersByDepartment(facultyId, departmentId, filter, o
     throw error
   }
 }
-
-export async function apiCreateUser(user) {
+  
+export async function apiCreateUser(newUser) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/users/create`
     const options = { withCredentials: true }
 
-    const responce = await axios.post(url, user, options)
+    const responce = await axios.post(url, newUser, options)
+
+    return responce.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function apiEditUser(id, updatedUser) {
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/users/edit/${id}`
+    const options = { withCredentials: true }
+
+    const responce = await axios.post(url, updatedUser, options)
 
     return responce.data
   } catch (error) {

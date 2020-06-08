@@ -5,11 +5,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { VirtualTableState, SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
-import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
-import { getAllPositions } from '../../features/positionsList/positonsSlice'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { SortingState, EditingState, IntegratedSorting } from '@devexpress/dx-react-grid'
+import { Grid, Table, TableHeaderRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'
+import { getAllPositions, deletePosition } from '../../features/positionsList/positionsSlice'
+import { tableHeaderMessages, tableMessages, editColumnMessages } from '../../utils/localization'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,11 +52,20 @@ export default function PositionList() {
   const dispatch = useDispatch()
   const history = useHistory()
   const positions = useSelector((state) => state.positions.positions)
-  // const loading = useSelector((state) => state.positions.loading)
 
   useEffect(() => {
     dispatch(getAllPositions(history))
   }, [])
+
+  const commitChanges = ({ deleted }) => {
+    const positionId = positions[deleted].id
+
+    dispatch(deletePosition(positionId, history))
+  }
+
+  const handleCreate = () => {
+    history.push('/positions/create')
+  }
 
   return (
     <>
@@ -64,12 +74,22 @@ export default function PositionList() {
         <Typography variant="h2" gutterBottom>
           Список должностей
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreate}
+          className={classes.addBtn}
+        >
+          Добавить
+        </Button>
         <Paper>
           <Grid rows={positions} columns={columns}>
             <SortingState />
+            <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
             <Table messages={tableMessages} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+            <TableEditColumn showDeleteCommand messages={editColumnMessages} />
           </Grid>
         </Paper>
       </Container>

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiGetAllAcademicDegrees } from '../../api/academicDegreesAPI'
+import { apiGetAllAcademicDegrees, apiDeleteAcademicDegree } from '../../api/academicDegreesAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -17,12 +18,19 @@ const academicDegreesSlice = createSlice({
   reducers: {
     getAcademicDegreesStart: startLoading,
     getAcademicDegreesFailure: loadingFailed,
+    deleteAcademicDegreeStart: startLoading,
+    deleteAcademicDegreeFailure: loadingFailed,
     resetError(state) {
       state.error = null
     },
     getAcademicDegreesSuccess(state, { payload }) {
       // TODO: валидация данных
       state.academicDegrees = payload
+      state.isLoading = false
+      state.error = null
+    },
+    deleteAcademicDegreeSuccess(state, { payload }) {
+      state.academicDegrees = state.academicDegrees.filter((ad) => ad.id !== payload)
       state.isLoading = false
       state.error = null
     },
@@ -33,6 +41,9 @@ export const {
   getAcademicDegreesStart,
   getAcademicDegreesFailure,
   getAcademicDegreesSuccess,
+  deleteAcademicDegreeStart,
+  deleteAcademicDegreeFailure,
+  deleteAcademicDegreeSuccess,
   resetError,
 } = academicDegreesSlice.actions
 
@@ -45,6 +56,20 @@ export const getAllAcademicDegrees = (router) => async (dispatch) => {
     dispatch(getAcademicDegreesSuccess(academicDegrees))
   } catch (error) {
     dispatch(getAcademicDegreesFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const deleteAcademicDegree = (academicDegreeId, router) => async (dispatch) => {
+  try {
+    dispatch(deleteAcademicDegreeStart())
+
+    const responce = await apiDeleteAcademicDegree(academicDegreeId)
+
+    dispatch(deleteAcademicDegreeSuccess(academicDegreeId))
+    dispatch(enqueueSnackbar('Запись успешно удалена', 'success'))
+  } catch (error) {
+    dispatch(deleteAcademicDegreeFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }

@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { VirtualTableState, SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
-import { Grid, VirtualTable, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
-import { getAllAcademicRanks } from './academicRanksSlice'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { SortingState, EditingState, IntegratedSorting } from '@devexpress/dx-react-grid'
+import { Grid, Table, TableHeaderRow, TableEditColumn } from '@devexpress/dx-react-grid-material-ui'
+import { getAllAcademicRanks, deleteAcademicRank } from './academicRanksSlice'
+import { tableHeaderMessages, tableMessages, editColumnMessages } from '../../utils/localization'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -40,17 +41,24 @@ const useStyles = makeStyles((theme) => ({
 
 const columns = [{ name: 'title', title: 'Наименование' }]
 
-const VIRTUAL_PAGE_SIZE = 100
-
 export default function AcademicRankList() {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
   const academicRanks = useSelector((state) => state.academicRanks.academicRanks)
-  const loading = useSelector((state) => state.academicRanks.loading)
 
-  const getAcademicRanks = () => {
+  useEffect(() => {
     dispatch(getAllAcademicRanks(history))
+  }, [])
+
+  const commitChanges = ({ deleted }) => {
+    const academicRankId = academicRanks[deleted].id
+
+    dispatch(deleteAcademicRank(academicRankId, history))
+  }
+
+  const handleAddAcademicRank = () => {
+    history.push('/academicRanks/create')
   }
 
   return (
@@ -60,19 +68,22 @@ export default function AcademicRankList() {
         <Typography variant="h2" gutterBottom>
           Список академических званий
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleAddAcademicRank}
+          className={classes.addBtn}
+        >
+          Добавить
+        </Button>
         <Paper>
           <Grid rows={academicRanks} columns={columns}>
             <SortingState />
+            <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
-            <VirtualTableState
-              loading={loading}
-              totalRowCount={academicRanks.lenght}
-              pageSize={VIRTUAL_PAGE_SIZE}
-              skip={0}
-              getRows={getAcademicRanks}
-            />
-            <VirtualTable messages={tableMessages} />
+            <Table messages={tableMessages} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+            <TableEditColumn showDeleteCommand messages={editColumnMessages} />
           </Grid>
         </Paper>
       </Container>
