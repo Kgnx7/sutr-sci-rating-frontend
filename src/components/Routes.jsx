@@ -14,6 +14,9 @@ import AcademicDegreesList from '../features/academicDegreesList'
 import AcademicDegreeCreate from '../features/academicDegreeCreate'
 import AcademicRanksList from '../features/academicRanksList'
 import AcademicRankCreate from '../features/academicRankCreate'
+import ResearchWorksList from '../features/researchWorksList'
+import ResearchWorkDetails from '../features/researchWorkDetails'
+import ResearchWorkCreate from '../features/researchWorkCreate'
 import UserDetails from '../features/userDetails'
 import Login from '../features/login'
 import Dashboard from '../components/Dashboard'
@@ -106,6 +109,24 @@ export default function Routers() {
           exact
           path="/departments/:id"
           component={DepartmentDetails}
+        />
+        <PrivateRoute
+          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
+          exact
+          path="/researchWorks"
+          component={ResearchWorksList}
+        />
+        <PrivateRoute
+          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
+          exact
+          path="/researchWorks/create"
+          component={ResearchWorkCreate}
+        />
+        <PrivateRoute
+          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
+          exact
+          path="/researchWorks/:id"
+          component={ResearchWorkDetails}
         />
         {/* <PrivateRoute
           withRoles={groups.University}

@@ -62,7 +62,7 @@ export const getFaculty = (facultyId, router) => async (dispatch) => {
   }
 }
 
-export const getFacultyDepartments = (facultyId, departmentId, router) => async (dispatch) => {
+export const getFacultyDepartments = (facultyId, router) => async (dispatch) => {
   try {
     dispatch(getFacultyDepartmentsStart())
 

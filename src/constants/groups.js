@@ -1,8 +1,8 @@
-import roles from './roles';
-
 export default {
-  University: [roles.Admin, roles.Rector],
-  Faculty: [roles.Dean],
-  Department: [roles.HeadOfDepartment],
-  Worker: [roles.Lecturer, roles.SeniorLecturer, roles.Docent, roles.Professor]
+  Admin: 'администраторы',
+  University: 'руководство университета',
+  Faculty: 'руководство факультета',
+  Department: 'руководство кафедры',
+  Worker: 'сотрудники',
+  ResearchDepartment: 'сотрудники УНИ',
 }

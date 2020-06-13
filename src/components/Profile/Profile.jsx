@@ -36,7 +36,7 @@ export default function Profile() {
             <Avatar src="/avatar.jpg" className={classes.avatar} />
             <Typography className={classes.text}>{`Логин: ${user.login}`}</Typography>
             <Typography>{`ФИО: ${user.displayName}`}</Typography>
-            <Typography>{`Должность: ${user.position || ''}`}</Typography>
+            <Typography>{`Должность: ${user.position?.title || ''}`}</Typography>
             <Typography>{`Кафедра: ${user.cathedra || ''}`}</Typography>
             <Typography>{`Ученая степень: ${user.academicDegree || ''}`}</Typography>
             <Typography>{`Ученое звание: ${user.academicDegree || ''}`}</Typography>

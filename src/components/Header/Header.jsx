@@ -99,6 +99,11 @@ export default function Header() {
       label: 'Списк факультетов',
       roles: groups.University,
     },
+    {
+      url: '/researchWorks',
+      label: 'РИДЫ',
+      roles: groups.University,
+    },
     // {
     //   url: `/faculties/${currentUser.facultyId}`,
     //   label: 'Факультет',
@@ -109,16 +114,16 @@ export default function Header() {
     //   label: 'Кафедра',
     //   roles: groups.Department,
     // },
-    {
-      url: '/academicDegrees',
-      label: 'Списк ученых степеней',
-      roles: groups.University,
-    },
-    {
-      url: '/academicRanks',
-      label: 'Списк ученых званий',
-      roles: groups.University,
-    },
+    // {
+    //   url: '/academicDegrees',
+    //   label: 'Списк ученых степеней',
+    //   roles: groups.University,
+    // },
+    // {
+    //   url: '/academicRanks',
+    //   label: 'Списк ученых званий',
+    //   roles: groups.University,
+    // },
   ]
 
   const menuId = 'primary-search-account-menu'
@@ -148,7 +153,7 @@ export default function Header() {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            Научный рейтинг СГУ
+            Система расчета научного рейтинга СГУ
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

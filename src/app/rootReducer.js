@@ -12,6 +12,8 @@ import departmentsReducer from '../features/departmentsList/departmentsSlice'
 import academicDegreesReducer from '../features/academicDegreesList/academicDegreesSlice'
 import academicRanksReducer from '../features/academicRanksList/academicRanksSlice'
 import staffsReducer from '../features/staffsList/staffsSlice'
+import researchWorksReducer from '../features/researchWorksList/researchWorksSlice'
+import researchWorkReducer from '../features/researchWorkDetails/researchWorkDetailsSlice'
 
 const rootReducer = combineReducers({
   app: appReducer,
@@ -26,6 +28,8 @@ const rootReducer = combineReducers({
   academicDegrees: academicDegreesReducer,
   academicRanks: academicRanksReducer,
   staffs: staffsReducer,
+  researchWorks: researchWorksReducer,
+  researchWork: researchWorkReducer,
 })
 
 export default rootReducer
