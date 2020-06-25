@@ -55,6 +55,17 @@ export const getFaculty = (facultyId, router) => async (dispatch) => {
 
     const faculty = await apiGetFaculty(facultyId)
 
+    faculty.dean = [faculty.dean.name, faculty.dean.surname, faculty.dean.patronymic]
+      .join(' ')
+      .trim()
+    faculty.deanAssistant = [
+      faculty.deanAssistant.name,
+      faculty.deanAssistant.surname,
+      faculty.deanAssistant.patronymic,
+    ]
+      .join(' ')
+      .trim()
+
     dispatch(getFacultySuccess(faculty))
   } catch (error) {
     dispatch(getFacultyFailure(error))
@@ -62,17 +73,17 @@ export const getFaculty = (facultyId, router) => async (dispatch) => {
   }
 }
 
-export const getFacultyDepartments = (facultyId, router) => async (dispatch) => {
-  try {
-    dispatch(getFacultyDepartmentsStart())
+// export const getFacultyDepartments = (facultyId, router) => async (dispatch) => {
+//   try {
+//     dispatch(getFacultyDepartmentsStart())
 
-    const departments = await apiDepartmentByFaculty(facultyId)
+//     const departments = await apiDepartmentByFaculty(facultyId)
 
-    dispatch(getFacultyDepartmentsSuccess(departments))
-  } catch (error) {
-    dispatch(getFacultyDepartmentsFailure(error))
-    handleServerErrors(error, router, dispatch)
-  }
-}
+//     dispatch(getFacultyDepartmentsSuccess(departments))
+//   } catch (error) {
+//     dispatch(getFacultyDepartmentsFailure(error))
+//     handleServerErrors(error, router, dispatch)
+//   }
+// }
 
 export default facultySlice.reducer

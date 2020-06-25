@@ -14,20 +14,18 @@ const useStyles = makeStyles((theme) => ({
 export default function _Backdrop() {
   const classes = useStyles()
   const isLoadingAuth = useSelector((state) => state.auth.isLoading)
-  const isLoadingPositions = useSelector((state) => state.positions.isLoading)
-  const isLoadingDepartments = useSelector((state) => state.department.isLoading)
-  const isLoadingFaculties = useSelector((state) => state.faculties.isLoading)
-  const isLoadingStaffs = useSelector((state) => state.staffs.isLoading)
+  // const isLoadingPositions = useSelector((state) => state.positions.isLoading)
+  // const isLoadingDepartments = useSelector((state) => state.department.isLoading)
+  // const isLoadingFaculties = useSelector((state) => state.faculties.isLoading)
 
   return (
     <Backdrop
       className={classes.backdrop}
       open={
-        isLoadingAuth ||
-        isLoadingPositions ||
-        isLoadingDepartments ||
-        isLoadingFaculties ||
-        isLoadingStaffs
+        isLoadingAuth
+        // isLoadingPositions ||
+        // isLoadingDepartments ||
+        // isLoadingFaculties ||
       }
     >
       <CircularProgress color="inherit" />

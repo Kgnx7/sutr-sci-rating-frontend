@@ -1,5 +1,9 @@
 export const tableHeaderMessages = {
-  sortingHint: 'Сортировать'
+  sortingHint: 'Сортировать',
+}
+
+export const searchPanelMessages = {
+  searchPlaceholder: 'Поиск',
 }
 
 export const tableMessages = {
@@ -7,7 +11,7 @@ export const tableMessages = {
 }
 
 export const editColumnMessages = {
-  deleteCommand: 'Удалить'
+  deleteCommand: 'Удалить',
 }
 
 export const validationErrorMessages = {

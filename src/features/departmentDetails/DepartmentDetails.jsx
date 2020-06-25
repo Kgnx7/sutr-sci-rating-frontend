@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { getDepartment, getUsersByDepartment } from './departmentSlice'
+import debounce from '../../utils/debounce'
 
 import {
   SortingState,
@@ -51,7 +52,8 @@ function DepartmentInfo({ department }) {
     <>
       <Typography>{`Наименование: ${department.title || ''}`}</Typography>
       <Typography>{`Сокращение: ${department.short || ''}`}</Typography>
-      <Typography>{`Заведующий: ${department.dean}`}</Typography>
+      <Typography>{`Заведующий: ${department.manager}`}</Typography>
+      <Typography>{`Факультет: ${department.faculty}`}</Typography>
       <Typography>{`Адресс: ${department.address || ''}`}</Typography>
       <Typography>{`Телефон: ${department.phone || ''}`}</Typography>
       <Typography>{`Электронная почта: ${department.email || ''}`}</Typography>
@@ -60,7 +62,7 @@ function DepartmentInfo({ department }) {
 }
 
 const DepartmentStaffColumns = [
-  { name: 'login', title: 'Логин' },
+  // { name: 'login', title: 'Логин' },
   { name: 'displayName', title: 'ФИО' },
   { name: 'position', title: 'Должность' },
 ]
@@ -69,7 +71,7 @@ const TableRow = ({ row, ...restProps }) => {
   const history = useHistory()
 
   const handleRowClick = () => {
-    history.push(`/users/${row.id}`)
+    history.push(`/users/${row.userId}`)
   }
 
   return (
@@ -85,7 +87,7 @@ const TableRow = ({ row, ...restProps }) => {
 
 const PAGE_SIZE = 10
 
-function DepartmentStaff({ facultyId, departmentId }) {
+function UsersByDepartment({ departmentId }) {
   const [searchValue, setSearchState] = useState('')
   const [currentPage, setCurrentPage] = useState(0)
   const dispatch = useDispatch()
@@ -99,15 +101,35 @@ function DepartmentStaff({ facultyId, departmentId }) {
     )
   }, [])
 
+  const handleCurrentPageChange = (page) => {
+    setCurrentPage(page)
+    dispatch(
+      getUsersByDepartment(departmentId, searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
+    )
+  }
+
+  const handleSearchChangeDebounced = useRef(
+    debounce((search) => {
+      dispatch(
+        getUsersByDepartment(departmentId, searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
+      )
+    }, 1000)
+  ).current
+
+  const handleSearchChange = (search) => {
+    setSearchState(search)
+    handleSearchChangeDebounced(search)
+  }
+
   return (
     <>
       <Paper>
         <Grid rows={users} columns={DepartmentStaffColumns}>
-          <SearchState value={searchValue} onValueChange={setSearchState} />
+          <SearchState value={searchValue} onValueChange={handleSearchChange} />
           <SortingState />
           <PagingState
             currentPage={currentPage}
-            onCurrentPageChange={setCurrentPage}
+            onCurrentPageChange={handleCurrentPageChange}
             pageSize={PAGE_SIZE}
           />
           <IntegratedSorting />
@@ -157,17 +179,10 @@ export default function DepartmentShow() {
     setTab(newValue)
   }
 
-  const handleBack = () => {
-    history.goBack()
-  }
-
   return (
     <>
       <Header />
       <Container className={classes.profileContainer}>
-        <IconButton aria-label="назад" onClick={handleBack}>
-          <ArrowBackIosIcon />
-        </IconButton>
         {department && (
           <>
             <Typography variant="h2" gutterBottom>
@@ -182,7 +197,7 @@ export default function DepartmentShow() {
                 <DepartmentInfo department={department} />
               </TabPanel>
               <TabPanel value={tab} index={1}>
-                <DepartmentStaff facultyId={department.facultyId} departmentId={department.id} />
+                <UsersByDepartment departmentId={department.id} />
               </TabPanel>
             </Box>
           </>

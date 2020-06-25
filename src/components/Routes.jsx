@@ -1,28 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
-// import Profile from './Profile'
 import UsersList from '../features/usersList'
-import PositionsList from '../features/positionsList'
-import PositionCreate from '../features/positionCreate'
-import UserEdit from '../features/userEdit'
-import FacultiesList from '../features/facultiesList'
-import FacultyDetails from '../features/facultyDetails'
-import FacultyCreate from '../features/facultyCreate'
-import DepartmentDetails from '../features/departmentDetails'
-import AcademicDegreesList from '../features/academicDegreesList'
-import AcademicDegreeCreate from '../features/academicDegreeCreate'
-import AcademicRanksList from '../features/academicRanksList'
-import AcademicRankCreate from '../features/academicRankCreate'
-import ResearchWorksList from '../features/researchWorksList'
-import ResearchWorkDetails from '../features/researchWorkDetails'
-import ResearchWorkCreate from '../features/researchWorkCreate'
 import UserDetails from '../features/userDetails'
 import Login from '../features/login'
+import FacultiesList from '../features/facultiesList'
+import FacultyDetails from '../features/facultyDetails'
+import DepartmentDetails from '../features/departmentDetails'
 import Dashboard from '../components/Dashboard'
 import NotFound from '../components/NotFound'
-
-import groups from '../constants/groups'
 
 export default function Routers() {
   return (
@@ -30,26 +16,19 @@ export default function Routers() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <PrivateRoute exact path="/" render={() => <Dashboard />} />
-        <PrivateRoute
-          withRoles={[
-            ...groups.University,
-            ...groups.Faculty,
-            ...groups.Department,
-            ...groups.Worker,
-          ]}
-          exact
-          path="/users/:id"
-          component={UserDetails}
-        />
-        <PrivateRoute
+        <PrivateRoute exact path="/users/:id" component={UserDetails} />
+        <PrivateRoute exact path="/users" component={UsersList} />
+        <PrivateRoute exact path="/faculties" component={FacultiesList} />
+        <PrivateRoute exact path="/faculties/:id" component={FacultyDetails} />
+        <PrivateRoute exact path="/departments/:id" component={DepartmentDetails} />
+        {/* <PrivateRoute
           withRoles={groups.University}
           exact
           path="/user/:id/edit"
           component={UserEdit}
-        />
-        <PrivateRoute withRoles={groups.University} exact path="/users" component={UsersList} />
+        /> */}
 
-        <PrivateRoute
+        {/* <PrivateRoute
           withRoles={groups.University}
           exact
           path="/positions"
@@ -104,12 +83,7 @@ export default function Routers() {
           path="/faculties/:id"
           component={FacultyDetails}
         />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/departments/:id"
-          component={DepartmentDetails}
-        />
+
         <PrivateRoute
           withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
           exact
@@ -128,6 +102,12 @@ export default function Routers() {
           path="/researchWorks/:id"
           component={ResearchWorkDetails}
         />
+        <PrivateRoute
+          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
+          exact
+          path="/rating"
+          component={SciRating}
+        /> */}
         {/* <PrivateRoute
           withRoles={groups.University}
           exact
@@ -136,13 +116,6 @@ export default function Routers() {
         /> */}
 
         {/* 
-
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty]}
-          exact
-          path="/faculties/:id"
-          component={FacultyDetails}
-        />
 
         <PrivateRoute
           withRoles={groups.University}
@@ -179,7 +152,7 @@ export default function Routers() {
 
 function PrivateRoute({ children, ...rest }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
-  const currentUser = useSelector((state) => state.auth.user)
+  // const currentUser = useSelector((state) => state.auth.user)
   const location = useLocation()
 
   const hasAccess = true

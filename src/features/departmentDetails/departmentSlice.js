@@ -56,6 +56,15 @@ export const getDepartment = (departmentId, router) => async (dispatch) => {
 
     const department = await apiGetDepartment(departmentId)
 
+    department.manager = [
+      department.manager.name,
+      department.manager.surname,
+      department.manager.patronymic,
+    ]
+      .join(' ')
+      .trim()
+    department.faculty = department.faculty.short
+
     dispatch(getDepartmentSuccess(department))
   } catch (error) {
     dispatch(getDepartmentFailure(error))
@@ -69,7 +78,13 @@ export const getUsersByDepartment = (departmentId, filter, offset, limit, router
   try {
     dispatch(getDepartmentUsersStart())
 
-    const { users, count } = await apiGetUsersByDepartment(departmentId, filter, offset, limit)
+    let { users, count } = await apiGetUsersByDepartment(departmentId, filter, offset, limit)
+
+    users = users.map((user) => ({
+      ...user,
+      displayName: [user.user.name, user.user.surname, user.user.patronymic].join(' ').trim(),
+      position: user.position.title,
+    }))
 
     dispatch(getDepartmentUsersSuccess({ users, count }))
   } catch (error) {

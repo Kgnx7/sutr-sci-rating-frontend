@@ -3,14 +3,12 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
 import debounce from '../../utils/debounce'
 
 import {
   SortingState,
   SearchState,
   PagingState,
-  EditingState,
   IntegratedSorting,
   CustomPaging,
 } from '@devexpress/dx-react-grid'
@@ -22,14 +20,13 @@ import {
   SearchPanel,
   PagingPanel,
   Toolbar,
-  TableEditColumn,
 } from '@devexpress/dx-react-grid-material-ui'
 
 import Paper from '@material-ui/core/Paper'
 import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
-import { tableHeaderMessages, tableMessages, editColumnMessages } from '../../utils/localization'
-import { getAllUsers, deleteUser } from './usersSlice'
+import { tableHeaderMessages, tableMessages, searchPanelMessages } from '../../utils/localization'
+import { getAllUsers } from './usersSlice'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -76,10 +73,6 @@ export default function UserList() {
   const users = useSelector((state) => state.usersList.users)
   const totalCount = useSelector((state) => state.usersList.count)
 
-  const handleAddUser = () => {
-    history.push('/users/create')
-  }
-
   useEffect(() => {
     dispatch(getAllUsers(searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history))
   }, [])
@@ -100,12 +93,6 @@ export default function UserList() {
     handleSearchChangeDebounced(search)
   }
 
-  const commitChanges = ({ deleted }) => {
-    const userId = users[deleted].id
-
-    dispatch(deleteUser(userId))
-  }
-
   return (
     <>
       <Header />
@@ -113,14 +100,6 @@ export default function UserList() {
         <Typography variant="h2" gutterBottom>
           Список преподавателей
         </Typography>
-        {/* <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddUser}
-          className={classes.addUserBtn}
-        >
-          Добавить пользователя
-        </Button> */}
         <Paper>
           <Grid rows={users} columns={columns}>
             <SearchState value={searchValue} onValueChange={handleSearchChange} />
@@ -130,15 +109,13 @@ export default function UserList() {
               onCurrentPageChange={handleCurrentPageChange}
               pageSize={PAGE_SIZE}
             />
-            <EditingState onCommitChanges={commitChanges} />
             <IntegratedSorting />
             <Table messages={tableMessages} rowComponent={TableRow} />
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
             <CustomPaging totalCount={totalCount} />
             <Toolbar />
-            <SearchPanel />
+            <SearchPanel messages={searchPanelMessages}/>
             <PagingPanel />
-            <TableEditColumn showDeleteCommand messages={editColumnMessages} />
           </Grid>
         </Paper>
       </Container>

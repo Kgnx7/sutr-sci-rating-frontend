@@ -1,10 +1,14 @@
 import axios from 'axios'
 
-export async function apiGetAllDepartments() {
+export async function apiGetAllDepartments(facultyId) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/departments/list`
 
-    const responce = await axios.get(url, { withCredentials: true, timeout: 3000 })
+    const responce = await axios.get(url, {
+      params: { facultyId },
+      withCredentials: true,
+      timeout: 3000,
+    })
 
     return responce.data
   } catch (error) {

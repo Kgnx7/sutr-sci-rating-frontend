@@ -6,22 +6,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
-import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Header from '../../components/Header'
 import { getUser } from './userDetailsSlice'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import {
   SortingState,
   SearchState,
-  PagingState,
   IntegratedSorting,
   IntegratedFiltering,
-  IntegratedPaging,
 } from '@devexpress/dx-react-grid'
 import { tableHeaderMessages, tableMessages } from '../../utils/localization'
 import {
@@ -29,7 +29,6 @@ import {
   Table,
   TableHeaderRow,
   SearchPanel,
-  PagingPanel,
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui'
 
@@ -41,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
-  text: {
+  gutterTop: {
     marginTop: theme.spacing(3),
   },
   createButton: {
@@ -66,86 +65,122 @@ function TabPanel(props) {
   )
 }
 
-const TableRow = ({ row, ...restProps }) => {
-  const history = useHistory()
+// const TableRow = ({ row, ...restProps }) => {
+//   const history = useHistory()
 
-  const handleRowClick = () => {
-    history.push(`/researchWorks/${row.id}`)
-  }
+//   const handleRowClick = () => {
+//     history.push(`/researchWorks/${row.id}`)
+//   }
 
-  return (
-    <Table.Row
-      {...restProps}
-      onClick={handleRowClick}
-      style={{
-        cursor: 'pointer',
-      }}
-    />
-  )
-}
+//   return (
+//     <Table.Row
+//       {...restProps}
+//       onClick={handleRowClick}
+//       style={{
+//         cursor: 'pointer',
+//       }}
+//     />
+//   )
+// }
 
-const ResearchWorks = ({ researchWorks }) => {
-  const [searchValue, setSearchState] = useState('')
+// const ResearchWorks = ({ researchWorks }) => {
+//   const [searchValue, setSearchState] = useState('')
+//   const classes = useStyles()
+//   const history = useHistory()
+
+//   const reseachWorksColumns = [
+//     { name: 'title', title: 'Наименование' },
+//     { name: 'description', title: 'Описание' },
+//     { name: 'authors', title: 'Авторы' },
+//   ]
+
+//   const tableColumnExtensions = [
+//     { columnName: 'title', wordWrapEnabled: true },
+//     { columnName: 'description', wordWrapEnabled: true },
+//     { columnName: 'authors', wordWrapEnabled: true },
+//   ]
+
+//   const handleCreateResearchWork = () => {
+//     history.push(`/researchWorks/create`)
+//   }
+
+//   return (
+//     <>
+//       <Button
+//         variant="contained"
+//         color="primary"
+//         onClick={handleCreateResearchWork}
+//         className={classes.createButton}
+//       >
+//         Добавить РИД
+//       </Button>
+//       <Paper>
+//         <Grid rows={researchWorks} columns={reseachWorksColumns}>
+//           <SearchState value={searchValue} onValueChange={setSearchState} />
+//           <SortingState />
+//           <IntegratedSorting />
+//           <IntegratedFiltering />
+//           <Table
+//             messages={tableMessages}
+//             rowComponent={TableRow}
+//             columnExtensions={tableColumnExtensions}
+//           />
+//           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+//           <Toolbar />
+//           <SearchPanel />
+//         </Grid>
+//       </Paper>
+//     </>
+//   )
+// }
+
+const UserInfo = ({ user }) => {
   const classes = useStyles()
-  const history = useHistory()
 
-  const reseachWorksColumns = [
-    { name: 'title', title: 'Наименование' },
-    { name: 'description', title: 'Описание' },
-    { name: 'authors', title: 'Авторы' },
+  const userStatusesColumns = [
+    { name: 'position', title: 'Должность' },
+    { name: 'department', title: 'Кафедра' },
+    { name: 'employmentType', title: 'Тип занятости' },
+    { name: 'salaryRate', title: 'Ставка' },
   ]
 
-  const tableColumnExtensions = [
+  const userStatusesColumnExtensions = [
     { columnName: 'title', wordWrapEnabled: true },
     { columnName: 'description', wordWrapEnabled: true },
     { columnName: 'authors', wordWrapEnabled: true },
   ]
 
-  const handleCreateResearchWork = () => {
-    history.push(`/researchWorks/create`)
-  }
+  const userAcademicDegreesColumns = [
+    { name: 'degreeType', title: 'Степень' },
+    { name: 'specialty', title: 'Специальность' },
+  ]
 
-  return (
-    <>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCreateResearchWork}
-        className={classes.createButton}
-      >
-        Добавить РИД
-      </Button>
-      <Paper>
-        <Grid rows={researchWorks} columns={reseachWorksColumns}>
-          <SearchState value={searchValue} onValueChange={setSearchState} />
-          <SortingState />
-          <IntegratedSorting />
-          <IntegratedFiltering />
-          <Table
-            messages={tableMessages}
-            rowComponent={TableRow}
-            columnExtensions={tableColumnExtensions}
-          />
-          <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
-          <Toolbar />
-          <SearchPanel />
-        </Grid>
-      </Paper>
-    </>
-  )
-}
+  const userAcademicDegreesColumnExtensions = [
+    { columnName: 'degreeType', wordWrapEnabled: true },
+    { columnName: 'specialty', wordWrapEnabled: true },
+  ]
 
-const UserInfo = ({ user }) => {
-  const classes = useStyles()
   return (
     <>
       <Avatar src="/avatar.jpg" className={classes.avatar} />
-      <Typography className={classes.text}>{`Логин: ${user.login}`}</Typography>
+      <Typography className={classes.gutterTop}>{`Логин: ${user.login}`}</Typography>
       <Typography>{`ФИО: ${user.displayName}`}</Typography>
       <Typography>{`Должность: ${user.position || ''}`}</Typography>
-      <Typography>{`Кафедра: ${user.department || ''}`}</Typography>
-      <Typography>{`Ученая степень: ${user.academicDegree || ''}`}</Typography>
-      <Typography>{`Ученое звание: ${user.academicDegree || ''}`}</Typography>
+      <Typography>{`Ученая степень: ${user.academicRank || ''}`}</Typography>
+      <Typography>{`Электронная почта: ${user.email || ''}`}</Typography>
+      <Typography>{`Телефон: ${user.phone || ''}`}</Typography>
+
+      <Typography className={classes.gutterTop}>Занимаемые должности:</Typography>
+      <Grid rows={user.states} columns={userStatusesColumns}>
+        <Table messages={tableMessages} columnExtensions={userStatusesColumnExtensions} />
+        <TableHeaderRow messages={tableHeaderMessages} />
+      </Grid>
+
+      <Typography className={classes.gutterTop}>Ученые степени:</Typography>
+      <Grid rows={user.academicDegrees} columns={userAcademicDegreesColumns}>
+        <Table messages={tableMessages} columnExtensions={userAcademicDegreesColumnExtensions} />
+        <TableHeaderRow messages={tableHeaderMessages} />
+      </Grid>
     </>
   )
 }
@@ -162,14 +197,6 @@ export default function UserDetails() {
     dispatch(getUser(id, history))
   }, [])
 
-  const handleBack = () => {
-    history.goBack()
-  }
-
-  // const handleEditUser = () => {
-  //   history.push(`/user/${id}/edit`)
-  // }
-
   const handleTabChange = (event, newValue) => {
     setTab(newValue)
   }
@@ -178,9 +205,6 @@ export default function UserDetails() {
     <>
       <Header />
       <Container className={classes.profileContainer}>
-        <IconButton aria-label="назад" onClick={handleBack}>
-          <ArrowBackIosIcon />
-        </IconButton>
         {user ? (
           <>
             <Tabs value={tab} onChange={handleTabChange} aria-label="Разделы факультета">
@@ -192,7 +216,7 @@ export default function UserDetails() {
                 <UserInfo user={user} />
               </TabPanel>
               <TabPanel value={tab} index={1}>
-                <ResearchWorks researchWorks={user.researchWorks} />
+                {/* <ResearchWorks researchWorks={user.researchWorks} /> */}
               </TabPanel>
             </Box>
           </>

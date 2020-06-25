@@ -9,14 +9,13 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
-import { getFaculty, getFacultyDepartments } from './facultySlice'
+import { getFaculty } from './facultySlice'
+import { getAllDepartments } from '../departmentsList/departmentsSlice'
 import {
   SortingState,
   SearchState,
-  PagingState,
   IntegratedSorting,
   IntegratedFiltering,
-  IntegratedPaging,
 } from '@devexpress/dx-react-grid'
 import { tableHeaderMessages, tableMessages } from '../../utils/localization'
 import {
@@ -24,7 +23,6 @@ import {
   Table,
   TableHeaderRow,
   SearchPanel,
-  PagingPanel,
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui'
 
@@ -49,7 +47,7 @@ function FacultyInfo({ faculty }) {
       <Typography>{`Наименование: ${faculty.title || ''}`}</Typography>
       <Typography>{`Сокращение: ${faculty.short || ''}`}</Typography>
       <Typography>{`Декан: ${faculty.dean}`}</Typography>
-      {/* <Typography>{`Декан: ${faculty.dean}`}</Typography> */}
+      <Typography>{`Зам. декана по научной наботе: ${faculty.deanAssistant}`}</Typography>
       <Typography>{`Адресс: ${faculty.address || ''}`}</Typography>
       <Typography>{`Телефон: ${faculty.phone || ''}`}</Typography>
       <Typography>{`Электронная почта: ${faculty.email || ''}`}</Typography>
@@ -58,11 +56,9 @@ function FacultyInfo({ faculty }) {
 }
 
 const DepartmentsListColumns = [
-  { name: 'short', title: 'Наименование' },
+  { name: 'title', title: 'Наименование' },
+  { name: 'short', title: 'Сокращение' },
   { name: 'manager', title: 'Заведующий' },
-  { name: 'address', title: 'Адресс' },
-  { name: 'phone', title: 'Телефон' },
-  { name: 'email', title: 'Электронная почта' },
 ]
 
 const TableRow = ({ row, ...restProps }) => {
@@ -87,10 +83,10 @@ function FacultyDepartments({ facultyId }) {
   const [searchValue, setSearchState] = useState('')
   const dispatch = useDispatch()
   const history = useHistory()
-  const departments = useSelector((state) => state.faculty.departments)
+  const departments = useSelector((state) => state.departments.departments)
 
   useEffect(() => {
-    dispatch(getFacultyDepartments(facultyId, history))
+    dispatch(getAllDepartments(facultyId, history))
   }, [])
 
   return (

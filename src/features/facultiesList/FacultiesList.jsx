@@ -72,10 +72,6 @@ export default function FacultyList() {
     dispatch(getAllFaculties(history))
   }, [])
 
-  const handleCreate = () => {
-    history.push('/faculties/create')
-  }
-
   return (
     <>
       <Header />
@@ -83,14 +79,6 @@ export default function FacultyList() {
         <Typography variant="h2" gutterBottom>
           Список факультетов
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCreate}
-          className={classes.addBtn}
-        >
-          Добавить
-        </Button>
         <Paper>
           <Grid rows={faculties} columns={columns}>
             <SortingState />

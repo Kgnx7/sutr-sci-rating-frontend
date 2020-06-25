@@ -13,11 +13,14 @@ import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
 import Link from '@material-ui/core/Link'
 import { Link as RouterLink } from 'react-router-dom'
 // import roles from "../../constants/roles";
 import groups from '../../constants/groups'
 import { signOut } from '../../features/login/authSlice'
+
+// import SmallSutrLogoBlue from `${process.env.PUBLIC_URL}/public/small_sutr_logo_blue`
 
 const drawerWidth = 240
 
@@ -47,6 +50,11 @@ const useStyles = makeStyles((theme) => ({
   },
   logoutBtn: {
     color: theme.palette.secondary.main,
+  },
+  sutrLogo: {
+    width: 107,
+    height: 107,
+    margin: '0 auto',
   },
 }))
 
@@ -80,50 +88,14 @@ export default function Header() {
   }
 
   const links = [
-    // {
-    //   url: "/",
-    //   label: "Главная",
-    // },
     {
       url: '/users',
       label: 'Список преподавателей',
-      roles: groups.University,
-    },
-    {
-      url: '/positions',
-      label: 'Списк должностей',
-      roles: groups.University,
     },
     {
       url: '/faculties',
       label: 'Списк факультетов',
-      roles: groups.University,
     },
-    {
-      url: '/researchWorks',
-      label: 'РИДЫ',
-      roles: groups.University,
-    },
-    // {
-    //   url: `/faculties/${currentUser.facultyId}`,
-    //   label: 'Факультет',
-    //   roles: groups.Faculty,
-    // },
-    // {
-    //   url: `/faculties/${currentUser.facultyId}/departments/${currentUser.departmentId}`,
-    //   label: 'Кафедра',
-    //   roles: groups.Department,
-    // },
-    // {
-    //   url: '/academicDegrees',
-    //   label: 'Списк ученых степеней',
-    //   roles: groups.University,
-    // },
-    // {
-    //   url: '/academicRanks',
-    //   label: 'Списк ученых званий',
-    //   roles: groups.University,
-    // },
   ]
 
   const menuId = 'primary-search-account-menu'
@@ -179,13 +151,24 @@ export default function Header() {
         }}
         anchor="left"
       >
+        <img
+          src="/small_sutr_logo_blue.png"
+          alt="Логотип СГУ"
+          width="107px"
+          height="107px"
+          className={classes.sutrLogo}
+        />
+        <Typography variant="subtitle1" align="center" gutterBottom>
+          Сочинский государственный университет
+        </Typography>
+        <Divider />
         <List>
           {links
-            // .filter((link) =>
-            //   Array.isArray(link.roles)
-            //     ? link.roles.some((role) => role === currentUser?.position)
-            //     : true
-            // )
+            .filter((link) =>
+              Array.isArray(link.roles)
+                ? link.roles.some((role) => role === currentUser?.position)
+                : true
+            )
             .map((link) => (
               <Link component={RouterLink} to={link.url}>
                 <ListItem button key={link.url}>

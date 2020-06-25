@@ -40,7 +40,19 @@ export const getAllFaculties = (router) => async (dispatch) => {
   try {
     dispatch(getFacultiesStart())
 
-    const faculties = await apiGetAllFaculties()
+    let faculties = await apiGetAllFaculties()
+
+    faculties = faculties.map((faculty) => ({
+      ...faculty,
+      dean: [faculty.dean.name, faculty.dean.surname, faculty.dean.patronymic].join(' ').trim(),
+      deanAssistant: [
+        faculty.deanAssistant.name,
+        faculty.deanAssistant.surname,
+        faculty.deanAssistant.patronymic,
+      ]
+        .join(' ')
+        .trim(),
+    }))
 
     dispatch(getFacultiesSuccess(faculties))
   } catch (error) {

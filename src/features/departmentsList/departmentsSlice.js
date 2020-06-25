@@ -36,11 +36,19 @@ export const {
   resetError,
 } = departmentsSlice.actions
 
-export const getAllDepartments = (router) => async (dispatch) => {
+export const getAllDepartments = (facultyId, router) => async (dispatch) => {
   try {
     dispatch(getDepartmentsStart())
 
-    const departments = await apiGetAllDepartments()
+    let departments = await apiGetAllDepartments(facultyId)
+
+    departments = departments.map((department) => ({
+      ...department,
+      manager: [department.manager.name, department.manager.surname, department.manager.patronymic]
+        .join(' ')
+        .trim(),
+      faculty: department.faculty.short,
+    }))
 
     dispatch(getDepartmentsSuccess(departments))
   } catch (error) {

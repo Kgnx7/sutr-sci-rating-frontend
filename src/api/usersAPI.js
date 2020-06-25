@@ -44,7 +44,7 @@ export async function apiGetUsersByDepartment(departmentId, filter, offset, limi
     throw error
   }
 }
-  
+
 export async function apiCreateUser(newUser) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/users/create`

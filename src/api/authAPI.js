@@ -1,33 +1,30 @@
-import axios from 'axios';
+import axios from 'axios'
 
 export async function apiLogin(login, password) {
-
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/auth/login`;
+    const url = `${process.env.REACT_APP_HOST}/api/auth/login`
     const data = {
       login,
-      password
-    };
+      password,
+    }
     const options = {
-      withCredentials: true
-    };
+      withCredentials: true,
+    }
 
-    const responce = await axios.post(url, data, options);
+    const responce = await axios.post(url, data, options)
 
-    return responce.data;
-
+    return responce.data
   } catch (error) {
-    throw error;
+    throw error
   }
 }
 
 export async function apiLogout() {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/auth/logout`;
+    const url = `${process.env.REACT_APP_HOST}/api/auth/logout`
 
-    await axios.get(url);
-
+    await axios.get(url)
   } catch (error) {
-    throw error;
+    throw error
   }
 }
