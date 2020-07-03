@@ -7,30 +7,16 @@ import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Header from '../../components/Header'
-import { getUser } from './userDetailsSlice'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import {
-  SortingState,
-  SearchState,
-  IntegratedSorting,
-  IntegratedFiltering,
-} from '@devexpress/dx-react-grid'
+import { getUser, deleteUser } from './userDetailsSlice'
 import { tableHeaderMessages, tableMessages } from '../../utils/localization'
-import {
-  Grid,
-  Table,
-  TableHeaderRow,
-  SearchPanel,
-  Toolbar,
-} from '@devexpress/dx-react-grid-material-ui'
+import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
+import Link from '@material-ui/core/Link'
+import { Link as RouterLink } from 'react-router-dom'
+import { Can } from '../../components/Can'
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -43,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
   gutterTop: {
     marginTop: theme.spacing(3),
   },
-  createButton: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+  gutterAll: {
+    margin: theme.spacing(3),
   },
 }))
 
@@ -65,76 +50,7 @@ function TabPanel(props) {
   )
 }
 
-// const TableRow = ({ row, ...restProps }) => {
-//   const history = useHistory()
-
-//   const handleRowClick = () => {
-//     history.push(`/researchWorks/${row.id}`)
-//   }
-
-//   return (
-//     <Table.Row
-//       {...restProps}
-//       onClick={handleRowClick}
-//       style={{
-//         cursor: 'pointer',
-//       }}
-//     />
-//   )
-// }
-
-// const ResearchWorks = ({ researchWorks }) => {
-//   const [searchValue, setSearchState] = useState('')
-//   const classes = useStyles()
-//   const history = useHistory()
-
-//   const reseachWorksColumns = [
-//     { name: 'title', title: 'Наименование' },
-//     { name: 'description', title: 'Описание' },
-//     { name: 'authors', title: 'Авторы' },
-//   ]
-
-//   const tableColumnExtensions = [
-//     { columnName: 'title', wordWrapEnabled: true },
-//     { columnName: 'description', wordWrapEnabled: true },
-//     { columnName: 'authors', wordWrapEnabled: true },
-//   ]
-
-//   const handleCreateResearchWork = () => {
-//     history.push(`/researchWorks/create`)
-//   }
-
-//   return (
-//     <>
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         onClick={handleCreateResearchWork}
-//         className={classes.createButton}
-//       >
-//         Добавить РИД
-//       </Button>
-//       <Paper>
-//         <Grid rows={researchWorks} columns={reseachWorksColumns}>
-//           <SearchState value={searchValue} onValueChange={setSearchState} />
-//           <SortingState />
-//           <IntegratedSorting />
-//           <IntegratedFiltering />
-//           <Table
-//             messages={tableMessages}
-//             rowComponent={TableRow}
-//             columnExtensions={tableColumnExtensions}
-//           />
-//           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
-//           <Toolbar />
-//           <SearchPanel />
-//         </Grid>
-//       </Paper>
-//     </>
-//   )
-// }
-
-const UserInfo = ({ user }) => {
+const AcademicRanks = ({ user }) => {
   const classes = useStyles()
 
   const userStatusesColumns = [
@@ -150,6 +66,26 @@ const UserInfo = ({ user }) => {
     { columnName: 'authors', wordWrapEnabled: true },
   ]
 
+  return (
+    <>
+      <Grid rows={user.states} columns={userStatusesColumns}>
+        <Table messages={tableMessages} columnExtensions={userStatusesColumnExtensions} />
+        <TableHeaderRow messages={tableHeaderMessages} />
+      </Grid>
+      <Can I="create" a="UserStatus">
+        <Link component={RouterLink} to={`/users/${user.id}/statuses/create`}>
+          <Button variant="contained" color="primary" className={classes.gutterAll}>
+            Добавить должность
+          </Button>
+        </Link>
+      </Can>
+    </>
+  )
+}
+
+const AcademicDegrees = ({ user }) => {
+  const classes = useStyles()
+
   const userAcademicDegreesColumns = [
     { name: 'degreeType', title: 'Степень' },
     { name: 'specialty', title: 'Специальность' },
@@ -162,25 +98,58 @@ const UserInfo = ({ user }) => {
 
   return (
     <>
-      <Avatar src="/avatar.jpg" className={classes.avatar} />
-      <Typography className={classes.gutterTop}>{`Логин: ${user.login}`}</Typography>
-      <Typography>{`ФИО: ${user.displayName}`}</Typography>
-      <Typography>{`Должность: ${user.position || ''}`}</Typography>
-      <Typography>{`Ученая степень: ${user.academicRank || ''}`}</Typography>
-      <Typography>{`Электронная почта: ${user.email || ''}`}</Typography>
-      <Typography>{`Телефон: ${user.phone || ''}`}</Typography>
-
-      <Typography className={classes.gutterTop}>Занимаемые должности:</Typography>
-      <Grid rows={user.states} columns={userStatusesColumns}>
-        <Table messages={tableMessages} columnExtensions={userStatusesColumnExtensions} />
-        <TableHeaderRow messages={tableHeaderMessages} />
-      </Grid>
-
-      <Typography className={classes.gutterTop}>Ученые степени:</Typography>
       <Grid rows={user.academicDegrees} columns={userAcademicDegreesColumns}>
         <Table messages={tableMessages} columnExtensions={userAcademicDegreesColumnExtensions} />
         <TableHeaderRow messages={tableHeaderMessages} />
       </Grid>
+      <Can I="create" a="AcademicDegree">
+        <Link component={RouterLink} to={`/users/${user.id}/academicDegrees/create`}>
+          <Button variant="contained" color="primary" className={classes.gutterAll}>
+            Добавить степень
+          </Button>
+        </Link>
+      </Can>
+    </>
+  )
+}
+
+const UserInfo = ({ user }) => {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const handleDelete = () => {
+    dispatch(deleteUser(user.id, history))
+  }
+
+  return (
+    <>
+      <Avatar src="/avatar.jpg" className={classes.avatar} />
+      <Typography className={classes.gutterTop}>{`Логин: ${user.login}`}</Typography>
+      <Typography>{`ФИО: ${user.displayName}`}</Typography>
+      <Typography>{`Ученая степень: ${user.academicRank || ''}`}</Typography>
+      <Typography>{`Электронная почта: ${user.email || ''}`}</Typography>
+      <Typography>{`Телефон: ${user.phone || ''}`}</Typography>
+
+      <div>
+        <Can I="edit" a="User">
+          <Link component={RouterLink} to={`/users/${user.id}/edit`}>
+            <Button variant="contained" color="primary" className={classes.gutterAll}>
+              Редактировать
+            </Button>
+          </Link>
+        </Can>
+        <Can I="delete" a="User">
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.gutterAll}
+            onClick={handleDelete}
+          >
+            Удалить
+          </Button>
+        </Can>
+      </div>
     </>
   )
 }
@@ -209,14 +178,19 @@ export default function UserDetails() {
           <>
             <Tabs value={tab} onChange={handleTabChange} aria-label="Разделы факультета">
               <Tab label="Общая информация" />
-              <Tab label="РИДЫ" />
+              <Tab label="Занимаемые должности" />
+              <Tab label="Ученые степени" />
+              {/* <Tab label="РИДЫ" /> */}
             </Tabs>
             <Box mt={3}>
               <TabPanel value={tab} index={0}>
                 <UserInfo user={user} />
               </TabPanel>
               <TabPanel value={tab} index={1}>
-                {/* <ResearchWorks researchWorks={user.researchWorks} /> */}
+                <AcademicRanks user={user} />
+              </TabPanel>
+              <TabPanel value={tab} index={2}>
+                <AcademicDegrees user={user} />
               </TabPanel>
             </Box>
           </>

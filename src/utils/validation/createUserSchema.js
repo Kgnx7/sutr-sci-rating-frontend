@@ -8,13 +8,12 @@ export default object().shape({
   surname: string().required(msg.required).trim(),
   name: string().required(msg.required).trim(),
   patronymic: string().nullable().trim(),
-  department: number().nullable(),
-  position: number().required(msg.required),
-  academicDegree: number().nullable(),
-  academicRank: number().nullable(),
-  staff: number().nullable(),
-  salaryRate: number().nullable(),
+
+  academicRankId: number().required(msg.required),
+  accessGroupId: number().required(msg.required),
+
   phone: string().nullable().trim(),
   email: string().email(msg.email).nullable(),
   yearOfBirth: number().nullable().integer().min(1900, msg.min).max(3000, msg.max),
+  snils: string().matches(/^\d{4}$/, msg.snils),
 })

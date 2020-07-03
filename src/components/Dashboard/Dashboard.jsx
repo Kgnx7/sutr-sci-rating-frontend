@@ -5,5 +5,5 @@ import { Redirect } from 'react-router-dom'
 export default function Dashboard() {
   const user = useSelector((state) => state.auth.user)
 
-  return <Redirect to={`/users/${user.id}`} />
+  return <Redirect to={`/users/get/${user.id}`} />
 }

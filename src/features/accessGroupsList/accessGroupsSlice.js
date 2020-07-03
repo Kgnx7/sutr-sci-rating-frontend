@@ -21,7 +21,6 @@ const accessGroupsSlice = createSlice({
       state.error = null
     },
     getAccessGroupsSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.accessGroups = payload
       state.isLoading = false
       state.error = null

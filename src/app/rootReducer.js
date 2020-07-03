@@ -8,12 +8,12 @@ import facultiesReducer from '../features/facultiesList/facultiesSlice'
 import facultyReducer from '../features/facultyDetails/facultySlice'
 import departmentsReducer from '../features/departmentsList/departmentsSlice'
 import departmentReducer from '../features/departmentDetails/departmentSlice'
-// import positionsReducer from '../features/positionsList/positionsSlice'
-// import academicDegreesReducer from '../features/academicDegreesList/academicDegreesSlice'
-// import academicRanksReducer from '../features/academicRanksList/academicRanksSlice'
-// import staffsReducer from '../features/staffsList/staffsSlice'
-// import researchWorksReducer from '../features/researchWorksList/researchWorksSlice'
-// import researchWorkReducer from '../features/researchWorkDetails/researchWorkDetailsSlice'
+import academicRanksReducer from '../features/academicRanksList/academicRanksSlice'
+import accessGroupsReducer from '../features/accessGroupsList/accessGroupsSlice'
+import positionsReducer from '../features/positionsList/positionsSlice'
+import employmentTypesReducer from '../features/employmentTypesList/employmentTypesListSlice'
+import degreeTypesListReducer from '../features/degreeTypesList/degreeTypesListSlice'
+import specialtiesListReducer from '../features/specialtiesList/specialtiesListSlice'
 
 const rootReducer = combineReducers({
   app: appReducer,
@@ -24,9 +24,12 @@ const rootReducer = combineReducers({
   faculty: facultyReducer,
   departments: departmentsReducer,
   department: departmentReducer,
-
-  // positions: positionsReducer,
-  // academicRanks: academicRanksReducer,
+  academicRanks: academicRanksReducer,
+  accessGroups: accessGroupsReducer,
+  positions: positionsReducer,
+  employmentTypes: employmentTypesReducer,
+  degreeTypesList: degreeTypesListReducer,
+  specialtiesList: specialtiesListReducer,
 })
 
 export default rootReducer

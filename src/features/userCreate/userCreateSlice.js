@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiCreateUser } from '../../api/usersAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -36,14 +37,15 @@ export const {
   resetError,
 } = userCreateSlice.actions
 
-export const createUser = (id, router) => async (dispatch) => {
+export const createUser = (newUser, router) => async (dispatch) => {
   try {
     dispatch(createUserStart())
 
-    const createUser = await apiCreateUser(id)
+    const createdUser = await apiCreateUser(newUser)
 
-    dispatch(createUserSuccess(createUser))
-    router.push('/users')
+    dispatch(createUserSuccess(createdUser))
+    router.push(`/users/get/${createdUser.id}`)
+    dispatch(enqueueSnackbar('Пользователь успешно создан', 'success'))
   } catch (error) {
     dispatch(createUserFailure(error))
 

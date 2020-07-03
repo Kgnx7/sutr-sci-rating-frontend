@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiGetAllDepartments } from '../../api/departmentsAPI'
+import { apiGetAllDepartments, apiGetDepartmentsByFaculty } from '../../api/departmentsAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
 
 function startLoading(state) {
@@ -13,7 +13,7 @@ function loadingFailed(state, action) {
 
 const departmentsSlice = createSlice({
   name: 'departments',
-  initialState: { departments: [], isLoading: false, error: null },
+  initialState: { departments: [], count: 0, isLoading: false, error: null },
   reducers: {
     getDepartmentsStart: startLoading,
     getDepartmentsFailure: loadingFailed,
@@ -21,7 +21,6 @@ const departmentsSlice = createSlice({
       state.error = null
     },
     getDepartmentsSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.departments = payload
       state.isLoading = false
       state.error = null
@@ -36,11 +35,32 @@ export const {
   resetError,
 } = departmentsSlice.actions
 
-export const getAllDepartments = (facultyId, router) => async (dispatch) => {
+export const getAllDepartments = (search, offset, limit, router) => async (dispatch) => {
   try {
     dispatch(getDepartmentsStart())
 
-    let departments = await apiGetAllDepartments(facultyId)
+    let { departments, count } = await apiGetAllDepartments(search, offset, limit)
+
+    // rows = rows.map((department) => ({
+    //   ...department,
+    //   manager: [department.manager.name, department.manager.surname, department.manager.patronymic]
+    //     .join(' ')
+    //     .trim(),
+    //   faculty: department.faculty.short,
+    // }))
+
+    dispatch(getDepartmentsSuccess(departments))
+  } catch (error) {
+    dispatch(getDepartmentsFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const getDepartmentsByFaculty = (facultyId, router) => async (dispatch) => {
+  try {
+    dispatch(getDepartmentsStart())
+
+    let departments = await apiGetDepartmentsByFaculty(facultyId)
 
     departments = departments.map((department) => ({
       ...department,

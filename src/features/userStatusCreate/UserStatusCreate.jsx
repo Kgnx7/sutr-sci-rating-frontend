@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Form } from 'react-final-form'
@@ -8,11 +8,14 @@ import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem'
-import { createUser } from './userCreateSlice'
+import { createUserStatus } from './userStatusCreateSlice'
 import Button from '@material-ui/core/Button'
-import createUserSchema from '../../utils/validation/createUserSchema'
-import { getAllAccessGroups } from '../../features/accessGroupsList/accessGroupsSlice'
-import { getAllAcademicRanks } from '../../features/academicRanksList/academicRanksSlice'
+import createUserStatusSchema from '../../utils/validation/createUserStatusSchema'
+import { useParams } from 'react-router-dom'
+import { getAllPositions } from '../../features/positionsList/positionsSlice'
+import { getAllDepartments } from '../../features/departmentsList/departmentsSlice'
+import { getAllEmploymentTypes } from '../../features/employmentTypesList/employmentTypesListSlice'
+import SelectModal from '../../components/SelectModal'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -27,73 +30,77 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function UserCreate(props) {
+export default function UserStatusCreate() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
+  const { id } = useParams()
 
-  const academicRanks = useSelector((state) => state.academicRanks.academicRanks)
-  const accessGroups = useSelector((state) => state.accessGroups.accessGroups)
+  const departments = useSelector((state) => state.departments.departments)
+  const positions = useSelector((state) => state.positions.positions)
+  const employmentTypes = useSelector((state) => state.employmentTypes.employmentTypes)
 
   const onSubmit = async (values) => {
-    dispatch(createUser(values, history))
+    dispatch(createUserStatus({ ...values, userId: id }, history))
   }
-
+  const handleDepartmentSearch = (search) => {
+    dispatch(getAllDepartments(search, 0, 3, history))
+  }
   useEffect(() => {
-    dispatch(getAllAccessGroups(history))
-    dispatch(getAllAcademicRanks(history))
+    dispatch(getAllDepartments('', 0, 3, history))
+    dispatch(getAllPositions())
+    dispatch(getAllEmploymentTypes())
   }, [])
 
-  const validate = makeValidate(createUserSchema)
+  const validate = makeValidate(createUserStatusSchema)
 
   return (
     <>
       <Header />
       <Container className={classes.container}>
         <Typography variant="h2" gutterBottom>
-          Создание пользователя
+          Добавление должности
         </Typography>
         <div className={classes.formContainer}>
           <Form
             onSubmit={onSubmit}
             initialValues={{}}
             validate={validate}
-            render={({ handleSubmit, form, submitting, pristine, values }) => (
+            render={({ handleSubmit, form, submitting, pristine }) => (
               <form onSubmit={handleSubmit} noValidate>
-                <TextField label="Логин" name="login" required={true} />
-
-                <TextField label="Имя" name="name" required={true} />
-                <TextField label="Фамилия" name="surname" required={true} />
-                <TextField label="Отчество" name="patronymic" required={false} />
-                <TextField label="Год рождения" name="yearOfBirth" type="number" required={false} />
+                <SelectModal
+                  title="Выбрать кафедру"
+                  name="departmentId"
+                  data={departments}
+                  onSearch={handleDepartmentSearch}
+                  type="departments"
+                />
 
                 <Select
-                  name="academicRankId"
-                  label="Ученое звание"
+                  name="positionId"
+                  label="Должность"
                   formControlProps={{ margin: 'normal' }}
                   required={true}
                 >
-                  {academicRanks.map((academicRank) => (
+                  {positions.map((academicRank) => (
                     <MenuItem value={academicRank.id}>{academicRank.title}</MenuItem>
                   ))}
                 </Select>
 
                 <Select
-                  name="accessGroupId"
-                  label="Уровень доступа"
+                  name="employmentTypeId"
+                  label="Тип занятости"
                   formControlProps={{ margin: 'normal' }}
                   required={true}
                 >
-                  {accessGroups.map((group) => (
+                  {employmentTypes.map((group) => (
                     <MenuItem value={group.id}>{group.title}</MenuItem>
                   ))}
                 </Select>
 
-                <TextField label="Номер телефона" name="phone" required={false} />
-                <TextField label="Электронная почта" name="email" required={false} />
-                <TextField label="Последнии 4 чифры снилс" name="snils" required={false} />
-                <TextField label="Пароль" name="password" type="password" required={true} />
-                <Button
+                <TextField label="Ставка" name="salaryRate" type="number" required={true} />
+
+                {/* <Button
                   variant="contained"
                   type="button"
                   onClick={form.reset}
@@ -101,7 +108,7 @@ export default function UserCreate(props) {
                   className={classes.gutterTop}
                 >
                   Сбросить
-                </Button>
+                </Button> */}
 
                 <Button
                   variant="contained"

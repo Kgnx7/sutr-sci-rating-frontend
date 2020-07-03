@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import debounce from '../../utils/debounce'
+import Link from '@material-ui/core/Link'
+import { Link as RouterLink } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import { Can } from '../../components/Can'
 
 import {
   SortingState,
@@ -28,13 +32,15 @@ import Container from '@material-ui/core/Container'
 import { tableHeaderMessages, tableMessages, searchPanelMessages } from '../../utils/localization'
 import { getAllUsers } from './usersSlice'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 100,
   },
-  addUserBtn: {
-    marginTop: 15,
-    marginBottom: 15,
+  gutterTop: {
+    marginTop: theme.spacing(3),
+  },
+  gutterBottom: {
+    marginBottom: theme.spacing(3),
   },
 }))
 
@@ -50,7 +56,7 @@ const TableRow = ({ row, ...restProps }) => {
   const history = useHistory()
 
   const handleRowClick = () => {
-    history.push(`/users/${row.id}`)
+    history.push(`/users/get/${row.id}`)
   }
 
   return (
@@ -100,6 +106,17 @@ export default function UserList() {
         <Typography variant="h2" gutterBottom>
           Список преподавателей
         </Typography>
+        <Link component={RouterLink} to={`/users/create`}>
+          <Can I="create" a="User">
+            <Button
+              variant="contained"
+              color="primary"
+              className={`${classes.gutterTop} ${classes.gutterBottom}`}
+            >
+              Создать пользователя
+            </Button>
+          </Can>
+        </Link>
         <Paper>
           <Grid rows={users} columns={columns}>
             <SearchState value={searchValue} onValueChange={handleSearchChange} />
@@ -114,7 +131,7 @@ export default function UserList() {
             <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
             <CustomPaging totalCount={totalCount} />
             <Toolbar />
-            <SearchPanel messages={searchPanelMessages}/>
+            <SearchPanel messages={searchPanelMessages} />
             <PagingPanel />
           </Grid>
         </Paper>

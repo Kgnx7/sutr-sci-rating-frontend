@@ -1,7 +1,8 @@
-import { object, string } from 'yup'
+import { object, number } from 'yup'
 
 import { validationErrorMessages as msg } from '../localization'
 
 export default object().shape({
-  title: string().required(msg.required).trim(),
+  degreeTypeId: number().required(msg.required),
+  specialtyId: number().required(msg.required),
 })

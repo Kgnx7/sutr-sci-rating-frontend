@@ -22,7 +22,6 @@ const academicDegreeCreateSlice = createSlice({
       state.error = null
     },
     createAcademicDegreeSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.createdAcademicDegree = payload
       state.isLoading = false
       state.error = null
@@ -37,15 +36,15 @@ export const {
   resetError,
 } = academicDegreeCreateSlice.actions
 
-export const createAcademicDegree = (id, router) => async (dispatch) => {
+export const createAcademicDegree = (newAcademicDegree, router) => async (dispatch) => {
   try {
     dispatch(createAcademicDegreeStart())
 
-    const createAcademicDegree = await apiCreateAcademicDegree(id)
+    const createAcademicDegree = await apiCreateAcademicDegree(newAcademicDegree)
 
     dispatch(createAcademicDegreeSuccess(createAcademicDegree))
     dispatch(enqueueSnackbar('Запись успешно создана', 'success'))
-    router.push('/academicDegrees')
+    router.push(`/users/get/${createAcademicDegree.userId}`)
   } catch (error) {
     dispatch(createAcademicDegreeFailure(error))
 

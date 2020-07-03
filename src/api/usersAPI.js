@@ -58,6 +58,19 @@ export async function apiCreateUser(newUser) {
   }
 }
 
+export async function apiСreateUserStatus(newUserStatus) {
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/users/statuses/create`
+    const options = { withCredentials: true }
+
+    const responce = await axios.post(url, newUserStatus, options)
+
+    return responce.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function apiEditUser(id, updatedUser) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/users/edit/${id}`
@@ -73,8 +86,8 @@ export async function apiEditUser(id, updatedUser) {
 
 export async function apiDeleteUser(id) {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/users/delete`
-    const options = { withCredentials: true, params: { id } }
+    const url = `${process.env.REACT_APP_HOST}/api/users/delete/${id}`
+    const options = { withCredentials: true }
 
     const responce = await axios.get(url, options)
 

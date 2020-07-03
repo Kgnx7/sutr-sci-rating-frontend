@@ -9,8 +9,6 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { getDepartment, getUsersByDepartment } from './departmentSlice'
 import debounce from '../../utils/debounce'
 
@@ -61,7 +59,7 @@ function DepartmentInfo({ department }) {
   )
 }
 
-const DepartmentStaffColumns = [
+const DepartmentUsersColumns = [
   // { name: 'login', title: 'Логин' },
   { name: 'displayName', title: 'ФИО' },
   { name: 'position', title: 'Должность' },
@@ -109,7 +107,7 @@ function UsersByDepartment({ departmentId }) {
   }
 
   const handleSearchChangeDebounced = useRef(
-    debounce((search) => {
+    debounce(() => {
       dispatch(
         getUsersByDepartment(departmentId, searchValue, PAGE_SIZE * currentPage, PAGE_SIZE, history)
       )
@@ -124,7 +122,7 @@ function UsersByDepartment({ departmentId }) {
   return (
     <>
       <Paper>
-        <Grid rows={users} columns={DepartmentStaffColumns}>
+        <Grid rows={users} columns={DepartmentUsersColumns}>
           <SearchState value={searchValue} onValueChange={handleSearchChange} />
           <SortingState />
           <PagingState

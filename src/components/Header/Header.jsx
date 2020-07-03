@@ -110,7 +110,7 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfile}>
-        <Link component={RouterLink} to={`/users/${currentUser.id}`}>
+        <Link component={RouterLink} to={`/users/get/${currentUser.id}`}>
           Профиль
         </Link>
       </MenuItem>

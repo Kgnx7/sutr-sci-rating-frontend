@@ -10,7 +10,7 @@ import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
 import { getFaculty } from './facultySlice'
-import { getAllDepartments } from '../departmentsList/departmentsSlice'
+import { getDepartmentsByFaculty } from '../departmentsList/departmentsSlice'
 import {
   SortingState,
   SearchState,
@@ -86,7 +86,7 @@ function FacultyDepartments({ facultyId }) {
   const departments = useSelector((state) => state.departments.departments)
 
   useEffect(() => {
-    dispatch(getAllDepartments(facultyId, history))
+    dispatch(getDepartmentsByFaculty(facultyId, history))
   }, [])
 
   return (

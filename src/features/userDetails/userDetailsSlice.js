@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiGetUser } from '../../api/usersAPI'
+import { apiGetUser, apiDeleteUser } from '../../api/usersAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -17,19 +18,47 @@ const userDetailsSlice = createSlice({
   reducers: {
     getUserStart: startLoading,
     getUserFailure: loadingFailed,
+
+    deleteUserStart: startLoading,
+    deleteUserFailure: loadingFailed,
+
+    editUserStart: startLoading,
+    editUserFailure: loadingFailed,
+
     resetError(state) {
       state.error = null
     },
+
     getUserSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.user = payload
+      state.isLoading = false
+      state.error = null
+    },
+    editUserSuccess(state, { payload }) {
+      state.user = payload
+      state.isLoading = false
+      state.error = null
+    },
+    deleteUserSuccess(state) {
+      state.user = null
       state.isLoading = false
       state.error = null
     },
   },
 })
 
-export const { getUserStart, getUserFailure, getUserSuccess, resetError } = userDetailsSlice.actions
+export const {
+  getUserStart,
+  getUserFailure,
+  deleteUserStart,
+  deleteUserFailure,
+  editUserStart,
+  editUserFailure,
+  getUserSuccess,
+  editUserSuccess,
+  deleteUserSuccess,
+  resetError,
+} = userDetailsSlice.actions
 
 export const getUser = (id, router) => async (dispatch) => {
   try {
@@ -40,7 +69,21 @@ export const getUser = (id, router) => async (dispatch) => {
     dispatch(getUserSuccess(user))
   } catch (error) {
     dispatch(getUserFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
 
+export const deleteUser = (id, router) => async (dispatch) => {
+  try {
+    dispatch(deleteUserStart())
+
+    await apiDeleteUser(id)
+
+    dispatch(deleteUserSuccess())
+    router.push(`/users`)
+    dispatch(enqueueSnackbar('Пользователь успешно удален', 'success'))
+  } catch (error) {
+    dispatch(deleteUserFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }

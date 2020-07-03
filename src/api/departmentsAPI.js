@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-export async function apiGetAllDepartments(facultyId) {
+export async function apiGetAllDepartments(filter, offset, limit) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/departments/list`
 
     const responce = await axios.get(url, {
-      params: { facultyId },
+      params: { filter, offset, limit },
       withCredentials: true,
       timeout: 3000,
     })
@@ -28,7 +28,7 @@ export async function apiGetDepartment(departmentId) {
   }
 }
 
-export async function apiDepartmentByFaculty(facultyId) {
+export async function apiGetDepartmentsByFaculty(facultyId) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/departments/listByFaculty/${facultyId}`
 

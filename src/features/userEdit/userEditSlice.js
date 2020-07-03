@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiEditUser } from '../../api/usersAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -21,7 +22,6 @@ const userEditSlice = createSlice({
       state.error = null
     },
     editUserSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.editedUser = payload
       state.isLoading = false
       state.error = null
@@ -38,7 +38,8 @@ export const editUser = (id, updatedUser, router) => async (dispatch) => {
     const editedUser = await apiEditUser(id, updatedUser)
 
     dispatch(editUserSuccess(editedUser))
-    router.push(`/users/${id}`)
+    router.push(`/users/get/${id}`)
+    dispatch(enqueueSnackbar('Пользователь успешно обновлен', 'success'))
   } catch (error) {
     dispatch(editUserFailure(error))
 
