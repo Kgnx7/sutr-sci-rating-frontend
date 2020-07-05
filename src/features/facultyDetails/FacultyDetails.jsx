@@ -18,7 +18,7 @@ import {
   IntegratedSorting,
   IntegratedFiltering,
 } from '@devexpress/dx-react-grid'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { tableHeaderMessages, tableMessages, searchPanelMessages } from '../../utils/localization'
 import {
   Grid,
   Table,
@@ -147,7 +147,7 @@ function FacultyDepartments({ facultyId }) {
           <Table messages={tableMessages} rowComponent={TableRow} />
           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
           <Toolbar />
-          <SearchPanel />
+          <SearchPanel messages={searchPanelMessages} />
         </Grid>
       </Paper>
     </>

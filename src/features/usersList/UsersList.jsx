@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const columns = [
   { name: 'login', title: 'Логин' },
   { name: 'displayName', title: 'ФИО' },
-  { name: 'position', title: 'Должность' },
+  { name: 'academicRank', title: 'Ученое знавание' },
 ]
 
 const PAGE_SIZE = 10

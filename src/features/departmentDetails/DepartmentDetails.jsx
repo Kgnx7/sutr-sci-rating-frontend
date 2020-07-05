@@ -23,7 +23,7 @@ import {
   IntegratedFiltering,
   CustomPaging,
 } from '@devexpress/dx-react-grid'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { tableHeaderMessages, tableMessages, searchPanelMessages } from '../../utils/localization'
 import {
   Grid,
   Table,
@@ -173,7 +173,7 @@ function UsersByDepartment({ departmentId }) {
           <Table messages={tableMessages} rowComponent={TableRow} />
           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
           <Toolbar />
-          <SearchPanel />
+          <SearchPanel messages={searchPanelMessages}/>
           <PagingPanel />
           <CustomPaging totalCount={totalCount} />
         </Grid>
