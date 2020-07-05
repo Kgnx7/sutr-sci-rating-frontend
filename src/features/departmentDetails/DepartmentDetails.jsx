@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams, Link as RouterLink } from 'react-router-dom'
+
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
-import { getDepartment, getUsersByDepartment } from './departmentSlice'
+import Link from '@material-ui/core/Link'
+import Button from '@material-ui/core/Button'
+
+import { getDepartment, getUsersByDepartment, deleteDepartment } from './departmentSlice'
 import debounce from '../../utils/debounce'
 
 import {
@@ -30,6 +33,7 @@ import {
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui'
 
+import { Can } from '../../components/Can'
 import Header from '../../components/Header'
 
 const useStyles = makeStyles((theme) => ({
@@ -43,9 +47,23 @@ const useStyles = makeStyles((theme) => ({
   text: {
     marginTop: theme.spacing(3),
   },
+  gutterTop: {
+    marginTop: theme.spacing(3),
+  },
+  gutterAll: {
+    margin: theme.spacing(3),
+  },
 }))
 
 function DepartmentInfo({ department }) {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const handleDelete = () => {
+    dispatch(deleteDepartment(department.id, history))
+  }
+
   return (
     <>
       <Typography>{`Наименование: ${department.title || ''}`}</Typography>
@@ -55,6 +73,26 @@ function DepartmentInfo({ department }) {
       <Typography>{`Адресс: ${department.address || ''}`}</Typography>
       <Typography>{`Телефон: ${department.phone || ''}`}</Typography>
       <Typography>{`Электронная почта: ${department.email || ''}`}</Typography>
+
+      <div>
+        <Can I="edit" a="Department">
+          <Link component={RouterLink} to={`/departments/${department.id}/edit`}>
+            <Button variant="contained" color="primary" className={classes.gutterAll}>
+              Редактировать
+            </Button>
+          </Link>
+        </Can>
+        <Can I="delete" a="Department">
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.gutterAll}
+            onClick={() => handleDelete(department.id)}
+          >
+            Удалить
+          </Button>
+        </Can>
+      </div>
     </>
   )
 }
@@ -69,7 +107,7 @@ const TableRow = ({ row, ...restProps }) => {
   const history = useHistory()
 
   const handleRowClick = () => {
-    history.push(`/users/${row.userId}`)
+    history.push(`/users/get/${row.userId}`)
   }
 
   return (

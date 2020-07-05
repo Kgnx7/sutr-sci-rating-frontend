@@ -7,7 +7,7 @@ import Header from '../../components/Header'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { createFaculty } from '../../features/facultyCreate/facultyCreateSlice'
+import { editFaculty } from './facultyEditSlice'
 import Button from '@material-ui/core/Button'
 import createFacultySchema from '../../utils/validation/createFacultySchema'
 import SelectModal from '../../components/SelectModal'
@@ -31,8 +31,11 @@ export default function FacultyCreate() {
   const history = useHistory()
   const dispatch = useDispatch()
   const users = useSelector((state) => state.usersList.users)
+
+  const facultyData = useSelector((state) => state.faculty.faculty)
+
   const onSubmit = async (values) => {
-    dispatch(createFaculty(values, history))
+    dispatch(editFaculty(values, history))
   }
 
   const handleUsersSearch = (search) => {
@@ -50,12 +53,12 @@ export default function FacultyCreate() {
       <Header />
       <Container className={classes.container}>
         <Typography variant="h2" gutterBottom>
-          Создание факультета
+          Редактирование факультета
         </Typography>
         <div className={classes.formContainer}>
           <Form
             onSubmit={onSubmit}
-            initialValues={{}}
+            initialValues={facultyData}
             validate={validate}
             render={({ handleSubmit, form, submitting, pristine }) => (
               <form onSubmit={handleSubmit} noValidate>
@@ -89,7 +92,7 @@ export default function FacultyCreate() {
                   disabled={submitting || pristine}
                   className={classes.createButton}
                 >
-                  Создать
+                  Редактировать
                 </Button>
               </form>
             )}

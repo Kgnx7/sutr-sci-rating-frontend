@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams, Link as RouterLink } from 'react-router-dom'
+
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 import Paper from '@material-ui/core/Paper'
-import { getFaculty } from './facultySlice'
-import { getDepartmentsByFaculty } from '../departmentsList/departmentsSlice'
+import Link from '@material-ui/core/Link'
+import Button from '@material-ui/core/Button'
+
 import {
   SortingState,
   SearchState,
@@ -27,6 +28,10 @@ import {
 } from '@devexpress/dx-react-grid-material-ui'
 
 import Header from '../../components/Header'
+import { Can } from '../../components/Can'
+
+import { getDepartmentsByFaculty } from '../departmentsList/departmentsSlice'
+import { getFaculty, deleteFaculty } from './facultySlice'
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -39,9 +44,23 @@ const useStyles = makeStyles((theme) => ({
   text: {
     marginTop: theme.spacing(3),
   },
+  gutterTop: {
+    marginTop: theme.spacing(3),
+  },
+  gutterAll: {
+    margin: theme.spacing(3),
+  },
 }))
 
 function FacultyInfo({ faculty }) {
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const handleDelete = () => {
+    dispatch(deleteFaculty(faculty.id, history))
+  }
+
   return (
     <>
       <Typography>{`Наименование: ${faculty.title || ''}`}</Typography>
@@ -51,6 +70,26 @@ function FacultyInfo({ faculty }) {
       <Typography>{`Адресс: ${faculty.address || ''}`}</Typography>
       <Typography>{`Телефон: ${faculty.phone || ''}`}</Typography>
       <Typography>{`Электронная почта: ${faculty.email || ''}`}</Typography>
+
+      <div>
+        <Can I="edit" a="Faculty">
+          <Link component={RouterLink} to={`/faculties/${faculty.id}/edit`}>
+            <Button variant="contained" color="primary" className={classes.gutterAll}>
+              Редактировать
+            </Button>
+          </Link>
+        </Can>
+        <Can I="delete" a="Faculty">
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.gutterAll}
+            onClick={() => handleDelete(faculty.id)}
+          >
+            Удалить
+          </Button>
+        </Can>
+      </div>
     </>
   )
 }
@@ -84,6 +123,7 @@ function FacultyDepartments({ facultyId }) {
   const dispatch = useDispatch()
   const history = useHistory()
   const departments = useSelector((state) => state.departments.departments)
+  const classes = useStyles()
 
   useEffect(() => {
     dispatch(getDepartmentsByFaculty(facultyId, history))
@@ -91,6 +131,13 @@ function FacultyDepartments({ facultyId }) {
 
   return (
     <>
+      <Can I="create" a="Department">
+        <Link component={RouterLink} to={`/departments/create`}>
+          <Button variant="contained" color="primary" className={classes.gutterAll}>
+            Добавить
+          </Button>
+        </Link>
+      </Can>
       <Paper>
         <Grid rows={departments} columns={DepartmentsListColumns}>
           <SearchState value={searchValue} onValueChange={setSearchState} />

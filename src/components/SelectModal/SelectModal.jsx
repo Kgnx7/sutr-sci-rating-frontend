@@ -89,7 +89,7 @@ export default function SelectModal({ title, name, type, data, onSearch }) {
                       onClick={() => handleSelectItem(item)}
                     />
                   )}
-                  {type === 'departments' && (
+                  {/^(departments|faculties)$/.test(type) && (
                     <ListItemText
                       primary={item.short}
                       secondary={item.title}

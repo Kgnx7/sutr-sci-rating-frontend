@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
+
 import UsersList from '../features/usersList'
 import UserDetails from '../features/userDetails'
 import UserEdit from '../features/userEdit'
@@ -9,11 +10,15 @@ import Login from '../features/login'
 import FacultiesList from '../features/facultiesList'
 import FacultyDetails from '../features/facultyDetails'
 import DepartmentDetails from '../features/departmentDetails'
+import DepartmentCreate from '../features/departmentCreate'
+import DepartmentEdit from '../features/departmentEdit'
 import Dashboard from '../components/Dashboard'
 import NotFound from '../components/NotFound'
 import { AbilityContext } from '../components/Can'
 import UserStatusCreate from '../features/userStatusCreate'
 import AcademicDegreeCreate from '../features/academicDegreeCreate'
+import FacultyCreate from '../features/facultyCreate'
+import FacultyEdit from '../features/facultyEdit'
 
 export default function Routers() {
   return (
@@ -66,6 +71,13 @@ export default function Routers() {
         />
         <PrivateRoute
           exact
+          action="create"
+          source="Faculty"
+          path="/faculties/create"
+          component={FacultyCreate}
+        />
+        <PrivateRoute
+          exact
           action="get"
           source="Faculty"
           path="/faculties/:id"
@@ -74,7 +86,28 @@ export default function Routers() {
         <PrivateRoute
           exact
           action="get"
-          source="Departments"
+          source="Faculty"
+          path="/faculties/:id/edit"
+          component={FacultyEdit}
+        />
+        <PrivateRoute
+          exact
+          action="get"
+          source="Department"
+          path="/departments/create"
+          component={DepartmentCreate}
+        />
+        <PrivateRoute
+          exact
+          action="get"
+          source="Department"
+          path="/departments/:id/edit"
+          component={DepartmentEdit}
+        />
+        <PrivateRoute
+          exact
+          action="get"
+          source="Department"
           path="/departments/:id"
           component={DepartmentDetails}
         />

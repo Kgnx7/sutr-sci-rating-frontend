@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiGetFaculty, apiGetFacultyDepartments } from '../../api/facultiesAPI'
-import { apiDepartmentByFaculty } from '../../api/departmentsAPI'
+import { apiGetFaculty, apiDeleteFaculty } from '../../api/facultiesAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -18,6 +18,8 @@ const facultySlice = createSlice({
   reducers: {
     getFacultyStart: startLoading,
     getFacultyFailure: loadingFailed,
+    deleteFacultyStart: startLoading,
+    deleteFacultyFailure: loadingFailed,
     getFacultyDepartmentsStart: startLoading,
     getFacultyDepartmentsFailure: loadingFailed,
 
@@ -25,13 +27,16 @@ const facultySlice = createSlice({
       state.error = null
     },
     getFacultySuccess(state, { payload }) {
-      // TODO: валидация данных
       state.faculty = payload
       state.isLoading = false
       state.error = null
     },
+    deleteFacultySuccess(state) {
+      state.faculty = null
+      state.isLoading = false
+      state.error = null
+    },
     getFacultyDepartmentsSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.departments = payload
       state.isLoading = false
       state.error = null
@@ -43,6 +48,11 @@ export const {
   getFacultyStart,
   getFacultyFailure,
   getFacultySuccess,
+
+  deleteFacultyStart,
+  deleteFacultySuccess,
+  deleteFacultyFailure,
+
   getFacultyDepartmentsStart,
   getFacultyDepartmentsFailure,
   getFacultyDepartmentsSuccess,
@@ -69,6 +79,21 @@ export const getFaculty = (facultyId, router) => async (dispatch) => {
     dispatch(getFacultySuccess(faculty))
   } catch (error) {
     dispatch(getFacultyFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const deleteFaculty = (facultyId, router) => async (dispatch) => {
+  try {
+    dispatch(deleteFacultyStart())
+
+    const faculty = await apiDeleteFaculty(facultyId)
+
+    dispatch(deleteFacultySuccess(faculty))
+    router.push('/faculties')
+    dispatch(enqueueSnackbar('Факультет успешно создан', 'success'))
+  } catch (error) {
+    dispatch(deleteFacultyFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }
