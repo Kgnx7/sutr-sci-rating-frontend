@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link as RouterLink } from 'react-router-dom'
+
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -15,12 +16,10 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Link from '@material-ui/core/Link'
-import { Link as RouterLink } from 'react-router-dom'
-// import roles from "../../constants/roles";
-import groups from '../../constants/groups'
-import { signOut } from '../../features/login/authSlice'
 
-// import SmallSutrLogoBlue from `${process.env.PUBLIC_URL}/public/small_sutr_logo_blue`
+import { signOut } from '../../features/login/authSlice'
+import groups from '../../constants/groups'
+import { Can } from '../../components/Can'
 
 const drawerWidth = 240
 
@@ -89,12 +88,22 @@ export default function Header() {
 
   const links = [
     {
+      action: 'list',
+      source: 'User',
       url: '/users',
       label: 'Список преподавателей',
     },
     {
+      action: 'list',
+      source: 'Faculty',
       url: '/faculties',
       label: 'Списк факультетов',
+    },
+    {
+      action: 'list',
+      source: 'RiaType',
+      url: '/riaTypes',
+      label: 'Виды РИД',
     },
   ]
 
@@ -170,11 +179,13 @@ export default function Header() {
                 : true
             )
             .map((link) => (
-              <Link component={RouterLink} to={link.url}>
-                <ListItem button key={link.url}>
-                  <ListItemText>{link.label}</ListItemText>
-                </ListItem>
-              </Link>
+              <Can I={link.action} a={link.source}>
+                <Link component={RouterLink} to={link.url}>
+                  <ListItem button key={link.url}>
+                    <ListItemText>{link.label}</ListItemText>
+                  </ListItem>
+                </Link>
+              </Can>
             ))}
         </List>
       </Drawer>

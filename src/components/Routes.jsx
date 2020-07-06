@@ -2,6 +2,10 @@ import React, { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
 
+import Dashboard from '../components/Dashboard'
+import NotFound from '../components/NotFound'
+import { AbilityContext } from '../components/Can'
+
 import UsersList from '../features/usersList'
 import UserDetails from '../features/userDetails'
 import UserEdit from '../features/userEdit'
@@ -12,13 +16,12 @@ import FacultyDetails from '../features/facultyDetails'
 import DepartmentDetails from '../features/departmentDetails'
 import DepartmentCreate from '../features/departmentCreate'
 import DepartmentEdit from '../features/departmentEdit'
-import Dashboard from '../components/Dashboard'
-import NotFound from '../components/NotFound'
-import { AbilityContext } from '../components/Can'
 import UserStatusCreate from '../features/userStatusCreate'
 import AcademicDegreeCreate from '../features/academicDegreeCreate'
 import FacultyCreate from '../features/facultyCreate'
 import FacultyEdit from '../features/facultyEdit'
+import RiaTypesList from '../features/riaTypesList'
+import RiaTypeDetails from '../features/riaTypeDetails'
 
 export default function Routers() {
   return (
@@ -111,118 +114,20 @@ export default function Routers() {
           path="/departments/:id"
           component={DepartmentDetails}
         />
-
-        {/* <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/positions"
-          component={PositionsList}
-        />
-
         <PrivateRoute
-          withRoles={groups.University}
           exact
-          path="/positions/create"
-          component={PositionCreate}
+          action="list"
+          source="RiaType"
+          path="/riaTypes"
+          component={RiaTypesList}
         />
         <PrivateRoute
-          withRoles={groups.University}
           exact
-          path="/academicDegrees"
-          component={AcademicDegreesList}
+          action="get"
+          source="RiaType"
+          path="/riaTypes/get/:id"
+          component={RiaTypeDetails}
         />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/academicDegrees/create"
-          component={AcademicDegreeCreate}
-        />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/academicRanks"
-          component={AcademicRanksList}
-        />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/academicRanks/create"
-          component={AcademicRankCreate}
-        />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/faculties"
-          component={FacultiesList}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty]}
-          exact
-          path="/faculties/create"
-          component={FacultyCreate}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty]}
-          exact
-          path="/faculties/:id"
-          component={FacultyDetails}
-        />
-
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/researchWorks"
-          component={ResearchWorksList}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/researchWorks/create"
-          component={ResearchWorkCreate}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/researchWorks/:id"
-          component={ResearchWorkDetails}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/rating"
-          component={SciRating}
-        /> */}
-        {/*  */}
-
-        {/* 
-
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/academicDegrees"
-          component={AcademicDegreesList}
-        />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/academicRanks"
-          component={AcademicRanksList}
-        />
-        <PrivateRoute
-          withRoles={[...groups.University, ...groups.Faculty, ...groups.Department]}
-          exact
-          path="/faculties/:facultyId/departments/:departmentId"
-          component={DepartmentDetails}
-        /> */}
-        {/* 
-        <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute
-          withRoles={groups.University}
-          exact
-          path="/user/create"
-          component={UserCreate}
-        />
-        */}
         <PrivateRoute path="*" component={NotFound} />
       </Switch>
     </Router>

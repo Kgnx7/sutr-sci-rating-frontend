@@ -13,6 +13,12 @@ import departmentsReducer from '../features/departmentsList/departmentsSlice'
 import departmentReducer from '../features/departmentDetails/departmentSlice'
 import departmentCreateReducer from '../features/departmentCreate/departmentCreateSlice'
 
+import riaTypesListReducer from '../features/riaTypesList/riaTypesListSlice'
+import riaTypesDetailsReducer from '../features/riaTypeDetails/riaTypeDetailsSlice'
+import riaTypeCreateReducer from '../features/riaTypeCreate/riaTypeCreateSlice'
+
+import riaGeneralTypeListReducer from '../features/riaGeneralTypeList/riaGeneralTypeListSlice'
+
 import academicRanksReducer from '../features/academicRanksList/academicRanksSlice'
 import accessGroupsReducer from '../features/accessGroupsList/accessGroupsSlice'
 import positionsReducer from '../features/positionsList/positionsSlice'
@@ -47,6 +53,12 @@ const rootReducer = combineReducers({
   degreeTypesList: degreeTypesListReducer,
 
   specialtiesList: specialtiesListReducer,
+
+  riaTypesList: riaTypesListReducer,
+  riaTypesDetails: riaTypesDetailsReducer,
+  riaTypeCreate: riaTypeCreateReducer,
+
+  riaGeneralTypesList: riaGeneralTypeListReducer,
 })
 
 export default rootReducer

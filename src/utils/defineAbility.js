@@ -37,6 +37,12 @@ export default function defineAbilityFor(user) {
 
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
+
+      can('list', 'RiaType')
+      can('create', 'RiaType')
+      can('edit', 'RiaType')
+      can('delete', 'RiaType')
+      can('get', 'RiaType')
       break
     case groups.ResearchDepartment:
       can('list', 'User')
@@ -64,6 +70,12 @@ export default function defineAbilityFor(user) {
 
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
+
+      can('list', 'RiaType')
+      can('create', 'RiaType')
+      can('edit', 'RiaType')
+      can('delete', 'RiaType')
+      can('get', 'RiaType')
       break
     case groups.University:
       can('list', 'User')
@@ -78,6 +90,9 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
       break
     case groups.Faculty:
       can('list', 'User')
@@ -92,6 +107,9 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
       break
     case groups.Department:
       can('list', 'User')
@@ -106,6 +124,9 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
       break
     case groups.Worker:
       can('get', 'User')
@@ -120,6 +141,9 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
       break
     default:
       break
