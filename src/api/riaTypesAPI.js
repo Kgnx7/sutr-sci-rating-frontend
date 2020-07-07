@@ -46,9 +46,9 @@ export async function apiCreateRiaType(newRiaType) {
   }
 }
 
-export async function apiEditRiaType(riaTypeId, updatedRiaType) {
+export async function apiEditRiaType(updatedRiaType) {
   try {
-    const url = `${process.env.REACT_APP_HOST}/api/riaTypes/edit/${riaTypeId}`
+    const url = `${process.env.REACT_APP_HOST}/api/riaTypes/edit/${updatedRiaType.id}`
 
     const responce = await axios.post(url, updatedRiaType, {
       withCredentials: true,

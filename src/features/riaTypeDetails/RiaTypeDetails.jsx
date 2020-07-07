@@ -181,6 +181,13 @@ export default function RiaTypeShow() {
                 <RiaTypeProperty properties={riaType.specifications} />
               </TabPanel>
             </Box>
+            <Can I="edit" a="RiaType">
+              <Link component={RouterLink} to={`/riaTypes/edit/${riaType.id}`}>
+                <Button variant="contained" color="primary" className={classes.gutterAll}>
+                  Редактировать
+                </Button>
+              </Link>
+            </Can>
           </>
         )}
       </Container>
