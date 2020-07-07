@@ -22,6 +22,7 @@ import FacultyCreate from '../features/facultyCreate'
 import FacultyEdit from '../features/facultyEdit'
 import RiaTypesList from '../features/riaTypesList'
 import RiaTypeDetails from '../features/riaTypeDetails'
+import RiaTypeCreate from '../features/riaTypeCreate'
 
 export default function Routers() {
   return (
@@ -120,6 +121,13 @@ export default function Routers() {
           source="RiaType"
           path="/riaTypes"
           component={RiaTypesList}
+        />
+        <PrivateRoute
+          exact
+          action="list"
+          source="RiaType"
+          path="/riaTypes/create"
+          component={RiaTypeCreate}
         />
         <PrivateRoute
           exact

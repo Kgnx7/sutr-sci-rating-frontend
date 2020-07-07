@@ -45,6 +45,7 @@ export const createRiaType = (riaType, router) => async (dispatch) => {
 
     dispatch(createRiaTypeSuccess(newRiaType))
     dispatch(enqueueSnackbar('Запись успешно добавлена', 'success'))
+    router.goBack()
   } catch (error) {
     dispatch(createRiaTypeFailure(error))
     handleServerErrors(error, router, dispatch)
