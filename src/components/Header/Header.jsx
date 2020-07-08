@@ -105,6 +105,12 @@ export default function Header() {
       url: '/riaTypes',
       label: 'Виды РИД',
     },
+    {
+      action: 'list',
+      source: 'RiaSpecification',
+      url: '/riaSpecifications',
+      label: 'Типы характеристик РИД',
+    },
   ]
 
   const menuId = 'primary-search-account-menu'

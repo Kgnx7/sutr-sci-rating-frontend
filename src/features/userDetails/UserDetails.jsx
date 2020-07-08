@@ -17,6 +17,7 @@ import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-
 import Link from '@material-ui/core/Link'
 import { Link as RouterLink } from 'react-router-dom'
 import { Can } from '../../components/Can'
+import AlertDialog from '../../components/AlertDialog'
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -114,12 +115,17 @@ const AcademicDegrees = ({ user }) => {
 }
 
 const UserInfo = ({ user }) => {
+  const [alertDialog, setAlertDialog] = useState(false)
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
 
   const handleDelete = () => {
     dispatch(deleteUser(user.id, history))
+  }
+
+  const toggleAlertDialog = () => {
+    setAlertDialog(!alertDialog)
   }
 
   return (
@@ -144,11 +150,12 @@ const UserInfo = ({ user }) => {
             variant="contained"
             color="secondary"
             className={classes.gutterAll}
-            onClick={handleDelete}
+            onClick={toggleAlertDialog}
           >
             Удалить
           </Button>
         </Can>
+        <AlertDialog open={alertDialog} onSubmit={handleDelete} handleClose={toggleAlertDialog} />
       </div>
     </>
   )

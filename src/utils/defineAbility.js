@@ -38,11 +38,21 @@ export default function defineAbilityFor(user) {
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
 
+      can('list', 'RiaSpecification')
+      can('create', 'RiaSpecification')
+      can('delete', 'RiaSpecification')
+
       can('list', 'RiaType')
       can('create', 'RiaType')
       can('edit', 'RiaType')
       can('delete', 'RiaType')
       can('get', 'RiaType')
+
+      can('list', 'Ria')
+      can('create', 'Ria')
+      can('edit', 'Ria')
+      can('delete', 'Ria')
+      can('get', 'Ria')
       break
     case groups.ResearchDepartment:
       can('list', 'User')
@@ -71,11 +81,21 @@ export default function defineAbilityFor(user) {
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
 
+      can('list', 'RiaSpecification')
+      can('create', 'RiaSpecification')
+      can('delete', 'RiaSpecification')
+
       can('list', 'RiaType')
       can('create', 'RiaType')
       can('edit', 'RiaType')
       can('delete', 'RiaType')
       can('get', 'RiaType')
+
+      can('list', 'Ria')
+      can('create', 'Ria')
+      can('edit', 'Ria')
+      can('delete', 'Ria')
+      can('get', 'Ria')
       break
     case groups.University:
       can('list', 'User')
@@ -90,6 +110,8 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaSpecification')
 
       can('list', 'RiaType')
       can('get', 'RiaType')
@@ -108,6 +130,8 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
+      can('list', 'RiaSpecification')
+
       can('list', 'RiaType')
       can('get', 'RiaType')
       break
@@ -125,6 +149,8 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
+      can('list', 'RiaSpecification')
+
       can('list', 'RiaType')
       can('get', 'RiaType')
       break
@@ -141,6 +167,8 @@ export default function defineAbilityFor(user) {
       can('get', 'Department')
 
       can('list', 'DegreeType')
+
+      can('list', 'RiaSpecification')
 
       can('list', 'RiaType')
       can('get', 'RiaType')

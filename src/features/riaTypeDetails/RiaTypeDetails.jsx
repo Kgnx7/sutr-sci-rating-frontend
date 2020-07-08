@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   gutterTop: {
     marginTop: theme.spacing(3),
   },
+  gutterBottom: {
+    marginBottom: theme.spacing(3),
+  },
   gutterAll: {
     margin: theme.spacing(3),
   },
@@ -69,8 +72,8 @@ function RiaTypeInfo({ riaType }) {
       <Typography>{`Описание: ${riaType.description || ''}`}</Typography>
 
       <div>
-        {/* <Can I="edit" a="RiaType">
-          <Link component={RouterLink} to={`/riaTypes/${riaType.id}/edit`}>
+        <Can I="edit" a="RiaType">
+          <Link component={RouterLink} to={`/riaTypes/edit/${riaType.id}`}>
             <Button variant="contained" color="primary" className={classes.gutterAll}>
               Редактировать
             </Button>
@@ -85,7 +88,7 @@ function RiaTypeInfo({ riaType }) {
           >
             Удалить
           </Button>
-        </Can> */}
+        </Can>
       </div>
     </>
   )
@@ -96,21 +99,19 @@ const PropertiesListColumns = [
   { name: 'dataType', title: 'Тип данных' },
 ]
 
-function RiaTypeProperty({ properties }) {
+function RiaTypeProperty({ properties, riaTypeId }) {
   const [searchValue, setSearchState] = useState('')
-  const dispatch = useDispatch()
-  const history = useHistory()
   const classes = useStyles()
 
   return (
     <>
-      {/* <Can I="create" a="Department">
-        <Link component={RouterLink} to={`/departments/create`}>
-          <Button variant="contained" color="primary" className={classes.gutterAll}>
+      <Can I="edit" a="RiaType">
+        <Link component={RouterLink} to={`/riaTypes/${riaTypeId}/addProperty`}>
+          <Button variant="contained" color="primary" className={classes.gutterBottom}>
             Добавить
           </Button>
         </Link>
-      </Can> */}
+      </Can>
       <Paper>
         <Grid rows={properties || []} columns={PropertiesListColumns}>
           <SearchState value={searchValue} onValueChange={setSearchState} />
@@ -178,16 +179,9 @@ export default function RiaTypeShow() {
                 <RiaTypeInfo riaType={riaType} />
               </TabPanel>
               <TabPanel value={tab} index={1}>
-                <RiaTypeProperty properties={riaType.specifications} />
+                <RiaTypeProperty riaTypeId={riaType.id} properties={riaType.specifications} />
               </TabPanel>
             </Box>
-            <Can I="edit" a="RiaType">
-              <Link component={RouterLink} to={`/riaTypes/edit/${riaType.id}`}>
-                <Button variant="contained" color="primary" className={classes.gutterAll}>
-                  Редактировать
-                </Button>
-              </Link>
-            </Can>
           </>
         )}
       </Container>

@@ -19,6 +19,8 @@ import riaTypeCreateReducer from '../features/riaTypeCreate/riaTypeCreateSlice'
 import riaTypeEditReducer from '../features/riaTypeEdit/riaTypeEditSlice'
 
 import riaGeneralTypeListReducer from '../features/riaGeneralTypeList/riaGeneralTypeListSlice'
+import riaSpecificationsListReducer from '../features/riaSpecificationsList/riaSpecificationsListSlice'
+import riaSpecificationCreateReducer from '../features/riaSpecificationCreate/riaSpecificationCreateSlice'
 
 import academicRanksReducer from '../features/academicRanksList/academicRanksSlice'
 import accessGroupsReducer from '../features/accessGroupsList/accessGroupsSlice'
@@ -61,6 +63,8 @@ const rootReducer = combineReducers({
   riaTypeEdit: riaTypeEditReducer,
 
   riaGeneralTypesList: riaGeneralTypeListReducer,
+  riaSpecificationsList: riaSpecificationsListReducer,
+  riaSpecificationCreate: riaSpecificationCreateReducer,
 })
 
 export default rootReducer

@@ -11,9 +11,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 
 import createRiaTypeSchema from '../riaTypeCreate/createRiaTypeSchema'
-import { getRiaGeneralTypes } from '../../features/riaGeneralTypeList/riaGeneralTypeListSlice'
-import { editRiaType } from './riaTypeEditSlice'
+import { addProperty } from './riaTypeEditSlice'
+import { getRiaTypes } from '../riaTypesList/riaTypesListSlice'
+import { getRiaSpecifications } from '../riaSpecificationsList/riaSpecificationsListSlice'
 
+import SelectModal from '../../components/SelectModal'
 import Header from '../../components/Header'
 
 const useStyles = makeStyles(() => ({
@@ -29,21 +31,30 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function RiaTypeEditCreate() {
+export default function RiaTypePropertyCreate() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const riaGeneralTypes = useSelector((state) => state.riaGeneralTypesList.riaGeneralTypes)
+  const riaTypes = useSelector((state) => state.riaTypesList.riaTypes)
+  const riaSpecifications = useSelector((state) => state.riaSpecificationsList.riaSpecifications)
   const riaType = useSelector((state) => state.riaTypesDetails.riaType)
 
   const onSubmit = async (values) => {
-    dispatch(editRiaType(values, history))
+    dispatch(addProperty(values, history))
   }
 
   useEffect(() => {
-    dispatch(getRiaGeneralTypes())
+    dispatch(getRiaTypes(riaType?.title || '', 0, 3, history))
+    dispatch(getRiaSpecifications('', 0, 3, history))
   }, [])
+
+  const handleRiaTypeSearch = (search) => {
+    dispatch(getRiaTypes(search, 0, 3, history))
+  }
+  const handleRiaSpecificationSearch = (search) => {
+    dispatch(getRiaSpecifications(search, 0, 3, history))
+  }
 
   const validate = makeValidate(createRiaTypeSchema)
 
@@ -57,25 +68,25 @@ export default function RiaTypeEditCreate() {
         <div className={classes.formContainer}>
           <Form
             onSubmit={onSubmit}
-            initialValues={riaType}
+            initialValues={{}}
             validate={validate}
             render={({ handleSubmit, submitting, pristine }) => (
               <form onSubmit={handleSubmit} noValidate>
-                <Select
-                  name="generalTypeId"
-                  label="Тип"
-                  formControlProps={{ margin: 'normal' }}
-                  required={true}
-                >
-                  {riaGeneralTypes.map((generalType) => (
-                    <MenuItem value={generalType.id}>{generalType.title}</MenuItem>
-                  ))}
-                </Select>
+                <SelectModal
+                  title="Выбрать тип РИД"
+                  name="typeId"
+                  data={riaTypes}
+                  onSearch={handleRiaTypeSearch}
+                  type="riaTypes"
+                />
 
-                <TextField label="Наименование" name="title" type="text" required={true} />
-                <TextField label="Описание" name="description" type="text" required={false} />
-                <TextField label="Единица измерения" name="unit" type="text" required={true} />
-                <TextField label="Баллы за единицу" name="perUnit" type="number" required={true} />
+                <SelectModal
+                  title="Выбрать декана"
+                  name="propertyId"
+                  data={riaSpecifications}
+                  onSearch={handleRiaSpecificationSearch}
+                  type="riaSpecifications"
+                />
 
                 <Button
                   variant="contained"
@@ -84,7 +95,7 @@ export default function RiaTypeEditCreate() {
                   disabled={submitting || pristine}
                   className={classes.gutterTop}
                 >
-                  Редактировать
+                  Добавить
                 </Button>
               </form>
             )}

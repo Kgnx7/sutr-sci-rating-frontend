@@ -68,6 +68,7 @@ export const deleteRiaType = (riaTypeId, router) => async (dispatch) => {
 
     dispatch(deleteRiaTypeSuccess(riaTypeId))
     dispatch(enqueueSnackbar('Запись успешно удалена', 'success'))
+    router.goBack()
   } catch (error) {
     dispatch(deleteRiaTypeFailure(error))
 

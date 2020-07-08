@@ -52,4 +52,19 @@ export const editRiaType = (riaType, router) => async (dispatch) => {
   }
 }
 
+export const addProperty = (newProperty, router) => async (dispatch) => {
+  try {
+    dispatch(editRiaTypeStart())
+
+    await apiEditRiaType(newProperty)
+
+    dispatch(editRiaTypeSuccess())
+    dispatch(enqueueSnackbar('Запись успешно обновлена', 'success'))
+    router.goBack()
+  } catch (error) {
+    dispatch(editRiaTypeFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
 export default riaTypeEditSlice.reducer

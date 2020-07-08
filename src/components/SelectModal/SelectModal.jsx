@@ -103,6 +103,20 @@ export default function SelectModal({ title, name, type, data, onSearch }) {
                       onClick={() => handleSelectItem(item)}
                     />
                   )}
+                  {type === 'riaTypes' && (
+                    <ListItemText
+                      primary={item.title}
+                      secondary={`${item.unit} - ${item.perUnit}`}
+                      onClick={() => handleSelectItem(item)}
+                    />
+                  )}
+                  {type === 'riaSpecifications' && (
+                    <ListItemText
+                      primary={item.title}
+                      secondary={item.dataType}
+                      onClick={() => handleSelectItem(item)}
+                    />
+                  )}
                 </ListItem>
               ))}
           </List>
