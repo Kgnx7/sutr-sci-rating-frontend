@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function UserStatusCreate() {
+export default function RiaTypeCreate() {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()

@@ -14,7 +14,7 @@ function loadingFailed(state, action) {
 
 const riaTypeSlice = createSlice({
   name: 'riaType',
-  initialState: { riaType: [], isLoading: false, error: null },
+  initialState: { riaType: null, isLoading: false, error: null },
   reducers: {
     getRiaTypeStart: startLoading,
     getRiaTypeFailure: loadingFailed,

@@ -27,6 +27,8 @@ import RiaTypeEdit from '../features/riaTypeEdit'
 import RiaTypePropertyCreate from '../features/riaTypeEdit/RiaTypePropertyCreate'
 import RiaSpecificationsList from '../features/riaSpecificationsList'
 import RiaSpecificationCreate from '../features/riaSpecificationCreate'
+import RiaDetails from '../features/riaDetails'
+import RiaCreate from '../features/riaCreate'
 
 export default function Routers() {
   return (
@@ -168,6 +170,8 @@ export default function Routers() {
           path="/riaSpecifications/create"
           component={RiaSpecificationCreate}
         />
+        <PrivateRoute exact action="get" source="Ria" path="/ria/get/:id" component={RiaDetails} />
+        <PrivateRoute exact action="create" source="Ria" path="/ria/create" component={RiaCreate} />
         <PrivateRoute path="*" component={NotFound} />
       </Switch>
     </Router>

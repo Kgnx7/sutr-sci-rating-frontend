@@ -29,6 +29,12 @@ import employmentTypesReducer from '../features/employmentTypesList/employmentTy
 import degreeTypesListReducer from '../features/degreeTypesList/degreeTypesListSlice'
 import specialtiesListReducer from '../features/specialtiesList/specialtiesListSlice'
 
+import riaDetailsReducer from '../features/riaDetails/riaDetailsSlice'
+import riaCreateReducer from '../features/riaCreate/riaCreateSlice'
+
+import rsTypesListReducer from '../features/rsTypesList/rsTypesListSlice'
+import riaStatusesListReducer from '../features/riaStatusesList/riaStatusesListSlice'
+
 const rootReducer = combineReducers({
   app: appReducer,
 
@@ -65,6 +71,12 @@ const rootReducer = combineReducers({
   riaGeneralTypesList: riaGeneralTypeListReducer,
   riaSpecificationsList: riaSpecificationsListReducer,
   riaSpecificationCreate: riaSpecificationCreateReducer,
+
+  riaDetails: riaDetailsReducer,
+  riaCreate: riaCreateReducer,
+
+  rsTypesList: rsTypesListReducer,
+  riaStatusesList: riaStatusesListReducer,
 })
 
 export default rootReducer
