@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { VirtualTableState, SortingState, IntegratedSorting } from '@devexpress/dx-react-grid'
 import { Grid, VirtualTable, TableHeaderRow } from '@devexpress/dx-react-grid-material-ui'
 import { getAllDepartments } from './departmentsSlice'
-import { tableHeaderMessages, tableMessages } from '../../utils/localization'
+import { tableHeaderMessages, tableMessages,  } from '../../utils/localization'
 
 const useStyles = makeStyles((theme) => ({
   container: {

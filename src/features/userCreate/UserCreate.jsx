@@ -25,6 +25,9 @@ const useStyles = makeStyles(() => ({
   gutterTop: {
     marginTop: 15,
   },
+  controls: {
+    display: 'block',
+  },
 }))
 
 export default function UserCreate(props) {
@@ -98,7 +101,7 @@ export default function UserCreate(props) {
                   type="button"
                   onClick={form.reset}
                   disabled={submitting || pristine}
-                  className={classes.gutterTop}
+                  className={`${classes.gutterTop} ${classes.controls}`}
                 >
                   Сбросить
                 </Button>
@@ -108,7 +111,7 @@ export default function UserCreate(props) {
                   color="primary"
                   type="submit"
                   disabled={submitting || pristine}
-                  className={classes.gutterTop}
+                  className={`${classes.gutterTop} ${classes.controls}`}
                 >
                   Создать
                 </Button>

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const columns = [
   { name: 'login', title: 'Логин' },
   { name: 'displayName', title: 'ФИО' },
-  { name: 'position', title: 'Должность' },
+  { name: 'academicRank', title: 'Ученое знавание' },
 ]
 
 const PAGE_SIZE = 10
@@ -106,8 +106,8 @@ export default function UserList() {
         <Typography variant="h2" gutterBottom>
           Список преподавателей
         </Typography>
-        <Link component={RouterLink} to={`/users/create`}>
-          <Can I="create" a="User">
+        <Can I="create" a="User">
+          <Link component={RouterLink} to={`/users/create`}>
             <Button
               variant="contained"
               color="primary"
@@ -115,8 +115,8 @@ export default function UserList() {
             >
               Создать пользователя
             </Button>
-          </Can>
-        </Link>
+          </Link>
+        </Can>
         <Paper>
           <Grid rows={users} columns={columns}>
             <SearchState value={searchValue} onValueChange={handleSearchChange} />

@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetUsersByDepartment } from '../../api/usersAPI'
-import { apiGetDepartment } from '../../api/departmentsAPI'
+import { apiGetDepartment, apiDeleteDepartment } from '../../api/departmentsAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
+import { enqueueSnackbar } from '../../app/appSlice'
 
 function startLoading(state) {
   state.isLoading = true
@@ -18,6 +19,8 @@ const departmentSlice = createSlice({
   reducers: {
     getDepartmentStart: startLoading,
     getDepartmentFailure: loadingFailed,
+    deleteDepartmentStart: startLoading,
+    deleteDepartmentFailure: loadingFailed,
     getDepartmentUsersStart: startLoading,
     getDepartmentUsersFailure: loadingFailed,
 
@@ -25,13 +28,16 @@ const departmentSlice = createSlice({
       state.error = null
     },
     getDepartmentSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.department = payload
       state.isLoading = false
       state.error = null
     },
+    deleteDepartmentSuccess(state) {
+      state.department = null
+      state.isLoading = false
+      state.error = null
+    },
     getDepartmentUsersSuccess(state, { payload }) {
-      // TODO: валидация данных
       state.users = payload.users
       state.usersCount = payload.count
       state.isLoading = false
@@ -44,6 +50,9 @@ export const {
   getDepartmentStart,
   getDepartmentFailure,
   getDepartmentSuccess,
+  deleteDepartmentStart,
+  deleteDepartmentFailure,
+  deleteDepartmentSuccess,
   getDepartmentUsersStart,
   getDepartmentUsersFailure,
   getDepartmentUsersSuccess,
@@ -68,6 +77,21 @@ export const getDepartment = (departmentId, router) => async (dispatch) => {
     dispatch(getDepartmentSuccess(department))
   } catch (error) {
     dispatch(getDepartmentFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const deleteDepartment = (departmentId, router) => async (dispatch) => {
+  try {
+    dispatch(deleteDepartmentStart())
+
+    await apiDeleteDepartment(departmentId)
+
+    dispatch(deleteDepartmentSuccess())
+    router.goBack()
+    dispatch(enqueueSnackbar('Кафедра успешно удалена', 'success'))
+  } catch (error) {
+    dispatch(deleteDepartmentFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }

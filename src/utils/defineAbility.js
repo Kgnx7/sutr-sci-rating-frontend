@@ -20,10 +20,16 @@ export default function defineAbilityFor(user) {
 
       can('list', 'Faculty')
       can('get', 'Faculty')
+      can('create', 'Faculty')
+      can('edit', 'Faculty')
+      can('delete', 'Faculty')
 
       can('list', 'Department')
       can('listByFaculty', 'Department')
       can('get', 'Department')
+      can('create', 'Department')
+      can('edit', 'Department')
+      can('delete', 'Department')
 
       can('list', 'AccessGroup')
 
@@ -32,6 +38,24 @@ export default function defineAbilityFor(user) {
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
 
+      can('list', 'RiaSpecification')
+      can('create', 'RiaSpecification')
+      can('delete', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('create', 'RiaType')
+      can('edit', 'RiaType')
+      can('delete', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'Ria')
+      can('create', 'Ria')
+      can('edit', 'Ria')
+      can('delete', 'Ria')
+      can('get', 'Ria')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     case groups.ResearchDepartment:
       can('list', 'User')
@@ -42,24 +66,49 @@ export default function defineAbilityFor(user) {
       can('delete', 'User')
       can('create', 'UserStatus')
 
-      can('list', 'faculties')
+      can('list', 'Faculty')
       can('get', 'Faculty')
+      can('create', 'Faculty')
+      can('edit', 'Faculty')
+      can('delete', 'Faculty')
 
       can('list', 'Department')
       can('listByFaculty', 'Department')
       can('get', 'Department')
+      can('create', 'Department')
+      can('edit', 'Department')
+      can('delete', 'Department')
 
       can('list', 'DegreeType')
 
       can('create', 'AcademicDegree')
       can('delete', 'AcademicDegree')
+
+      can('list', 'RiaSpecification')
+      can('create', 'RiaSpecification')
+      can('delete', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('create', 'RiaType')
+      can('edit', 'RiaType')
+      can('delete', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'Ria')
+      can('create', 'Ria')
+      can('edit', 'Ria')
+      can('delete', 'Ria')
+      can('get', 'Ria')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     case groups.University:
       can('list', 'User')
       can('listByDepartment', 'User')
       can('get', 'User')
 
-      can('list', 'faculties')
+      can('list', 'Faculty')
       can('get', 'Faculty')
 
       can('list', 'Department')
@@ -68,8 +117,13 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
-      can('create', 'AcademicDegree')
-      can('delete', 'AcademicDegree')
+      can('list', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     case groups.Faculty:
       can('list', 'User')
@@ -85,8 +139,13 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
-      can('create', 'AcademicDegree')
-      can('delete', 'AcademicDegree')
+      can('list', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     case groups.Department:
       can('list', 'User')
@@ -102,8 +161,13 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
-      can('create', 'AcademicDegree')
-      can('delete', 'AcademicDegree')
+      can('list', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     case groups.Worker:
       can('get', 'User')
@@ -119,8 +183,13 @@ export default function defineAbilityFor(user) {
 
       can('list', 'DegreeType')
 
-      can('create', 'AcademicDegree')
-      can('delete', 'AcademicDegree')
+      can('list', 'RiaSpecification')
+
+      can('list', 'RiaType')
+      can('get', 'RiaType')
+
+      can('list', 'RsTypes')
+      can('list', 'RiaStatuses')
       break
     default:
       break

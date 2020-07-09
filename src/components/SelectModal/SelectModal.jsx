@@ -10,12 +10,20 @@ import debounce from '../../utils/debounce'
 import { useField } from 'react-final-form'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  gutterTop: {
+    marginTop: theme.spacing(3),
+  },
+}))
 
 export default function SelectModal({ title, name, type, data, onSearch }) {
   const [selectedItem, setSelectedItem] = useState(null)
   const [selectModal, setSelectModal] = useState(null)
   const [searchState, setSearchState] = useState('')
   const { input, meta } = useField(name)
+  const classes = useStyles()
 
   const handleDepartmentsSelectModelOpen = (event) => {
     event.preventDefault()
@@ -47,7 +55,7 @@ export default function SelectModal({ title, name, type, data, onSearch }) {
   }
 
   return (
-    <div>
+    <div className={classes.gutterTop}>
       <Typography gutterBottom>
         {type === 'users'
           ? selectedItem && selectedItem.displayName
@@ -89,7 +97,7 @@ export default function SelectModal({ title, name, type, data, onSearch }) {
                       onClick={() => handleSelectItem(item)}
                     />
                   )}
-                  {type === 'departments' && (
+                  {/^(departments|faculties)$/.test(type) && (
                     <ListItemText
                       primary={item.short}
                       secondary={item.title}
@@ -100,6 +108,20 @@ export default function SelectModal({ title, name, type, data, onSearch }) {
                     <ListItemText
                       primary={item.code}
                       secondary={item.title}
+                      onClick={() => handleSelectItem(item)}
+                    />
+                  )}
+                  {type === 'riaTypes' && (
+                    <ListItemText
+                      primary={item.title}
+                      secondary={`${item.unit} - ${item.perUnit}`}
+                      onClick={() => handleSelectItem(item)}
+                    />
+                  )}
+                  {type === 'riaSpecifications' && (
+                    <ListItemText
+                      primary={item.title}
+                      secondary={item.dataType}
                       onClick={() => handleSelectItem(item)}
                     />
                   )}

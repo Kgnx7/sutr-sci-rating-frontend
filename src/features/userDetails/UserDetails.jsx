@@ -17,6 +17,7 @@ import { Grid, Table, TableHeaderRow } from '@devexpress/dx-react-grid-material-
 import Link from '@material-ui/core/Link'
 import { Link as RouterLink } from 'react-router-dom'
 import { Can } from '../../components/Can'
+import AlertDialog from '../../components/AlertDialog'
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -53,23 +54,22 @@ function TabPanel(props) {
 const AcademicRanks = ({ user }) => {
   const classes = useStyles()
 
-  const userStatusesColumns = [
+  const columns = [
     { name: 'position', title: 'Должность' },
     { name: 'department', title: 'Кафедра' },
     { name: 'employmentType', title: 'Тип занятости' },
     { name: 'salaryRate', title: 'Ставка' },
   ]
 
-  const userStatusesColumnExtensions = [
-    { columnName: 'title', wordWrapEnabled: true },
-    { columnName: 'description', wordWrapEnabled: true },
-    { columnName: 'authors', wordWrapEnabled: true },
+  const columnExtensions = [
+    { columnName: 'position', wordWrapEnabled: true },
+    { columnName: 'department', wordWrapEnabled: true },
   ]
 
   return (
     <>
-      <Grid rows={user.states} columns={userStatusesColumns}>
-        <Table messages={tableMessages} columnExtensions={userStatusesColumnExtensions} />
+      <Grid rows={user.states} columns={columns}>
+        <Table messages={tableMessages} columnExtensions={columnExtensions} />
         <TableHeaderRow messages={tableHeaderMessages} />
       </Grid>
       <Can I="create" a="UserStatus">
@@ -79,6 +79,60 @@ const AcademicRanks = ({ user }) => {
           </Button>
         </Link>
       </Can>
+    </>
+  )
+}
+
+const TableRow = ({ row, ...restProps }) => {
+  const history = useHistory()
+
+  const handleRowClick = () => {
+    history.push(`/ria/get/${row.id}`)
+  }
+
+  return (
+    <Table.Row
+      {...restProps}
+      onClick={handleRowClick}
+      style={{
+        cursor: 'pointer',
+      }}
+    />
+  )
+}
+
+const RiaList = ({ user }) => {
+  const classes = useStyles()
+
+  const columns = [
+    { name: 'title', title: 'Наименование' },
+    { name: 'authors', title: 'Авторы' },
+    { name: 'description', title: 'Описание' },
+  ]
+
+  const columnExtensions = [
+    { columnName: 'title', wordWrapEnabled: true },
+    { columnName: 'authors', wordWrapEnabled: true },
+    { columnName: 'description', wordWrapEnabled: true },
+  ]
+
+  return (
+    <>
+      <Can I="create" a="UserStatus">
+        <Link component={RouterLink} to={`/ria/create`}>
+          <Button variant="contained" color="primary" className={classes.gutterAll}>
+            Добавить РИД
+          </Button>
+        </Link>
+      </Can>
+      <Grid rows={user.ria} columns={columns}>
+        <Table
+          messages={tableMessages}
+          columnExtensions={columnExtensions}
+          rowComponent={TableRow}
+        />
+        <TableHeaderRow messages={tableHeaderMessages} />
+      </Grid>
     </>
   )
 }
@@ -114,12 +168,17 @@ const AcademicDegrees = ({ user }) => {
 }
 
 const UserInfo = ({ user }) => {
+  const [alertDialog, setAlertDialog] = useState(false)
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
 
   const handleDelete = () => {
     dispatch(deleteUser(user.id, history))
+  }
+
+  const toggleAlertDialog = () => {
+    setAlertDialog(!alertDialog)
   }
 
   return (
@@ -144,11 +203,12 @@ const UserInfo = ({ user }) => {
             variant="contained"
             color="secondary"
             className={classes.gutterAll}
-            onClick={handleDelete}
+            onClick={toggleAlertDialog}
           >
             Удалить
           </Button>
         </Can>
+        <AlertDialog open={alertDialog} onSubmit={handleDelete} handleClose={toggleAlertDialog} />
       </div>
     </>
   )
@@ -180,7 +240,7 @@ export default function UserDetails() {
               <Tab label="Общая информация" />
               <Tab label="Занимаемые должности" />
               <Tab label="Ученые степени" />
-              {/* <Tab label="РИДЫ" /> */}
+              <Tab label="РИДЫ" />
             </Tabs>
             <Box mt={3}>
               <TabPanel value={tab} index={0}>
@@ -191,6 +251,9 @@ export default function UserDetails() {
               </TabPanel>
               <TabPanel value={tab} index={2}>
                 <AcademicDegrees user={user} />
+              </TabPanel>
+              <TabPanel value={tab} index={3}>
+                <RiaList user={user} />
               </TabPanel>
             </Box>
           </>
