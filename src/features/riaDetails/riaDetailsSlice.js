@@ -36,15 +36,7 @@ const riaSlice = createSlice({
   },
 })
 
-export const {
-  getRiaStart,
-  getRiaFailure,
-  getRiaSuccess,
-  // deleteRiaStart,
-  // deleteRiaFailure,
-  // deleteRiaSuccess,
-  resetError,
-} = riaSlice.actions
+export const { getRiaStart, getRiaFailure, getRiaSuccess, resetError } = riaSlice.actions
 
 export const getRia = (riaId, router) => async (dispatch) => {
   try {
@@ -59,6 +51,20 @@ export const getRia = (riaId, router) => async (dispatch) => {
     handleServerErrors(error, router, dispatch)
   }
 }
+
+// export const addProperty = (newProperty, router) => async (dispatch) => {
+//   try {
+//     dispatch(addRiaPropertyStart())
+
+//     const riaProperty = await apiAddRiaProperty(newProperty)
+
+//     dispatch(addRiaPropertySuccess(riaProperty))
+//   } catch (error) {
+//     dispatch(addRiaPropertyFailure(error))
+
+//     handleServerErrors(error, router, dispatch)
+//   }
+// }
 
 // export const deleteRia = (riaId, router) => async (dispatch) => {
 //   try {

@@ -94,15 +94,6 @@ export default function RiaCreate() {
             validate={riaMetaValidate}
             render={({ handleSubmit, form, submitting, pristine }) => (
               <form onSubmit={handleSubmit} noValidate>
-                {/* <TextField label="Роль" name="role" type="text" required={true} />
-                <TextField
-                  label="Доля"
-                  name="part"
-                  type="number"
-                  required={true}
-                  className={classes.gutterBottom}
-                />
-                <Divider /> */}
                 <TextField label="Наименование" name="title" type="text" required={true} />
                 <TextField label="Авторы" name="authors" type="text" required={true} />
                 <TextField label="Описание" name="description" type="text" required={false} />

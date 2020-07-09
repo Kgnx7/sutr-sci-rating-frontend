@@ -95,15 +95,15 @@ function RiaInfo({ riaDetails }) {
   )
 }
 
-const columns = [
-  { name: 'displayName', title: 'ФИО' },
-  { name: 'role', title: 'Роль' },
-  { name: 'part', title: 'Часть' },
-]
-
 function RiaAuthors({ riaDetails }) {
   const [searchValue, setSearchState] = useState('')
   const classes = useStyles()
+
+  const columns = [
+    { name: 'displayName', title: 'ФИО' },
+    { name: 'role', title: 'Роль' },
+    { name: 'part', title: 'Часть' },
+  ]
 
   return (
     <>
@@ -116,6 +116,40 @@ function RiaAuthors({ riaDetails }) {
       </Can> */}
       <Paper>
         <Grid rows={riaDetails.users || []} columns={columns}>
+          <SearchState value={searchValue} onValueChange={setSearchState} />
+          <SortingState />
+          <IntegratedSorting />
+          <IntegratedFiltering />
+          <Table messages={tableMessages} />
+          <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+          <Toolbar />
+          <SearchPanel messages={searchPanelMessages} />
+        </Grid>
+      </Paper>
+    </>
+  )
+}
+
+function RiaProperties({ riaDetails }) {
+  const [searchValue, setSearchState] = useState('')
+  const classes = useStyles()
+
+  const columns = [
+    { name: 'title', title: 'Наименование' },
+    { name: 'value', title: 'Значение' },
+  ]
+
+  return (
+    <>
+      <Can I="edit" a="Ria">
+        <Link component={RouterLink} to={`/ria/${riaDetails.id}/addProperty`}>
+          <Button variant="contained" color="primary" className={classes.gutterBottom}>
+            Добавить
+          </Button>
+        </Link>
+      </Can>
+      <Paper>
+        <Grid rows={riaDetails.properties || []} columns={columns}>
           <SearchState value={searchValue} onValueChange={setSearchState} />
           <SortingState />
           <IntegratedSorting />
@@ -175,6 +209,7 @@ export default function RiaDetails() {
             <Tabs value={tab} onChange={handleTabChange}>
               <Tab label="Общая информация" />
               <Tab label="Авторы" />
+              <Tab label="Свойства" />
             </Tabs>
             <Box mt={3}>
               <TabPanel value={tab} index={0}>
@@ -182,6 +217,9 @@ export default function RiaDetails() {
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <RiaAuthors riaDetails={riaDetails} />
+              </TabPanel>
+              <TabPanel value={tab} index={2}>
+                <RiaProperties riaDetails={riaDetails} />
               </TabPanel>
             </Box>
           </>

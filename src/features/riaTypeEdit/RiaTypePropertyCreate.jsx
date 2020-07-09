@@ -81,7 +81,7 @@ export default function RiaTypePropertyCreate() {
                 />
 
                 <SelectModal
-                  title="Выбрать декана"
+                  title="Выбрать свойство"
                   name="propertyId"
                   data={riaSpecifications}
                   onSearch={handleRiaSpecificationSearch}
