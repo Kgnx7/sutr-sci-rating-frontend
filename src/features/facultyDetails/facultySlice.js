@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiGetFaculty, apiDeleteFaculty } from '../../api/facultiesAPI'
+import { apiGetFaculty, apiDeleteFaculty, apiGetСonsolidatedRegister } from '../../api/facultiesAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
 import { enqueueSnackbar } from '../../app/appSlice'
 
@@ -14,10 +14,18 @@ function loadingFailed(state, action) {
 
 const facultySlice = createSlice({
   name: 'faculty',
-  initialState: { faculty: null, departments: [], isLoading: false, error: null },
+  initialState: {
+    faculty: null,
+    consolidatedRegister: [],
+    departments: [],
+    isLoading: false,
+    error: null,
+  },
   reducers: {
     getFacultyStart: startLoading,
     getFacultyFailure: loadingFailed,
+    getСonsolidatedRegisterStart: startLoading,
+    getСonsolidatedRegisterFailure: loadingFailed,
     deleteFacultyStart: startLoading,
     deleteFacultyFailure: loadingFailed,
     getFacultyDepartmentsStart: startLoading,
@@ -41,6 +49,11 @@ const facultySlice = createSlice({
       state.isLoading = false
       state.error = null
     },
+    getСonsolidatedRegisterSuccess(state, { payload }) {
+      state.consolidatedRegister = payload
+      state.isLoading = false
+      state.error = null
+    },
   },
 })
 
@@ -48,6 +61,10 @@ export const {
   getFacultyStart,
   getFacultyFailure,
   getFacultySuccess,
+
+  getСonsolidatedRegisterStart,
+  getСonsolidatedRegisterFailure,
+  getСonsolidatedRegisterSuccess,
 
   deleteFacultyStart,
   deleteFacultySuccess,
@@ -79,6 +96,19 @@ export const getFaculty = (facultyId, router) => async (dispatch) => {
     dispatch(getFacultySuccess(faculty))
   } catch (error) {
     dispatch(getFacultyFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const getСonsolidatedRegister = (facultyId, router) => async (dispatch) => {
+  try {
+    dispatch(getСonsolidatedRegisterStart())
+
+    const consolidatedRegister = await apiGetСonsolidatedRegister(facultyId)
+
+    dispatch(getСonsolidatedRegisterSuccess(consolidatedRegister))
+  } catch (error) {
+    dispatch(getСonsolidatedRegisterFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }

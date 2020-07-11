@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { apiGetUsersByDepartment } from '../../api/usersAPI'
-import { apiGetDepartment, apiDeleteDepartment } from '../../api/departmentsAPI'
+import {
+  apiGetDepartment,
+  apiDeleteDepartment,
+  apiGetgetConsolidatedRegister,
+} from '../../api/departmentsAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
 import { enqueueSnackbar } from '../../app/appSlice'
 
@@ -15,10 +19,20 @@ function loadingFailed(state, action) {
 
 const departmentSlice = createSlice({
   name: 'department',
-  initialState: { department: [], users: [], usersCount: 0, isLoading: false, error: null },
+  initialState: {
+    department: [],
+    consolidatedRegister: [],
+    consolidatedRegisterCount: 0,
+    users: [],
+    usersCount: 0,
+    isLoading: false,
+    error: null,
+  },
   reducers: {
     getDepartmentStart: startLoading,
+    getConsolidatedRegisterStart: startLoading,
     getDepartmentFailure: loadingFailed,
+    getConsolidatedRegisterFailure: loadingFailed,
     deleteDepartmentStart: startLoading,
     deleteDepartmentFailure: loadingFailed,
     getDepartmentUsersStart: startLoading,
@@ -43,6 +57,12 @@ const departmentSlice = createSlice({
       state.isLoading = false
       state.error = null
     },
+    getConsolidatedRegisterSuccess(state, { payload }) {
+      state.consolidatedRegister = payload
+      // state.consolidatedRegisterCount = payload.count
+      state.isLoading = false
+      state.error = null
+    },
   },
 })
 
@@ -50,6 +70,9 @@ export const {
   getDepartmentStart,
   getDepartmentFailure,
   getDepartmentSuccess,
+  getConsolidatedRegisterStart,
+  getConsolidatedRegisterFailure,
+  getConsolidatedRegisterSuccess,
   deleteDepartmentStart,
   deleteDepartmentFailure,
   deleteDepartmentSuccess,
@@ -113,6 +136,19 @@ export const getUsersByDepartment = (departmentId, filter, offset, limit, router
     dispatch(getDepartmentUsersSuccess({ users, count }))
   } catch (error) {
     dispatch(getDepartmentUsersFailure(error))
+    handleServerErrors(error, router, dispatch)
+  }
+}
+
+export const getConsolidatedRegister = (departmentId, router) => async (dispatch) => {
+  try {
+    dispatch(getConsolidatedRegisterStart())
+
+    let consolidatedRegister = await apiGetgetConsolidatedRegister(departmentId)
+
+    dispatch(getConsolidatedRegisterSuccess(consolidatedRegister))
+  } catch (error) {
+    dispatch(getConsolidatedRegisterFailure(error))
     handleServerErrors(error, router, dispatch)
   }
 }

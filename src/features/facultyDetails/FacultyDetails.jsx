@@ -31,7 +31,7 @@ import Header from '../../components/Header'
 import { Can } from '../../components/Can'
 
 import { getDepartmentsByFaculty } from '../departmentsList/departmentsSlice'
-import { getFaculty, deleteFaculty } from './facultySlice'
+import { getFaculty, deleteFaculty, getСonsolidatedRegister } from './facultySlice'
 
 const useStyles = makeStyles((theme) => ({
   profileContainer: {
@@ -154,6 +154,38 @@ function FacultyDepartments({ facultyId }) {
   )
 }
 
+function ConsolidatedRegister({ facultyId }) {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const сonsolidatedRegister = useSelector((state) => state.faculty.consolidatedRegister)
+  // const totalCount = useSelector((state) => state.department.usersCount)
+
+  const сolumns = [
+    { name: 'displayName', title: 'ФИО' },
+    { name: 'position', title: 'Должность' },
+    { name: 'sciRating', title: 'Баллы' },
+  ]
+
+  useEffect(() => {
+    dispatch(getСonsolidatedRegister(facultyId, history))
+  }, [])
+
+  return (
+    <>
+      <Paper>
+        <Grid rows={сonsolidatedRegister} columns={сolumns}>
+          <SortingState />
+          <IntegratedSorting />
+          <IntegratedFiltering />
+          <Table messages={tableMessages} />
+          <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+          <Toolbar />
+        </Grid>
+      </Paper>
+    </>
+  )
+}
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props
 
@@ -199,6 +231,7 @@ export default function FacultyShow() {
             <Tabs value={tab} onChange={handleTabChange} aria-label="Разделы факультета">
               <Tab label="Общая информация" />
               <Tab label="Кафедры" />
+              <Tab label="Сводный реестр" />
             </Tabs>
             <Box mt={3}>
               <TabPanel value={tab} index={0}>
@@ -206,6 +239,9 @@ export default function FacultyShow() {
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <FacultyDepartments facultyId={faculty.id} />
+              </TabPanel>
+              <TabPanel value={tab} index={2}>
+                <ConsolidatedRegister facultyId={faculty.id} />
               </TabPanel>
             </Box>
           </>

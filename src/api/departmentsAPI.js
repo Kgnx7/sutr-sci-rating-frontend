@@ -40,6 +40,18 @@ export async function apiGetDepartmentsByFaculty(facultyId) {
   }
 }
 
+export async function apiGetgetConsolidatedRegister(departmentId) {
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/departments/get/${departmentId}/getSciRating`
+
+    const responce = await axios.get(url, { withCredentials: true, timeout: 3000 })
+
+    return responce.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function apiCreateDepartment(newDepartment) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/departments/create`

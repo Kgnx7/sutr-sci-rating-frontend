@@ -12,7 +12,12 @@ import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
 import Button from '@material-ui/core/Button'
 
-import { getDepartment, getUsersByDepartment, deleteDepartment } from './departmentSlice'
+import {
+  getDepartment,
+  getUsersByDepartment,
+  deleteDepartment,
+  getConsolidatedRegister,
+} from './departmentSlice'
 import debounce from '../../utils/debounce'
 
 import {
@@ -173,9 +178,41 @@ function UsersByDepartment({ departmentId }) {
           <Table messages={tableMessages} rowComponent={TableRow} />
           <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
           <Toolbar />
-          <SearchPanel messages={searchPanelMessages}/>
+          <SearchPanel messages={searchPanelMessages} />
           <PagingPanel />
           <CustomPaging totalCount={totalCount} />
+        </Grid>
+      </Paper>
+    </>
+  )
+}
+
+function ConsolidatedRegister({ departmentId }) {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const сonsolidatedRegister = useSelector((state) => state.department.consolidatedRegister)
+  // const totalCount = useSelector((state) => state.department.usersCount)
+
+  const сolumns = [
+    { name: 'displayName', title: 'ФИО' },
+    { name: 'position', title: 'Должность' },
+    { name: 'sciRating', title: 'Баллы' },
+  ]
+
+  useEffect(() => {
+    dispatch(getConsolidatedRegister(departmentId, history))
+  }, [])
+
+  return (
+    <>
+      <Paper>
+        <Grid rows={сonsolidatedRegister} columns={сolumns}>
+          <SortingState />
+          <IntegratedSorting />
+          <IntegratedFiltering />
+          <Table messages={tableMessages} />
+          <TableHeaderRow showSortingControls messages={tableHeaderMessages} />
+          <Toolbar />
         </Grid>
       </Paper>
     </>
@@ -224,9 +261,10 @@ export default function DepartmentShow() {
             <Typography variant="h2" gutterBottom>
               {department.short}
             </Typography>
-            <Tabs value={tab} onChange={handleTabChange} aria-label="Разделы факультета">
+            <Tabs value={tab} onChange={handleTabChange} aria-label="Разделы кафедры">
               <Tab label="Общая информация" />
               <Tab label="Сотрудники" />
+              <Tab label="Сводный реестр" />
             </Tabs>
             <Box mt={3}>
               <TabPanel value={tab} index={0}>
@@ -234,6 +272,9 @@ export default function DepartmentShow() {
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <UsersByDepartment departmentId={department.id} />
+              </TabPanel>
+              <TabPanel value={tab} index={2}>
+                <ConsolidatedRegister departmentId={department.id} />
               </TabPanel>
             </Box>
           </>
