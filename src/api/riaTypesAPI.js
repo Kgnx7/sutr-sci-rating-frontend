@@ -61,6 +61,21 @@ export async function apiEditRiaType(updatedRiaType) {
   }
 }
 
+export async function apiAddRiaTypeProperty(newProperty) {
+  try {
+    const url = `${process.env.REACT_APP_HOST}/api/riaTypes/addProperty`
+
+    const responce = await axios.post(url, newProperty, {
+      withCredentials: true,
+      timeout: 3000,
+    })
+
+    return responce.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function apiDeleteRiaType(riaTypeId) {
   try {
     const url = `${process.env.REACT_APP_HOST}/api/riaTypes/delete/${riaTypeId}`

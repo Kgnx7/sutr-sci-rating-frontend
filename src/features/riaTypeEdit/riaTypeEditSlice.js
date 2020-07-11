@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { apiEditRiaType } from '../../api/riaTypesAPI'
+import { apiEditRiaType, apiAddRiaTypeProperty } from '../../api/riaTypesAPI'
 import { handleServerErrors } from '../../utils/errorHandler'
 import { enqueueSnackbar } from '../../app/appSlice'
 
@@ -56,7 +56,7 @@ export const addProperty = (newProperty, router) => async (dispatch) => {
   try {
     dispatch(editRiaTypeStart())
 
-    await apiEditRiaType(newProperty)
+    await apiAddRiaTypeProperty(newProperty)
 
     dispatch(editRiaTypeSuccess())
     dispatch(enqueueSnackbar('Запись успешно обновлена', 'success'))

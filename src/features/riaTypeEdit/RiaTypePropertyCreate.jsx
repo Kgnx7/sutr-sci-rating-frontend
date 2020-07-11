@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 
-import createRiaTypeSchema from '../riaTypeCreate/createRiaTypeSchema'
+import createRiaTypePropertySchema from './createRiaTypePropertySchema'
 import { addProperty } from './riaTypeEditSlice'
 import { getRiaTypes } from '../riaTypesList/riaTypesListSlice'
 import { getRiaSpecifications } from '../riaSpecificationsList/riaSpecificationsListSlice'
@@ -56,7 +56,7 @@ export default function RiaTypePropertyCreate() {
     dispatch(getRiaSpecifications(search, 0, 3, history))
   }
 
-  const validate = makeValidate(createRiaTypeSchema)
+  const validate = makeValidate(createRiaTypePropertySchema)
 
   return (
     <>

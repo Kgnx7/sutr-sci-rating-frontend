@@ -1,10 +1,19 @@
 import React, { useContext } from 'react'
-import { useSelector } from 'react-redux'
-import { BrowserRouter as Router, Switch, Route, Redirect, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+  useHistory,
+} from 'react-router-dom'
 
 import Dashboard from '../components/Dashboard'
 import NotFound from '../components/NotFound'
 import { AbilityContext } from '../components/Can'
+
+import { enqueueSnackbar } from '../app/appSlice'
 
 import UsersList from '../features/usersList'
 import UserDetails from '../features/userDetails'
@@ -189,9 +198,16 @@ export default function Routers() {
 function PrivateRoute({ children, action, source, ...rest }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
+  // const history = useHistory()
+  const dispatch = useDispatch()
   const ability = useContext(AbilityContext)
 
   const hasAccess = ability.can(action, source)
+
+  
+  if (!hasAccess) {
+    dispatch(enqueueSnackbar('Нет доступа', 'error'))
+  }
 
   return (
     <Route {...rest}>

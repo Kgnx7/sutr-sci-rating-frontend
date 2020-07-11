@@ -118,7 +118,7 @@ const RiaList = ({ user }) => {
 
   return (
     <>
-      <Can I="create" a="UserStatus">
+      <Can I="create" a="Ria">
         <Link component={RouterLink} to={`/ria/create`}>
           <Button variant="contained" color="primary" className={classes.gutterAll}>
             Добавить РИД
