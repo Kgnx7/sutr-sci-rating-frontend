@@ -199,15 +199,14 @@ function PrivateRoute({ children, action, source, ...rest }) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
   // const history = useHistory()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const ability = useContext(AbilityContext)
 
   const hasAccess = ability.can(action, source)
 
-  
-  if (!hasAccess) {
-    dispatch(enqueueSnackbar('Нет доступа', 'error'))
-  }
+  // if (!hasAccess && location.pathname !== '/login') {
+  //   dispatch(enqueueSnackbar('Нет доступа', 'error'))
+  // }
 
   return (
     <Route {...rest}>

@@ -19,6 +19,7 @@ import { getRiaStatuses } from '../../features/riaStatusesList/riaStatusesListSl
 import { getRsTypes } from '../../features/rsTypesList/rsTypesListSlice'
 import { getRiaTypes } from '../../features/riaTypesList/riaTypesListSlice'
 import { createRia } from './riaCreateSlice'
+import { getAllUsers } from '../usersList/usersSlice'
 
 import Header from '../../components/Header'
 import SelectModal from '../../components/SelectModal'
@@ -47,15 +48,20 @@ export default function RiaCreate() {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const currentUser = useSelector((state) => state.auth.user)
+  const currentUser = useSelector((state) => state.userDetails.user)
   const rsTypes = useSelector((state) => state.rsTypesList.rsTypes)
   const riaStatuses = useSelector((state) => state.riaStatusesList.riaStatuses)
   const riaTypes = useSelector((state) => state.riaTypesList.riaTypes)
+  const users = useSelector((state) => state.usersList.users)
 
   const onRiaMetaSubmit = async (values) => {
     // dispatch(createRia(values, history))
     setRiaMeta(values)
     toggleAuthorForm()
+  }
+
+  const handleUsersSearch = (search) => {
+    dispatch(getAllUsers(search, 0, 3, history))
   }
 
   const onAuthorMetaSubmit = async (values) => {
@@ -71,6 +77,7 @@ export default function RiaCreate() {
     dispatch(getRiaStatuses(history))
     dispatch(getRsTypes(history))
     dispatch(getRiaTypes('', 0, 3, history))
+    dispatch(getAllUsers(currentUser?.login || '', 0, 3, history))
   }, [])
 
   const handleRiaTypeSearch = (search) => {
@@ -147,6 +154,13 @@ export default function RiaCreate() {
                 validate={authorMetaValidate}
                 render={({ handleSubmit, form, submitting, pristine }) => (
                   <form onSubmit={handleSubmit} noValidate>
+                    <SelectModal
+                      title="Выбрать автора"
+                      name="userId"
+                      data={users}
+                      onSearch={handleUsersSearch}
+                      type="users"
+                    />
                     <TextField label="Роль" name="role" type="text" required={true} />
                     <TextField
                       label="Доля"

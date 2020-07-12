@@ -7,5 +7,5 @@ export default object().shape({
   departmentId: number().required(msg.required),
   positionId: number().required(msg.required),
   employmentTypeId: number().required(msg.required),
-  salaryRate: number().required(msg.required),
+  salaryRate: number().required(msg.required).min(0, msg.min).max(1, msg.max),
 })

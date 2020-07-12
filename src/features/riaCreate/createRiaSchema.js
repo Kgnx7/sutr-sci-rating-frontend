@@ -12,7 +12,7 @@ export const riaMetaSchema = object().shape({
 })
 
 export const authorMetaSchema = object().shape({
-  // userId: number().required(msg.required),
+  userId: number().required(msg.required),
   // riaId: number().required(msg.required),
   part: number().required(msg.required).min(0, msg.min).max(100, msg.max),
   role: string().required(msg.required),
